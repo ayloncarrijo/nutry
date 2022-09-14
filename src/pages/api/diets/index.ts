@@ -13,8 +13,6 @@ const include = {
       recipe: { include: { linkedFoods: { include: { food: true } } } },
     },
   },
-  createdAsDailyBy: true,
-  createdAsGoalBy: true,
 };
 
 const methods = {
