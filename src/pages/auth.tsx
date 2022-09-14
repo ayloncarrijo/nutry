@@ -1,10 +1,12 @@
 import Button from "components/Button";
+import TextInput from "components/TextInput";
 import AuthLayout from "layouts/AuthLayout";
+import React from "react";
 import "twin.macro";
 import type { AppPage } from "types";
 
 const Page: AppPage = () => {
-  // const [name, setName] = React.useState("");
+  const [name, setName] = React.useState("");
 
   // const { push } = useRouter();
 
@@ -26,13 +28,13 @@ const Page: AppPage = () => {
           //
         }}
       >
-        {/* <TextField
+        <TextInput
+          id="name"
           label="Insira seu nome"
           value={name}
           onChange={(event) => setName(event.target.value)}
           required
-          fullWidth
-        /> */}
+        />
 
         <div tw="mt-2">
           <Button type="submit" startIcon="login" isFullWidth>
