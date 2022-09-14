@@ -26,17 +26,20 @@ const methods = {
   },
 
   PUT: async (
-    req: TypedApiRequest<{
-      weight: number;
-      carbohydratesPerKg: number;
-      fatsPerKg: number;
-      proteinsPerKg: number;
-    }>,
+    req: TypedApiRequest<
+      {
+        weight: number;
+        carbohydratesPerKg: number;
+        fatsPerKg: number;
+        proteinsPerKg: number;
+      },
+      Query
+    >,
     res: NextApiResponse<User>
   ) => {
     const { weight, carbohydratesPerKg, fatsPerKg, proteinsPerKg } = req.body;
 
-    const { name } = req.query as Query;
+    const { name } = req.query;
 
     const user = await prisma.user.update({
       where: {

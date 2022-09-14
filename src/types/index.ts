@@ -14,3 +14,10 @@ export type AppPage<
 > = NextPage<Props, InitialProps> & {
   getLayout: (page: React.ReactElement) => JSX.Element;
 };
+
+export enum Status {
+  IDLE,
+  LOADING,
+  SUCCESS,
+  ERROR,
+}
