@@ -13,7 +13,7 @@ type UnwrapProps<T extends GetServerSideProps> = T extends GetServerSideProps<
   : never;
 
 class NextUtil {
-  public static combine<
+  public static merge<
     T extends Array<GetServerSideProps> | [GetServerSideProps]
   >(
     middlewares: T,
@@ -42,17 +42,17 @@ class NextUtil {
         })
       );
 
-      const unifiedProps = middlewareProps.reduce(
-        (accumulator, prop) => ({
+      const unifiedMiddlewareProps = middlewareProps.reduce(
+        (accumulator, props) => ({
           ...accumulator,
-          ...prop,
+          ...props,
         }),
         {}
       );
 
       if (!sspGetter) {
         return {
-          props: unifiedProps,
+          props: unifiedMiddlewareProps,
         };
       }
 
@@ -66,7 +66,7 @@ class NextUtil {
 
       return {
         props: {
-          ...unifiedProps,
+          ...unifiedMiddlewareProps,
           ...(await sspResult.props),
         },
       };

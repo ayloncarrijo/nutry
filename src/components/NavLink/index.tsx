@@ -1,15 +1,14 @@
-import { useRouter } from "next/router";
 import React from "react";
 import tw from "twin.macro";
 
-function MenuLink(
-  props: React.ComponentPropsWithoutRef<"a">,
+interface NavLinkProps extends React.ComponentPropsWithoutRef<"a"> {
+  isActive?: boolean;
+}
+
+function NavLink(
+  { isActive, ...props }: NavLinkProps,
   ref: React.ForwardedRef<HTMLAnchorElement>
 ): JSX.Element {
-  const { pathname } = useRouter();
-
-  const isActive = props.href === pathname;
-
   return (
     <a
       tw="hover:(text-white)"
@@ -20,4 +19,4 @@ function MenuLink(
   );
 }
 
-export default React.forwardRef(MenuLink);
+export default React.forwardRef(NavLink);

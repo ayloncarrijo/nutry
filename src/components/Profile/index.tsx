@@ -2,8 +2,12 @@ import Icon from "components/Icon";
 import React from "react";
 import "twin.macro";
 
+interface ProfileProps extends React.ComponentPropsWithoutRef<"a"> {
+  name: string;
+}
+
 function Profile(
-  props: React.ComponentPropsWithoutRef<"a">,
+  { name, ...props }: ProfileProps,
   ref: React.ForwardedRef<HTMLAnchorElement>
 ): JSX.Element {
   return (
@@ -15,7 +19,7 @@ function Profile(
       <div tw="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center">
         <Icon icon="person" />
       </div>
-      <span tw="font-medium">Nickname</span>
+      <span tw="font-medium">{name}</span>
     </a>
   );
 }
