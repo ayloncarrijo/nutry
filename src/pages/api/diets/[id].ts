@@ -1,5 +1,6 @@
 import prisma from "lib/prisma";
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiResponse } from "next";
+import type { TypedApiRequest } from "types";
 import type { FullDiet } from "types/api";
 import HttpStatusCode from "types/HttpStatusCode";
 import DatabaseUtil from "utils/DatabaseUtil";
@@ -11,8 +12,11 @@ type Query = {
 };
 
 const methods = {
-  GET: async (req: NextApiRequest, res: NextApiResponse<FullDiet>) => {
-    const { id } = req.query as Query;
+  GET: async (
+    req: TypedApiRequest<unknown, Query>,
+    res: NextApiResponse<FullDiet>
+  ) => {
+    const { id } = req.query;
 
     const diet = await prisma.diet.findUniqueOrThrow({
       include,
@@ -26,10 +30,19 @@ const methods = {
       .json(DatabaseUtil.assignMacrosToDiet(diet));
   },
 
-  PUT: async (req: NextApiRequest, res: NextApiResponse<FullDiet>) => {
+  PUT: async (
+    req: TypedApiRequest<
+      {
+        linkedFoods: Array<{ foodId: string; quantity: number }>;
+        linkedRecipes: Array<{ recipeId: string; quantity: number }>;
+      },
+      Query
+    >,
+    res: NextApiResponse<FullDiet>
+  ) => {
     const { linkedFoods, linkedRecipes } = req.body;
 
-    const { id } = req.query as Query;
+    const { id } = req.query;
 
     const diet = await prisma.diet.update({
       include,
@@ -57,8 +70,11 @@ const methods = {
       .json(DatabaseUtil.assignMacrosToDiet(diet));
   },
 
-  DELETE: async (req: NextApiRequest, res: NextApiResponse<never>) => {
-    const { id } = req.query as Query;
+  DELETE: async (
+    req: TypedApiRequest<unknown, Query>,
+    res: NextApiResponse<never>
+  ) => {
+    const { id } = req.query;
 
     await prisma.diet.delete({
       where: {
@@ -70,7 +86,10 @@ const methods = {
   },
 };
 
-const handle = async (req: NextApiRequest, res: NextApiResponse) => {
+const handle = async (
+  req: TypedApiRequest<never, never>,
+  res: NextApiResponse
+) => {
   const { method = "NONE" } = req;
 
   if (ObjectUtil.isKeyOf(methods, method)) {

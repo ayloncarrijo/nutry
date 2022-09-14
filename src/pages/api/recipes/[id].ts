@@ -1,5 +1,6 @@
 import prisma from "lib/prisma";
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiResponse } from "next";
+import type { TypedApiRequest } from "types";
 import type { FullRecipe } from "types/api";
 import HttpStatusCode from "types/HttpStatusCode";
 import DatabaseUtil from "utils/DatabaseUtil";
@@ -11,8 +12,11 @@ type Query = {
 };
 
 const methods = {
-  GET: async (req: NextApiRequest, res: NextApiResponse<FullRecipe>) => {
-    const { id } = req.query as Query;
+  GET: async (
+    req: TypedApiRequest<unknown, Query>,
+    res: NextApiResponse<FullRecipe>
+  ) => {
+    const { id } = req.query;
 
     const recipe = await prisma.recipe.findUniqueOrThrow({
       include,
@@ -26,8 +30,17 @@ const methods = {
       .json(DatabaseUtil.assignMacrosToRecipe(recipe));
   },
 
-  PUT: async (req: NextApiRequest, res: NextApiResponse<FullRecipe>) => {
-    const { id } = req.query as Query;
+  PUT: async (
+    req: TypedApiRequest<
+      {
+        name: string;
+        linkedFoods: Array<{ foodId: string; quantity: number }>;
+      },
+      Query
+    >,
+    res: NextApiResponse<FullRecipe>
+  ) => {
+    const { id } = req.query;
 
     const { name, linkedFoods } = req.body;
 
@@ -52,8 +65,11 @@ const methods = {
       .json(DatabaseUtil.assignMacrosToRecipe(recipe));
   },
 
-  DELETE: async (req: NextApiRequest, res: NextApiResponse<never>) => {
-    const { id } = req.query as Query;
+  DELETE: async (
+    req: TypedApiRequest<unknown, Query>,
+    res: NextApiResponse<never>
+  ) => {
+    const { id } = req.query;
 
     await prisma.recipe.delete({
       where: {
@@ -65,7 +81,10 @@ const methods = {
   },
 };
 
-const handle = async (req: NextApiRequest, res: NextApiResponse) => {
+const handle = async (
+  req: TypedApiRequest<never, never>,
+  res: NextApiResponse
+) => {
   const { method = "NONE" } = req;
 
   if (ObjectUtil.isKeyOf(methods, method)) {

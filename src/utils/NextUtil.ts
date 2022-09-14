@@ -1,6 +1,8 @@
 import type { GetServerSideProps } from "next";
 
-type MiddlewareProps<T extends GetServerSideProps[] | [GetServerSideProps]> = {
+type MiddlewareProps<
+  T extends Array<GetServerSideProps> | [GetServerSideProps]
+> = {
   [Index in keyof T]: UnwrapProps<T[Index]>;
 };
 
@@ -11,7 +13,9 @@ type UnwrapProps<T extends GetServerSideProps> = T extends GetServerSideProps<
   : never;
 
 class NextUtil {
-  public static combine<T extends GetServerSideProps[] | [GetServerSideProps]>(
+  public static combine<
+    T extends Array<GetServerSideProps> | [GetServerSideProps]
+  >(
     middlewares: T,
     sspGetter?: (props: MiddlewareProps<T>) => GetServerSideProps
   ): GetServerSideProps {
@@ -52,9 +56,9 @@ class NextUtil {
         };
       }
 
-      const sspResult = await sspGetter(
-        middlewareProps as unknown as MiddlewareProps<T>
-      )(context);
+      const sspResult = await sspGetter(middlewareProps as MiddlewareProps<T>)(
+        context
+      );
 
       if (!("props" in sspResult)) {
         return sspResult;
@@ -63,7 +67,7 @@ class NextUtil {
       return {
         props: {
           ...unifiedProps,
-          ...sspResult.props,
+          ...(await sspResult.props),
         },
       };
     };

@@ -1,5 +1,5 @@
 class ObjectUtil {
-  public static isKeyOf<T extends Record<PropertyKey, any>>(
+  public static isKeyOf<T extends Record<PropertyKey, unknown>>(
     obj: T,
     key: PropertyKey
   ): key is keyof T {

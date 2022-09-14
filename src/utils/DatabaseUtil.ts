@@ -40,7 +40,9 @@ class DatabaseUtil {
     return {
       ...recipe,
       ...DatabaseUtil.calculateTotalMacros(
-        recipe.linkedFoods.map(DatabaseUtil.assignMacrosToLinkedFood)
+        recipe.linkedFoods.map((linkedFood) =>
+          DatabaseUtil.assignMacrosToLinkedFood(linkedFood)
+        )
       ),
     };
   }
@@ -49,13 +51,17 @@ class DatabaseUtil {
     return {
       ...diet,
       ...DatabaseUtil.calculateTotalMacros([
-        ...diet.linkedFoods.map(DatabaseUtil.assignMacrosToLinkedFood),
-        ...diet.linkedRecipes.map(DatabaseUtil.assignMacrosToLinkedRecipe),
+        ...diet.linkedFoods.map((linkedFood) =>
+          DatabaseUtil.assignMacrosToLinkedFood(linkedFood)
+        ),
+        ...diet.linkedRecipes.map((linkedRecipe) =>
+          DatabaseUtil.assignMacrosToLinkedRecipe(linkedRecipe)
+        ),
       ]),
     };
   }
 
-  public static calculateTotalMacros(macros: Macros[]): Macros {
+  public static calculateTotalMacros(macros: Array<Macros>): Macros {
     return macros.reduce(
       (accumulator, { carbohydrates, fats, proteins }) => ({
         carbohydrates: accumulator.carbohydrates + carbohydrates,

@@ -1,17 +1,28 @@
 import prisma from "lib/prisma";
-import type { NextApiRequest, NextApiResponse } from "next";
-import type { Food } from "types/api";
+import type { NextApiResponse } from "next";
+import type { TypedApiRequest } from "types";
+import type { Food, Measurement } from "types/api";
 import HttpStatusCode from "types/HttpStatusCode";
 import ObjectUtil from "utils/ObjectUtil";
 
 const methods = {
-  GET: async (req: NextApiRequest, res: NextApiResponse<Food[]>) => {
+  GET: async (req: TypedApiRequest, res: NextApiResponse<Array<Food>>) => {
     const foods = await prisma.food.findMany();
 
     return res.status(HttpStatusCode.OK).json(foods);
   },
 
-  POST: async (req: NextApiRequest, res: NextApiResponse<Food>) => {
+  POST: async (
+    req: TypedApiRequest<{
+      measurement: Measurement;
+      proportion: number;
+      name: string;
+      carbohydrates: number;
+      fats: number;
+      proteins: number;
+    }>,
+    res: NextApiResponse<Food>
+  ) => {
     const { measurement, proportion, name, carbohydrates, fats, proteins } =
       req.body;
 
@@ -30,7 +41,10 @@ const methods = {
   },
 };
 
-const handle = async (req: NextApiRequest, res: NextApiResponse) => {
+const handle = async (
+  req: TypedApiRequest<never, never>,
+  res: NextApiResponse
+) => {
   const { method = "NONE" } = req;
 
   if (ObjectUtil.isKeyOf(methods, method)) {

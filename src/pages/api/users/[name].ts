@@ -1,5 +1,6 @@
 import prisma from "lib/prisma";
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiResponse } from "next";
+import type { TypedApiRequest } from "types";
 import type { User } from "types/api";
 import HttpStatusCode from "types/HttpStatusCode";
 import ObjectUtil from "utils/ObjectUtil";
@@ -9,8 +10,11 @@ type Query = {
 };
 
 const methods = {
-  GET: async (req: NextApiRequest, res: NextApiResponse<User | null>) => {
-    const { name } = req.query as Query;
+  GET: async (
+    req: TypedApiRequest<unknown, Query>,
+    res: NextApiResponse<User | null>
+  ) => {
+    const { name } = req.query;
 
     const user = await prisma.user.findUnique({
       where: {
@@ -21,7 +25,15 @@ const methods = {
     return res.status(HttpStatusCode.OK).json(user);
   },
 
-  PUT: async (req: NextApiRequest, res: NextApiResponse<User>) => {
+  PUT: async (
+    req: TypedApiRequest<{
+      weight: number;
+      carbohydratesPerKg: number;
+      fatsPerKg: number;
+      proteinsPerKg: number;
+    }>,
+    res: NextApiResponse<User>
+  ) => {
     const { weight, carbohydratesPerKg, fatsPerKg, proteinsPerKg } = req.body;
 
     const { name } = req.query as Query;
@@ -42,7 +54,10 @@ const methods = {
   },
 };
 
-const handle = async (req: NextApiRequest, res: NextApiResponse) => {
+const handle = async (
+  req: TypedApiRequest<never, never>,
+  res: NextApiResponse
+) => {
   const { method = "NONE" } = req;
 
   if (ObjectUtil.isKeyOf(methods, method)) {

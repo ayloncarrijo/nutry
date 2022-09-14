@@ -1,6 +1,7 @@
 import prisma from "lib/prisma";
-import type { NextApiRequest, NextApiResponse } from "next";
-import type { Food } from "types/api";
+import type { NextApiResponse } from "next";
+import type { TypedApiRequest } from "types";
+import type { Food, Measurement } from "types/api";
 import HttpStatusCode from "types/HttpStatusCode";
 import ObjectUtil from "utils/ObjectUtil";
 
@@ -9,8 +10,11 @@ type Query = {
 };
 
 const methods = {
-  GET: async (req: NextApiRequest, res: NextApiResponse<Food>) => {
-    const { id } = req.query as Query;
+  GET: async (
+    req: TypedApiRequest<unknown, Query>,
+    res: NextApiResponse<Food>
+  ) => {
+    const { id } = req.query;
 
     const food = await prisma.food.findUniqueOrThrow({
       where: {
@@ -21,8 +25,21 @@ const methods = {
     return res.status(HttpStatusCode.OK).json(food);
   },
 
-  PUT: async (req: NextApiRequest, res: NextApiResponse<Food>) => {
-    const { id } = req.query as Query;
+  PUT: async (
+    req: TypedApiRequest<
+      {
+        measurement: Measurement;
+        proportion: number;
+        name: string;
+        carbohydrates: number;
+        fats: number;
+        proteins: number;
+      },
+      Query
+    >,
+    res: NextApiResponse<Food>
+  ) => {
+    const { id } = req.query;
 
     const { measurement, proportion, name, carbohydrates, fats, proteins } =
       req.body;
@@ -44,8 +61,11 @@ const methods = {
     return res.status(HttpStatusCode.OK).json(food);
   },
 
-  DELETE: async (req: NextApiRequest, res: NextApiResponse<never>) => {
-    const { id } = req.query as Query;
+  DELETE: async (
+    req: TypedApiRequest<unknown, Query>,
+    res: NextApiResponse<never>
+  ) => {
+    const { id } = req.query;
 
     await prisma.food.delete({
       where: {
@@ -57,7 +77,10 @@ const methods = {
   },
 };
 
-const handle = async (req: NextApiRequest, res: NextApiResponse) => {
+const handle = async (
+  req: TypedApiRequest<never, never>,
+  res: NextApiResponse
+) => {
   const { method = "NONE" } = req;
 
   if (ObjectUtil.isKeyOf(methods, method)) {

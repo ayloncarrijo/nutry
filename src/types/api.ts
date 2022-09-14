@@ -6,14 +6,14 @@ export type FullDiet = WithMacros<Diet>;
 export type FullRecipe = WithMacros<Recipe>;
 
 export type Diet = Prisma.Diet & {
-  linkedFoods: LinkedFood[];
-  linkedRecipes: LinkedRecipe[];
+  linkedFoods: Array<LinkedFood>;
+  linkedRecipes: Array<LinkedRecipe>;
 };
 
 export type Food = Prisma.Food;
 
 export type Recipe = Prisma.Recipe & {
-  linkedFoods: LinkedFood[];
+  linkedFoods: Array<LinkedFood>;
 };
 
 export type LinkedFood = Prisma.LinkedFood & {

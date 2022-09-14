@@ -1,5 +1,6 @@
 import prisma from "lib/prisma";
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiResponse } from "next";
+import type { TypedApiRequest } from "types";
 import type { FullDiet } from "types/api";
 import HttpStatusCode from "types/HttpStatusCode";
 import DatabaseUtil from "utils/DatabaseUtil";
@@ -17,17 +18,23 @@ const include = {
 };
 
 const methods = {
-  GET: async (req: NextApiRequest, res: NextApiResponse<FullDiet[]>) => {
+  GET: async (req: TypedApiRequest, res: NextApiResponse<Array<FullDiet>>) => {
     const diets = await prisma.diet.findMany({
       include,
     });
 
     return res
       .status(HttpStatusCode.OK)
-      .json(diets.map(DatabaseUtil.assignMacrosToDiet));
+      .json(diets.map((diet) => DatabaseUtil.assignMacrosToDiet(diet)));
   },
 
-  POST: async (req: NextApiRequest, res: NextApiResponse<FullDiet>) => {
+  POST: async (
+    req: TypedApiRequest<{
+      linkedFoods: Array<{ foodId: string; quantity: number }>;
+      linkedRecipes: Array<{ recipeId: string; quantity: number }>;
+    }>,
+    res: NextApiResponse<FullDiet>
+  ) => {
     const { linkedFoods, linkedRecipes } = req.body;
 
     const diet = await prisma.diet.create({
@@ -52,7 +59,10 @@ const methods = {
   },
 };
 
-const handle = async (req: NextApiRequest, res: NextApiResponse) => {
+const handle = async (
+  req: TypedApiRequest<never, never>,
+  res: NextApiResponse
+) => {
   const { method = "NONE" } = req;
 
   if (ObjectUtil.isKeyOf(methods, method)) {

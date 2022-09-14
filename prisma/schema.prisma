@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Measurement {
+  KG
+  G
+  UN
+}
+
+model User {
+  name               String @id
+  weight             Float  @default(0)
+  carbohydratesPerKg Float  @default(2)
+  fatsPerKg          Float  @default(1)
+  proteinsPerKg      Float  @default(1.5)
+  dailyDiet          Diet   @relation("dailyDiet", fields: [dailyDietId], references: [id])
+  dailyDietId        String @unique
+  goalDiet           Diet   @relation("goalDiet", fields: [goalDietId], references: [id])
+  goalDietId         String @unique
+}
+
+model Food {
+  id            String       @id @default(uuid())
+  measurement   Measurement
+  proportion    Float
+  name          String
+  carbohydrates Float
+  fats          Float
+  proteins      Float
+  linkedFoods   LinkedFood[]
+}
+
+model Recipe {
+  id            String         @id @default(uuid())
+  name          String
+  linkedFoods   LinkedFood[]
+  linkedRecipes LinkedRecipe[]
+}
+
+model Diet {
+  id               String         @id @default(uuid())
+  linkedFoods      LinkedFood[]
+  linkedRecipes    LinkedRecipe[]
+  createdAsDailyBy User?          @relation("dailyDiet")
+  createdAsGoalBy  User?          @relation("goalDiet")
+}
+
+model LinkedFood {
+  id       String  @id @default(uuid())
+  quantity Int
+  food     Food    @relation(fields: [foodId], references: [id], onDelete: Cascade)
+  foodId   String
+  recipe   Recipe? @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId String?
+  diet     Diet?   @relation(fields: [dietId], references: [id], onDelete: Cascade)
+  dietId   String?
+}
+
+model LinkedRecipe {
+  id       String @id @default(uuid())
+  quantity Int
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId String
+  diet     Diet   @relation(fields: [dietId], references: [id], onDelete: Cascade)
+  dietId   String
+}
