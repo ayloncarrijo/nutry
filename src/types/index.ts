@@ -1,10 +1,5 @@
 import type { NextPage } from "next";
 
-export enum Layout {
-  AUTH,
-  USER,
-}
-
 export type AppPage<
   Props = Record<string, unknown>,
   InitialProps = Props

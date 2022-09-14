@@ -2,10 +2,10 @@ import GlobalStyles from "components/GlobalStyles";
 import type {} from "styled-components/cssprop";
 import type { AppPage } from "types";
 
-interface AppProps {
+type AppProps = {
   Component: AppPage;
   pageProps: PageProps;
-}
+};
 
 type PageProps = Record<string, unknown>;
 

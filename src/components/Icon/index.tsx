@@ -1,9 +1,18 @@
+import "twin.macro";
+
 interface IconProps {
   icon: string;
 }
 
 function Icon({ icon }: IconProps): JSX.Element {
-  return <span className="material-symbols-outlined">{icon}</span>;
+  return (
+    <div
+      tw="flex justify-center items-center"
+      className="material-symbols-outlined"
+    >
+      {icon}
+    </div>
+  );
 }
 
 export default Icon;
