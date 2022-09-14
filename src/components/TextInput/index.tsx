@@ -19,7 +19,7 @@ const TextInput = ReactUtil.forwardRefWithAs<HTMLInputElement, TextInputProps>(
     const label = clsx(rawLabel, props.required && "*");
 
     return (
-      <div tw="pt-1">
+      <div tw="pt-2">
         <div tw="relative">
           <fieldset
             tw="absolute inset-0 -mt-3 p-3 pointer-events-none rounded-md border border-gray-500"
