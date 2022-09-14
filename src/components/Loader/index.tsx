@@ -14,9 +14,9 @@ function Loader(): JSX.Element {
           cy="50"
           fill="none"
           stroke="currentColor"
-          stroke-width="8"
+          strokeWidth="8"
           r="36"
-          stroke-dasharray="188.49555921538757 64.83185307179586"
+          strokeDasharray="188.49555921538757 64.83185307179586"
         >
           <animateTransform
             attributeName="transform"

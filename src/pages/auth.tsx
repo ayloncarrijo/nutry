@@ -27,9 +27,9 @@ const Page: AppPage = () => {
       <form tw="w-full max-w-xs" onSubmit={signIn}>
         <TextInput
           label="Usuário"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
           required
+          value={name}
+          onValueChange={setName}
         />
 
         <div tw="mt-2">

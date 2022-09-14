@@ -12,8 +12,8 @@ function Profile(
 ): JSX.Element {
   return (
     <a
-      tw="flex items-center gap-2 p-2 rounded-lg hover:(bg-white bg-opacity-5)"
       ref={ref}
+      tw="flex items-center gap-2 p-2 rounded-lg hover:(bg-white bg-opacity-5)"
       {...props}
     >
       <div tw="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center">
