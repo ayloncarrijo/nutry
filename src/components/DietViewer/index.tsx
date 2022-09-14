@@ -11,9 +11,10 @@ import SwalUtil from "utils/SwalUtil";
 
 interface DietViewerProps {
   diet: FullDiet;
+  onDietChange: (diet: FullDiet) => void;
 }
 
-function DietViewer({ diet }: DietViewerProps): JSX.Element {
+function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
   const { weight, carbohydratesPerKg, fatsPerKg, proteinsPerKg } = useUser();
 
   const [cleaningStatus, setCleaningStatus] = React.useState(Status.IDLE);
@@ -29,20 +30,23 @@ function DietViewer({ diet }: DietViewerProps): JSX.Element {
       cancelButtonText: "Não",
     });
 
-    if (isConfirmed) {
-      setCleaningStatus(Status.LOADING);
+    if (!isConfirmed) {
+      return;
+    }
 
-      try {
-        await Api.MAIN.put(`/diets/${diet.id}`, {
-          linkedFoods: [],
-          linkedRecipes: [],
-        });
+    setCleaningStatus(Status.LOADING);
 
-        setCleaningStatus(Status.SUCCESS);
-      } catch (error) {
-        setCleaningStatus(Status.ERROR);
-        await SwalUtil.fireError();
-      }
+    try {
+      const { data } = await Api.MAIN.put<FullDiet>(`/diets/${diet.id}`, {
+        linkedFoods: [],
+        linkedRecipes: [],
+      });
+
+      setCleaningStatus(Status.SUCCESS);
+      onDietChange(data);
+    } catch (error) {
+      setCleaningStatus(Status.ERROR);
+      await SwalUtil.fireError();
     }
   };
 
@@ -74,10 +78,10 @@ function DietViewer({ diet }: DietViewerProps): JSX.Element {
           <Button
             variant="outlined"
             startIcon="delete_sweep"
+            isLoading={cleaningStatus === Status.LOADING}
             onClick={() => {
               void clearAll();
             }}
-            isLoading={cleaningStatus === Status.LOADING}
           >
             Limpar
           </Button>

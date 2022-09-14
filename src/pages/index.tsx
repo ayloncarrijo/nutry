@@ -4,18 +4,21 @@ import UserLayout from "layouts/UserLayout";
 import Api from "lib/api";
 import authenticate from "middlewares/authenticate";
 import type { GetServerSideProps } from "next";
+import React from "react";
 import type { AppPage } from "types";
 import type { FullDiet } from "types/api";
 import NextUtil from "utils/NextUtil";
 
 interface PageProps {
-  dailyDiet: FullDiet;
+  initialDialyDiet: FullDiet;
 }
 
-const Page: AppPage<PageProps> = ({ dailyDiet }) => {
+const Page: AppPage<PageProps> = ({ initialDialyDiet }) => {
+  const [dailyDiet, setDailyDiet] = React.useState(initialDialyDiet);
+
   return (
     <Container>
-      <DietViewer diet={dailyDiet} />
+      <DietViewer diet={dailyDiet} onDietChange={setDailyDiet} />
     </Container>
   );
 };
@@ -31,7 +34,7 @@ export const getServerSideProps: GetServerSideProps = NextUtil.merge(
       );
 
       const props: PageProps = {
-        dailyDiet,
+        initialDialyDiet: dailyDiet,
       };
 
       return {
