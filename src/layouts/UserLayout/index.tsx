@@ -1,11 +1,12 @@
 import Header from "containers/Header";
+import "twin.macro";
 
 function UserLayout({ children }: React.PropsWithChildren): JSX.Element {
   return (
-    <div>
+    <div tw="grid gap-8">
       <Header />
 
-      <div>{children}</div>
+      <main>{children}</main>
     </div>
   );
 }
