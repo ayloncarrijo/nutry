@@ -29,7 +29,6 @@ const Page: AppPage = () => {
         }}
       >
         <TextInput
-          id="name"
           label="Insira seu nome"
           value={name}
           onChange={(event) => setName(event.target.value)}
