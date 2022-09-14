@@ -1,4 +1,6 @@
 import GlobalStyles from "components/GlobalStyles";
+import type { AuthenticateProps } from "middlewares/authenticate";
+import UserProvider from "providers/UserProvider";
 import type {} from "styled-components/cssprop";
 import type { AppPage } from "types";
 
@@ -7,15 +9,19 @@ type AppProps = {
   pageProps: PageProps;
 };
 
-type PageProps = Record<string, unknown>;
+type PageProps = Partial<AuthenticateProps>;
 
 function App({ Component, pageProps }: AppProps) {
   const { getLayout } = Component;
 
+  const { user } = pageProps;
+
   return (
     <>
       <GlobalStyles />
-      {getLayout(<Component {...pageProps} />)}
+      <UserProvider value={user}>
+        {getLayout(<Component {...pageProps} />)}
+      </UserProvider>
     </>
   );
 }
