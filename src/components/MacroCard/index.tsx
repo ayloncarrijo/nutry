@@ -3,12 +3,16 @@ import "twin.macro";
 
 interface MacroCardProps {
   title: string;
-  goal: number;
-  current: number;
+  goalValue: number;
+  currentValue: number;
 }
 
-function MacroCard({ title, goal, current }: MacroCardProps): JSX.Element {
-  const isCompleted = current >= goal;
+function MacroCard({
+  title,
+  goalValue,
+  currentValue,
+}: MacroCardProps): JSX.Element {
+  const isCompleted = currentValue >= goalValue;
 
   return (
     <div tw="rounded-xl p-4 bg-gray-800">
@@ -32,12 +36,12 @@ function MacroCard({ title, goal, current }: MacroCardProps): JSX.Element {
       <table tw="mt-4">
         <tbody>
           <tr>
-            <th tw="font-medium text-left pr-4">Meta</th>
-            <td>{goal}g</td>
+            <th tw="pr-4">Meta</th>
+            <td>{goalValue}g</td>
           </tr>
           <tr>
-            <th tw="font-medium text-left pr-4">Atual</th>
-            <td>{current}g</td>
+            <th tw="pr-4">Atual</th>
+            <td>{currentValue}g</td>
           </tr>
         </tbody>
       </table>

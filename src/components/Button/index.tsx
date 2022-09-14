@@ -8,6 +8,7 @@ import ReactUtil from "utils/ReactUtil";
 interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   isFullWidth?: boolean;
   isLoading?: boolean;
+  variant?: "outlined" | "contained";
   startIcon?: string;
   endIcon?: string;
 }
@@ -17,6 +18,7 @@ const Button = ReactUtil.forwardRefWithAs<HTMLButtonElement, ButtonProps>(
     {
       isFullWidth,
       isLoading,
+      variant = "contained",
       startIcon,
       endIcon,
       children,
@@ -30,10 +32,14 @@ const Button = ReactUtil.forwardRefWithAs<HTMLButtonElement, ButtonProps>(
     return (
       <button
         ref={ref}
-        tw="inline-flex justify-center items-center rounded-full px-4 py-2 bg-blue-500 text-white font-medium shadow-md hover:(bg-blue-600) disabled:(bg-blue-200 text-gray-600 cursor-not-allowed)"
+        tw="inline-flex justify-center items-center rounded-full px-4 py-2 text-white font-medium shadow-md select-none disabled:(text-gray-500 cursor-not-allowed)"
         css={[
           isFullWidth && tw`w-full`,
           isLoading && tw`disabled:(text-opacity-0)`,
+          {
+            outlined: tw`ring-inset ring-1 ring-blue-500 not-disabled:hover:(bg-blue-500 bg-opacity-25) disabled:(ring-gray-400 ring-opacity-25)`,
+            contained: tw`bg-blue-500 not-disabled:hover:(bg-blue-600) disabled:(bg-gray-600 bg-opacity-25)`,
+          }[variant],
         ]}
         disabled={isDisabled}
         {...props}
@@ -46,7 +52,7 @@ const Button = ReactUtil.forwardRefWithAs<HTMLButtonElement, ButtonProps>(
 
         {startIcon && (
           <div tw="-ml-1 mr-2">
-            <Icon icon={startIcon} />
+            <Icon icon={startIcon} size="sm" />
           </div>
         )}
 
@@ -54,7 +60,7 @@ const Button = ReactUtil.forwardRefWithAs<HTMLButtonElement, ButtonProps>(
 
         {endIcon && (
           <div tw="-mr-1 ml-2">
-            <Icon icon={endIcon} />
+            <Icon icon={endIcon} size="sm" />
           </div>
         )}
       </button>
