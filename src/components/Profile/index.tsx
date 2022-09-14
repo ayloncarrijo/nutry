@@ -8,7 +8,7 @@ function Profile(
 ): JSX.Element {
   return (
     <a
-      tw="p-2 rounded-lg flex items-center gap-2 hover:(bg-white bg-opacity-5)"
+      tw="flex items-center gap-2 p-2 rounded-lg hover:(bg-white bg-opacity-5)"
       ref={ref}
       {...props}
     >

@@ -1,12 +1,21 @@
 import GlobalStyles from "components/GlobalStyles";
-import type { AppProps } from "next/app";
 import type {} from "styled-components/cssprop";
+import type { AppPage } from "types";
+
+interface AppProps {
+  Component: AppPage;
+  pageProps: PageProps;
+}
+
+type PageProps = Record<string, unknown>;
 
 function App({ Component, pageProps }: AppProps) {
+  const { getLayout } = Component;
+
   return (
     <>
       <GlobalStyles />
-      <Component {...pageProps} />
+      {getLayout(<Component {...pageProps} />)}
     </>
   );
 }
