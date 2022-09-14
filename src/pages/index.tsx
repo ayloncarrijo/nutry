@@ -1,12 +1,9 @@
-import Container from "components/Container";
-import Icon from "components/Icon";
+import Header from "containers/Header";
 import type { NextPage } from "next";
 
 const HomePage: NextPage = () => {
   return (
-    <Container>
-      <Icon icon="home" />
-    </Container>
+    <Header />
   );
 };
 
