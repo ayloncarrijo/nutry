@@ -1,5 +1,6 @@
 import Button from "components/Button";
 import Container from "components/Container";
+import Divider from "components/Divider";
 import TextInput from "components/TextInput";
 import UserLayout from "layouts/UserLayout";
 import Api from "lib/api";
@@ -55,7 +56,7 @@ const Page: AppPage = () => {
         }}
       >
         <div tw="grid grid-cols-12 gap-4">
-          <div tw="col-span-6">
+          <div tw="col-span-12">
             <NumericFormat
               customInput={TextInput}
               required
@@ -65,11 +66,15 @@ const Page: AppPage = () => {
             />
           </div>
 
-          <div tw="col-span-6">
+          <div tw="col-span-12">
+            <Divider>Macronutrientes por kilo</Divider>
+          </div>
+
+          <div tw="col-span-4">
             <NumericFormat
               customInput={TextInput}
               required
-              label="Carboidrato/Kilo"
+              label="Carboidratos"
               value={carbohydratesPerKg}
               onValueChange={({ floatValue = 0 }) =>
                 setCarbohydratesPerKg(floatValue)
@@ -77,21 +82,21 @@ const Page: AppPage = () => {
             />
           </div>
 
-          <div tw="col-span-6">
+          <div tw="col-span-4">
             <NumericFormat
               customInput={TextInput}
               required
-              label="Gordura/Kilo"
+              label="Gorduras"
               value={fatsPerKg}
               onValueChange={({ floatValue = 0 }) => setFatsPerKg(floatValue)}
             />
           </div>
 
-          <div tw="col-span-6">
+          <div tw="col-span-4">
             <NumericFormat
               customInput={TextInput}
               required
-              label="Proteína/Kilo"
+              label="Proteínas"
               value={proteinsPerKg}
               onValueChange={({ floatValue = 0 }) =>
                 setProteinsPerKg(floatValue)
