@@ -26,7 +26,7 @@ const Page: AppPage = () => {
     <div tw="min-h-screen flex justify-center items-center">
       <form tw="w-full max-w-xs" onSubmit={signIn}>
         <TextInput
-          label="Insira seu nome"
+          label="Usuário"
           value={name}
           onChange={(event) => setName(event.target.value)}
           required
