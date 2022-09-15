@@ -58,11 +58,17 @@ export const getServerSideProps: GetServerSideProps = NextUtil.merge(
   () => async (context) => {
     const currentPage = Number(context.query.page);
 
+    if (currentPage < 1 || Number.isNaN(currentPage)) {
+      return {
+        notFound: true,
+      };
+    }
+
     const {
       data: [maximumPage, foods],
     } = await Api.MAIN.get<Paginated<Food>>("/foods", {
       params: {
-        limit: 1,
+        limit: 16,
         page: currentPage,
       },
     });
