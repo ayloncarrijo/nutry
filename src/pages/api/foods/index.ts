@@ -17,6 +17,9 @@ const methods = {
     const [total, foods] = await prisma.$transaction([
       prisma.food.count(),
       prisma.food.findMany({
+        orderBy: {
+          createdAt: "desc",
+        },
         skip: limit * (page - 1),
         take: limit,
       }),

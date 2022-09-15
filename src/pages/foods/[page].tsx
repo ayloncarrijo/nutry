@@ -1,10 +1,13 @@
+import Button from "components/Button";
 import Container from "components/Container";
 import FoodCard from "components/FoodCard";
+import MessageBox from "components/MessageBox";
 import Pagination from "components/Pagination";
 import UserLayout from "layouts/UserLayout";
 import Api from "lib/api";
 import authenticate from "middlewares/authenticate";
 import type { GetServerSideProps } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import "twin.macro";
 import type { AppPage } from "types";
@@ -23,13 +26,38 @@ const Page: AppPage<PageProps> = ({ maximumPage, foods }) => {
 
   return (
     <Container>
-      <ul>
-        {foods.map((food) => (
-          <li key={food.id}>
-            <FoodCard food={food} />
-          </li>
-        ))}
-      </ul>
+      <div tw="mb-4">
+        <Link href="/food/create" passHref>
+          <Button forwardedAs="a" startIcon="add">
+            Registrar
+          </Button>
+        </Link>
+      </div>
+
+      {!foods.length ? (
+        <MessageBox>
+          <p>Ainda não há comidas registradas.</p>
+        </MessageBox>
+      ) : (
+        <ul tw="grid grid-cols-3 gap-4">
+          {foods.map((food) => (
+            <li key={food.id}>
+              <Link
+                href={{
+                  pathname: "/food/[id]",
+                  query: {
+                    id: food.id,
+                  },
+                }}
+              >
+                <a>
+                  <FoodCard food={food} />
+                </a>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
 
       {maximumPage > 1 && (
         <div tw="mt-4 flex justify-center">
@@ -60,7 +88,10 @@ export const getServerSideProps: GetServerSideProps = NextUtil.merge(
 
     if (currentPage < 1 || Number.isNaN(currentPage)) {
       return {
-        notFound: true,
+        redirect: {
+          destination: `/foods/1`,
+          permanent: false,
+        },
       };
     }
 
@@ -68,12 +99,12 @@ export const getServerSideProps: GetServerSideProps = NextUtil.merge(
       data: [maximumPage, foods],
     } = await Api.MAIN.get<Paginated<Food>>("/foods", {
       params: {
-        limit: 16,
+        limit: 12,
         page: currentPage,
       },
     });
 
-    if (currentPage > maximumPage) {
+    if (maximumPage > 0 && currentPage > maximumPage) {
       return {
         redirect: {
           destination: `/foods/${maximumPage}`,

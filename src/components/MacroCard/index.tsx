@@ -1,13 +1,16 @@
+import Card from "components/Card";
 import Icon from "components/Icon";
 import "twin.macro";
 
 interface MacroCardProps {
+  icon: string;
   title: string;
   goalValue: number;
   currentValue: number;
 }
 
 function MacroCard({
+  icon,
   title,
   goalValue,
   currentValue,
@@ -15,10 +18,10 @@ function MacroCard({
   const isCompleted = currentValue >= goalValue;
 
   return (
-    <div tw="rounded-xl p-4 bg-gray-800">
+    <Card>
       <div tw="flex justify-between items-center">
         <div tw="flex items-center gap-2">
-          <Icon icon="restaurant_menu" />
+          <Icon icon={icon} />
           <h3 tw="text-xl font-medium">{title}</h3>
         </div>
 
@@ -45,7 +48,7 @@ function MacroCard({
           </tr>
         </tbody>
       </table>
-    </div>
+    </Card>
   );
 }
 

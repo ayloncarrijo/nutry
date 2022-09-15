@@ -12,11 +12,11 @@ type Query = {
 const methods = {
   GET: async (
     req: TypedApiRequest<unknown, Query>,
-    res: NextApiResponse<Food>
+    res: NextApiResponse<Food | null>
   ) => {
     const { id } = req.query;
 
-    const food = await prisma.food.findUniqueOrThrow({
+    const food = await prisma.food.findUnique({
       where: {
         id,
       },

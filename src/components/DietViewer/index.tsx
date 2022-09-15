@@ -6,7 +6,7 @@ import { useUser } from "providers/UserProvider";
 import React from "react";
 import Swal from "sweetalert2";
 import "twin.macro";
-import { Status } from "types";
+import { MacroIcon, Status } from "types";
 import type { FullDiet } from "types/api";
 import SwalUtil from "utils/SwalUtil";
 
@@ -55,18 +55,21 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
     <div>
       <div tw="grid gap-4 grid-cols-3">
         <MacroCard
+          icon={MacroIcon.CARBOHYDRATES}
           title="Carboidratos"
           goalValue={weight * carbohydratesPerKg}
           currentValue={diet.carbohydrates}
         />
 
         <MacroCard
+          icon={MacroIcon.FATS}
           title="Gorduras"
           goalValue={weight * fatsPerKg}
           currentValue={diet.fats}
         />
 
         <MacroCard
+          icon={MacroIcon.PROTEINS}
           title="Proteínas"
           goalValue={weight * proteinsPerKg}
           currentValue={diet.proteins}

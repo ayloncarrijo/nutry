@@ -3,7 +3,7 @@ import "twin.macro";
 
 function UserLayout({ children }: React.PropsWithChildren): JSX.Element {
   return (
-    <div tw="grid gap-8">
+    <div tw="grid gap-8 pb-8">
       <Header />
 
       <main>{children}</main>

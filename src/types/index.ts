@@ -21,3 +21,9 @@ export enum Status {
   SUCCESS,
   ERROR,
 }
+
+export enum MacroIcon {
+  CARBOHYDRATES = "electric_bolt",
+  FATS = "lunch_dining",
+  PROTEINS = "fitness_center",
+}
