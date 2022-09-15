@@ -3,7 +3,7 @@ import "twin.macro";
 import tw from "twin.macro";
 
 interface IconProps {
-  icon: string;
+  icon: string | JSX.Element;
   size?: "md" | "sm";
   variant?: "outlined" | "filled";
 }
@@ -13,20 +13,20 @@ function Icon({
   size = "md",
   variant = "filled",
 }: IconProps): JSX.Element {
+  const isMaterialIcon = typeof icon === "string";
+
   return (
     <div
-      tw="select-none flex justify-center items-center"
-      css={[
-        {
-          md: tw`!font-size[24px]`,
-          sm: tw`!font-size[20px]`,
-        }[size],
-      ]}
-      className={clsx("material-symbols-outlined", variant)}
+      tw="flex justify-center items-center select-none"
+      css={{ md: tw`w-6 h-6`, sm: tw`w-5 h-5` }[size]}
+      className={clsx(
+        isMaterialIcon && clsx("material-symbols", size, variant)
+      )}
     >
       {icon}
     </div>
   );
 }
 
+export type { IconProps };
 export default Icon;

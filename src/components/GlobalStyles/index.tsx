@@ -14,7 +14,24 @@ const CustomStyles = createGlobalStyle({
       ...tw`font-medium text-left`,
     },
   },
-  ".material-symbols-outlined": {
+  ".material-symbols": {
+    "-webkit-font-feature-settings": "'liga'",
+    "-webkit-font-smoothing": "antialiased",
+    fontFamily: "Material Symbols Outlined",
+    fontWeight: "normal",
+    fontStyle: "normal",
+    lineHeight: 1,
+    letterSpacing: "normal",
+    textTransform: "none",
+    whiteSpace: "nowrap",
+    wordWrap: "normal",
+    direction: "ltr",
+    "&.md": {
+      fontSize: "24px",
+    },
+    "&.sm": {
+      fontSize: "20px",
+    },
     "&.outlined": {
       fontVariationSettings: "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48",
     },
