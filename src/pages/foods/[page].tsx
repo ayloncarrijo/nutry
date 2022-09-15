@@ -67,7 +67,7 @@ export const getServerSideProps: GetServerSideProps = NextUtil.merge(
       },
     });
 
-    if (Number(currentPage) > maximumPage) {
+    if (currentPage > maximumPage) {
       return {
         redirect: {
           destination: `/foods/${maximumPage}`,
