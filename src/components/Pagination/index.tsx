@@ -1,28 +1,35 @@
 import IconButton from "components/IconButton";
 import PaginationButton from "components/Pagination/PaginationButton";
+import React from "react";
 import "twin.macro";
 
 interface PaginationProps {
   onPageChange: (page: number) => void;
+  maximumPage: number;
   currentPage: number;
-  totalPages: number;
   visiblePages?: number;
 }
 
 function Pagination({
   onPageChange,
+  maximumPage,
   currentPage,
-  totalPages,
   visiblePages = 5,
 }: PaginationProps): JSX.Element {
   const isFirstPage = currentPage === 1;
 
-  const isLastPage = currentPage === totalPages;
+  const isLastPage = currentPage === maximumPage;
 
   const initialPage = Math.min(
     Math.max(currentPage - Math.floor(visiblePages / 2), 1),
-    Math.abs(totalPages - visiblePages) + 1
+    Math.abs(maximumPage - visiblePages) + 1
   );
+
+  const goToPage = (page: number) => {
+    if (currentPage !== page) {
+      onPageChange(page);
+    }
+  };
 
   return (
     <div tw="flex items-center gap-1">
@@ -30,28 +37,28 @@ function Pagination({
         icon="first_page"
         size="sm"
         disabled={isFirstPage}
-        onClick={() => onPageChange(1)}
+        onClick={() => goToPage(1)}
       />
 
       <IconButton
         icon="chevron_left"
         size="sm"
         disabled={isFirstPage}
-        onClick={() => onPageChange(currentPage - 1)}
+        onClick={() => goToPage(currentPage - 1)}
       />
 
-      {Array(Math.min(totalPages, visiblePages))
+      {Array(Math.min(maximumPage, visiblePages))
         .fill(null)
         .map((_, index) => {
-          const pageNumber = initialPage + index;
+          const thisPage = initialPage + index;
 
           return (
             <PaginationButton
-              key={pageNumber}
-              isActive={pageNumber === currentPage}
-              onClick={() => onPageChange(pageNumber)}
+              key={thisPage}
+              isActive={thisPage === currentPage}
+              onClick={() => goToPage(thisPage)}
             >
-              {pageNumber}
+              {thisPage}
             </PaginationButton>
           );
         })}
@@ -60,17 +67,31 @@ function Pagination({
         icon="chevron_right"
         size="sm"
         disabled={isLastPage}
-        onClick={() => onPageChange(currentPage + 1)}
+        onClick={() => goToPage(currentPage + 1)}
       />
 
       <IconButton
         icon="last_page"
         size="sm"
         disabled={isLastPage}
-        onClick={() => onPageChange(totalPages)}
+        onClick={() => goToPage(maximumPage)}
       />
     </div>
   );
 }
 
+const usePagination = () => {
+  const [maximumPage, setMaximumPage] = React.useState(0);
+
+  const [currentPage, setCurrentPage] = React.useState(1);
+
+  return {
+    maximumPage,
+    setMaximumPage,
+    currentPage,
+    setCurrentPage,
+  };
+};
+
+export { usePagination };
 export default Pagination;

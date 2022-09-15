@@ -79,6 +79,7 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
           <Button
             variant="outlined"
             startIcon="delete_sweep"
+            disabled={!hasSnack}
             isLoading={cleaningStatus === Status.LOADING}
             onClick={() => {
               void clearAll();

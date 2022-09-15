@@ -1,6 +1,8 @@
 import type * as Prisma from "@prisma/client";
 export * from "@prisma/client";
 
+export type Paginated<T> = [number, Array<T>];
+
 export type FullDiet = WithMacros<Diet>;
 
 export type FullRecipe = WithMacros<Recipe>;

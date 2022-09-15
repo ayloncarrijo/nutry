@@ -12,7 +12,7 @@ type AppProps = {
 type PageProps = Partial<AuthenticateProps>;
 
 function App({ Component, pageProps }: AppProps) {
-  const { getLayout } = Component;
+  const { getLayout = (page) => page } = Component;
 
   const { user } = pageProps;
 

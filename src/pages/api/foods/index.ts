@@ -1,15 +1,30 @@
 import prisma from "lib/prisma";
 import type { NextApiResponse } from "next";
 import type { TypedApiRequest } from "types";
-import type { Food, Measurement } from "types/api";
+import type { Food, Measurement, Paginated } from "types/api";
 import HttpStatusCode from "types/HttpStatusCode";
 import ObjectUtil from "utils/ObjectUtil";
 
 const methods = {
-  GET: async (req: TypedApiRequest, res: NextApiResponse<Array<Food>>) => {
-    const foods = await prisma.food.findMany();
+  GET: async (
+    req: TypedApiRequest<unknown, { limit: string; page: string }>,
+    res: NextApiResponse<Paginated<Food>>
+  ) => {
+    const limit = Number(req.query.limit);
 
-    return res.status(HttpStatusCode.OK).json(foods);
+    const page = Number(req.query.page);
+
+    const [total, foods] = await prisma.$transaction([
+      prisma.food.count(),
+      prisma.food.findMany({
+        skip: limit * (page - 1),
+        take: limit,
+      }),
+    ]);
+
+    return res
+      .status(HttpStatusCode.OK)
+      .json([Math.ceil(total / limit), foods]);
   },
 
   POST: async (

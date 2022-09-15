@@ -24,14 +24,37 @@ function Header(): JSX.Element {
         <nav>
           <ul tw="flex gap-6">
             {[
-              { href: "/", label: "Início" },
-              { href: "/diet", label: "Dieta" },
-              { href: "/recipes", label: "Receitas" },
-              { href: "/foods", label: "Comidas" },
+              {
+                label: "Início",
+                href: {
+                  pathname: "/",
+                },
+              },
+              {
+                label: "Dieta",
+                href: {
+                  pathname: "/diet",
+                },
+              },
+              {
+                label: "Receitas",
+                href: {
+                  pathname: "/recipes",
+                },
+              },
+              {
+                label: "Comidas",
+                href: {
+                  pathname: "/foods/[page]",
+                  query: { page: 1 },
+                },
+              },
             ].map(({ href, label }) => (
-              <li key={href}>
+              <li key={href.pathname}>
                 <Link href={href} passHref>
-                  <NavLink isActive={pathname === href}>{label}</NavLink>
+                  <NavLink isActive={pathname === href.pathname}>
+                    {label}
+                  </NavLink>
                 </Link>
               </li>
             ))}
