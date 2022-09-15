@@ -4,29 +4,35 @@ import tw from "twin.macro";
 
 interface IconButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   icon: IconProps["icon"];
+  size?: "md" | "sm";
+  variant?: "icon" | "contained";
   iconProps?: Omit<IconProps, "icon">;
-  variant?: "default" | "contained";
 }
 
 function IconButton({
   icon,
+  size = "md",
+  variant = "icon",
   iconProps,
-  variant = "default",
   ...props
 }: IconButtonProps): JSX.Element {
   return (
     <button
       type="button"
-      tw="w-10 h-10 rounded-full flex justify-center items-center"
-      css={
+      tw="flex justify-center items-center rounded-full disabled:(text-gray-300 text-opacity-40 cursor-not-allowed)"
+      css={[
         {
-          default: tw`hover:(bg-white bg-opacity-10)`,
-          contained: tw`bg-blue-500 hover:(bg-blue-600)`,
-        }[variant]
-      }
+          md: tw`w-10 h-10`,
+          sm: tw`w-8 h-8`,
+        }[size],
+        {
+          icon: tw`not-disabled:hover:(bg-white bg-opacity-10)`,
+          contained: tw`bg-blue-500 not-disabled:hover:(bg-blue-600) disabled:(bg-gray-600 bg-opacity-25)`,
+        }[variant],
+      ]}
       {...props}
     >
-      <Icon icon={icon} {...iconProps} />
+      <Icon icon={icon} size={size} {...iconProps} />
     </button>
   );
 }

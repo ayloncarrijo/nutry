@@ -32,7 +32,7 @@ const Button = ReactUtil.forwardRefWithAs<HTMLButtonElement, ButtonProps>(
     return (
       <button
         ref={ref}
-        tw="inline-flex justify-center items-center rounded-full px-4 py-2 text-white font-medium shadow-md select-none disabled:(text-gray-500 cursor-not-allowed)"
+        tw="inline-flex justify-center items-center rounded-full px-4 py-2 text-white font-medium shadow-md select-none disabled:(text-gray-300 text-opacity-40 cursor-not-allowed)"
         css={[
           isFullWidth && tw`w-full`,
           isLoading && tw`disabled:(text-opacity-0)`,

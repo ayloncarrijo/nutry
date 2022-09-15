@@ -7,15 +7,15 @@ import React from "react";
 import type { AppPage } from "types";
 
 const Page: AppPage = () => {
-  const [currentPage, setCurrentPage] = React.useState(0);
+  const [currentPage, setCurrentPage] = React.useState(1);
 
   return (
     <Container>
       <div>
         <Pagination
-          totalPages={10}
-          page={currentPage}
           onPageChange={setCurrentPage}
+          currentPage={currentPage}
+          totalPages={10}
         />
       </div>
     </Container>

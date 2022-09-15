@@ -12,9 +12,10 @@ function PaginationButton({
 }: PaginationButtonProps): JSX.Element {
   return (
     <IconButton
-      tw="font-medium"
+      tw="text-sm font-medium"
       icon={<>{children}</>}
-      variant={isActive ? "contained" : "default"}
+      size="sm"
+      variant={isActive ? "contained" : "icon"}
       {...props}
     />
   );
