@@ -17,7 +17,7 @@ class NextUtil {
     T extends Array<GetServerSideProps> | [GetServerSideProps]
   >(
     middlewares: T,
-    sspGetter?: (props: MiddlewareProps<T>) => GetServerSideProps
+    gsspGetter?: (props: MiddlewareProps<T>) => GetServerSideProps
   ): GetServerSideProps {
     return async (context) => {
       const middlewareResults = await Promise.all(
@@ -50,24 +50,24 @@ class NextUtil {
         {}
       );
 
-      if (!sspGetter) {
+      if (!gsspGetter) {
         return {
           props: unifiedMiddlewareProps,
         };
       }
 
-      const sspResult = await sspGetter(middlewareProps as MiddlewareProps<T>)(
-        context
-      );
+      const gsspResult = await gsspGetter(
+        middlewareProps as MiddlewareProps<T>
+      )(context);
 
-      if (!("props" in sspResult)) {
-        return sspResult;
+      if (!("props" in gsspResult)) {
+        return gsspResult;
       }
 
       return {
         props: {
           ...unifiedMiddlewareProps,
-          ...(await sspResult.props),
+          ...(await gsspResult.props),
         },
       };
     };

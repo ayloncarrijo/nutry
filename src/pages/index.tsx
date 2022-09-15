@@ -10,11 +10,13 @@ import type { FullDiet } from "types/api";
 import NextUtil from "utils/NextUtil";
 
 interface PageProps {
-  initialDialyDiet: FullDiet;
+  initialState: {
+    dailyDiet: FullDiet;
+  };
 }
 
-const Page: AppPage<PageProps> = ({ initialDialyDiet }) => {
-  const [dailyDiet, setDailyDiet] = React.useState(initialDialyDiet);
+const Page: AppPage<PageProps> = ({ initialState }) => {
+  const [dailyDiet, setDailyDiet] = React.useState(initialState.dailyDiet);
 
   return (
     <Container>
@@ -34,7 +36,9 @@ export const getServerSideProps: GetServerSideProps = NextUtil.merge(
       );
 
       const props: PageProps = {
-        initialDialyDiet: dailyDiet,
+        initialState: {
+          dailyDiet,
+        },
       };
 
       return {
