@@ -22,11 +22,11 @@ const TextInput = ReactUtil.forwardRefWithAs<HTMLInputElement, TextInputProps>(
       <div tw="pt-2">
         <div tw="relative">
           <fieldset
-            tw="absolute inset-0 -top-2 p-3 pointer-events-none rounded-md border border-gray-500 text-sm"
+            tw="absolute inset-0 p-3 pointer-events-none rounded-md border border-gray-500 text-sm"
             css={[isFocused && tw`border-blue-300 text-blue-300`]}
           >
-            <legend tw="-ml-1 whitespace-nowrap leading-tight">
-              <span tw="px-1">{label}</span>
+            <legend tw="-ml-1 px-1 line-height[0] whitespace-nowrap">
+              {label}
             </legend>
           </fieldset>
 
