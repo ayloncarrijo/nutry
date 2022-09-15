@@ -1,4 +1,5 @@
 import IconButton from "components/IconButton";
+import PaginationButton from "components/Pagination/PaginationButton";
 import "twin.macro";
 
 interface PaginationProps {
@@ -16,13 +17,11 @@ function Pagination({
     <div tw="flex items-center gap-1">
       <IconButton icon="chevron_left" />
 
-      <IconButton icon={<div>...</div>} />
-
-      <IconButton icon={<div>1</div>} />
-      <IconButton icon={<div>2</div>} />
-      <IconButton icon={<div>3</div>} />
-
-      <IconButton icon={<div>...</div>} />
+      <PaginationButton>...</PaginationButton>
+      <PaginationButton>1</PaginationButton>
+      <PaginationButton isActive>2</PaginationButton>
+      <PaginationButton>3</PaginationButton>
+      <PaginationButton>...</PaginationButton>
 
       <IconButton icon="chevron_right" />
     </div>
