@@ -1,5 +1,6 @@
 import Button from "components/Button";
 import MacroCard from "components/MacroCard";
+import MessageBox from "components/MessageBox";
 import Api from "lib/api";
 import { useUser } from "providers/UserProvider";
 import React from "react";
@@ -89,13 +90,11 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
 
         <div tw="mt-4">
           {hasSnack ? (
-            <div />
+            <MessageBox>...</MessageBox>
           ) : (
-            <div tw="w-full h-64 border border-gray-500 rounded-xl flex items-center justify-center">
-              <p tw="font-medium">
-                Você ainda não adicionou nenhuma refeição nesta lista.
-              </p>
-            </div>
+            <MessageBox>
+              <p>Você ainda não adicionou nenhuma refeição nesta lista.</p>
+            </MessageBox>
           )}
         </div>
       </div>

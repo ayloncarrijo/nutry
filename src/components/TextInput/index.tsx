@@ -5,8 +5,8 @@ import tw from "twin.macro";
 import ReactUtil from "utils/ReactUtil";
 
 interface TextInputProps extends React.ComponentPropsWithoutRef<"input"> {
-  label: string;
   onValueChange?: (value: string) => void;
+  label: string;
 }
 
 const TextInput = ReactUtil.forwardRefWithAs<HTMLInputElement, TextInputProps>(
