@@ -57,8 +57,14 @@ const CustomStyles = createGlobalStyle({
       "&__value-container": {
         ...tw`h-full p-0 py-2 mx-3`,
       },
+      "&__indicators": {
+        ...tw`pr-3`,
+      },
+      "&__indicator": {
+        ...tw`w-6 h-6 p-0 flex justify-center items-center text-gray-300`,
+      },
       "&__indicator-separator": {
-        ...tw`bg-gray-500`,
+        ...tw`hidden`,
       },
       "&__menu": {
         ...tw`bg-gray-700 text-gray-300 overflow-hidden rounded-lg`,

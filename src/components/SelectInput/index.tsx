@@ -4,7 +4,7 @@ import Select, { GroupBase, Props, SelectInstance } from "react-select";
 
 interface SelectInputProps<
   Option = unknown,
-  IsMulti extends boolean = boolean,
+  IsMulti extends boolean = false,
   Group extends GroupBase<Option> = GroupBase<Option>
 > extends Props<Option, IsMulti, Group>,
     FieldProps {
@@ -13,7 +13,7 @@ interface SelectInputProps<
 
 function SelectInput<
   Option = unknown,
-  IsMulti extends boolean = boolean,
+  IsMulti extends boolean = false,
   Group extends GroupBase<Option> = GroupBase<Option>
 >({
   onFocus,

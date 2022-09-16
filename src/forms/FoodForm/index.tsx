@@ -10,7 +10,13 @@ import "twin.macro";
 function FoodForm(): JSX.Element {
   const [name, setName] = React.useState("");
 
-  const [measurement, setMeasurement] = React.useState(Measurement.G);
+  const [measurement, setMeasurement] = React.useState<{
+    value: Measurement;
+    label: Measurement;
+  } | null>({
+    value: Measurement.G,
+    label: Measurement.G,
+  });
 
   const [proportion, setProportion] = React.useState(0);
 
@@ -49,10 +55,13 @@ function FoodForm(): JSX.Element {
           <SelectInput
             isRequired
             label="Medida"
+            value={measurement}
+            onChange={setMeasurement}
             options={[
-              { value: "chocolate", label: "Chocolate" },
-              { value: "strawberry", label: "Strawberry" },
-              { value: "vanilla", label: "Vanilla" },
+              ...Object.values(Measurement).map((measurement) => ({
+                value: measurement,
+                label: measurement,
+              })),
             ]}
           />
         </div>
