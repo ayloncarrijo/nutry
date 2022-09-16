@@ -1,14 +1,13 @@
 import Button from "components/Button";
 import Container from "components/Container";
 import Divider from "components/Divider";
-import TextInput from "components/TextInput";
+import NumericInput from "components/NumericInput";
 import UserLayout from "layouts/UserLayout";
 import Api from "lib/api";
 import authenticate from "middlewares/authenticate";
 import type { GetServerSideProps } from "next";
 import { useUser } from "providers/UserProvider";
 import React from "react";
-import { NumericFormat } from "react-number-format";
 import "twin.macro";
 import { AppPage, Status } from "types";
 import SwalUtil from "utils/SwalUtil";
@@ -57,8 +56,7 @@ const Page: AppPage = () => {
       >
         <div tw="grid grid-cols-12 gap-4">
           <div tw="col-span-12">
-            <NumericFormat
-              customInput={TextInput}
+            <NumericInput
               required
               label="Peso"
               value={weight}
@@ -71,8 +69,7 @@ const Page: AppPage = () => {
           </div>
 
           <div tw="col-span-4">
-            <NumericFormat
-              customInput={TextInput}
+            <NumericInput
               required
               label="Carboidratos"
               value={carbohydratesPerKg}
@@ -83,8 +80,7 @@ const Page: AppPage = () => {
           </div>
 
           <div tw="col-span-4">
-            <NumericFormat
-              customInput={TextInput}
+            <NumericInput
               required
               label="Gorduras"
               value={fatsPerKg}
@@ -93,8 +89,7 @@ const Page: AppPage = () => {
           </div>
 
           <div tw="col-span-4">
-            <NumericFormat
-              customInput={TextInput}
+            <NumericInput
               required
               label="Proteínas"
               value={proteinsPerKg}

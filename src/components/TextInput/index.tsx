@@ -102,4 +102,5 @@ const TextInput = ReactUtil.forwardRefWithAs<HTMLInputElement, TextInputProps>(
   }
 );
 
+export type { TextInputProps };
 export default TextInput;
