@@ -10,28 +10,44 @@ import { Status } from "types";
 import type { Food, NotCreated } from "types/api";
 
 interface FoodFormProps {
-  onSubmit: (food: NotCreated<Food>) => void;
+  initialData?: Food;
   status: Status;
+  onSubmit: (food: NotCreated<Food>) => void;
 }
 
-function FoodForm({ onSubmit, status }: FoodFormProps): JSX.Element {
-  const [name, setName] = React.useState("");
+function FoodForm({
+  initialData,
+  status,
+  onSubmit,
+}: FoodFormProps): JSX.Element {
+  const [name, setName] = React.useState(initialData?.name ?? "");
 
   const [measurement, setMeasurement] = React.useState<{
     value: Measurement;
     label: Measurement;
-  } | null>({
-    value: Measurement.G,
-    label: Measurement.G,
-  });
+  } | null>(
+    initialData?.measurement
+      ? {
+          value: initialData.measurement,
+          label: initialData.measurement,
+        }
+      : {
+          value: Measurement.G,
+          label: Measurement.G,
+        }
+  );
 
-  const [proportion, setProportion] = React.useState(0);
+  const [proportion, setProportion] = React.useState(
+    initialData?.proportion ?? 0
+  );
 
-  const [carbohydrates, setCarbohydrates] = React.useState(0);
+  const [carbohydrates, setCarbohydrates] = React.useState(
+    initialData?.carbohydrates ?? 0
+  );
 
-  const [fats, setFats] = React.useState(0);
+  const [fats, setFats] = React.useState(initialData?.fats ?? 0);
 
-  const [proteins, setProteins] = React.useState(0);
+  const [proteins, setProteins] = React.useState(initialData?.proteins ?? 0);
 
   return (
     <form
@@ -79,9 +95,9 @@ function FoodForm({ onSubmit, status }: FoodFormProps): JSX.Element {
             onChange={setMeasurement}
             isRequired
             options={[
-              ...Object.values(Measurement).map((measurement) => ({
-                value: measurement,
-                label: measurement,
+              ...Object.values(Measurement).map((value) => ({
+                value,
+                label: value,
               })),
             ]}
           />
@@ -125,9 +141,9 @@ function FoodForm({ onSubmit, status }: FoodFormProps): JSX.Element {
         <Button
           isLoading={status === Status.LOADING}
           type="submit"
-          startIcon="add"
+          startIcon={initialData ? "check" : "add"}
         >
-          Registrar
+          {initialData ? "Salvar" : "Registrar"}
         </Button>
       </div>
     </form>

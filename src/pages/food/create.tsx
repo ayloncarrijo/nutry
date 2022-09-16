@@ -18,6 +18,7 @@ const Page: AppPage = () => {
   return (
     <Container>
       <FoodForm
+        status={status}
         onSubmit={(food) => {
           setStatus(Status.LOADING);
 
@@ -37,7 +38,6 @@ const Page: AppPage = () => {
               return SwalUtil.fireError();
             });
         }}
-        status={status}
       />
     </Container>
   );

@@ -61,6 +61,7 @@
     "object-curly-spacing": ["error", "always"],
     "object-shorthand": ["error", "always"],
     "no-console": "warn",
+    "no-shadow": "error",
     "no-useless-rename": "error",
     "no-param-reassign": "error",
     "eqeqeq": ["error", "smart"],

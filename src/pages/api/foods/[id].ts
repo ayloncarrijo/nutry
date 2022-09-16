@@ -1,7 +1,7 @@
 import prisma from "lib/prisma";
 import type { NextApiResponse } from "next";
 import type { TypedApiRequest } from "types";
-import type { Food, Measurement } from "types/api";
+import type { Food, NotCreated } from "types/api";
 import HttpStatusCode from "types/HttpStatusCode";
 import ObjectUtil from "utils/ObjectUtil";
 
@@ -26,17 +26,7 @@ const methods = {
   },
 
   PUT: async (
-    req: TypedApiRequest<
-      {
-        measurement: Measurement;
-        proportion: number;
-        name: string;
-        carbohydrates: number;
-        fats: number;
-        proteins: number;
-      },
-      Query
-    >,
+    req: TypedApiRequest<NotCreated<Food>, Query>,
     res: NextApiResponse<Food>
   ) => {
     const { id } = req.query;
