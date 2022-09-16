@@ -1,47 +1,84 @@
+import clsx from "clsx";
+import type { IconButtonProps } from "components/IconButton";
+import IconButton from "components/IconButton";
 import type React from "react";
 import "twin.macro";
 import tw from "twin.macro";
 
-interface FieldProps extends React.PropsWithChildren {
-  onFocus?: () => void;
+interface ImplFieldProps extends React.PropsWithChildren {
+  onTryFocus: () => void;
+  isFocused: boolean;
+  isRequired: boolean;
+}
+
+interface FieldProps {
   label: string;
-  isFocused?: boolean;
+  startButtons?: Array<IconButtonProps>;
+  endButtons?: Array<IconButtonProps>;
   startComponent?: JSX.Element;
   endComponent?: JSX.Element;
 }
 
 function Field({
-  onFocus,
-  label,
-  children,
+  onTryFocus,
   isFocused,
+  isRequired,
+  label: rawLabel,
+  children,
+  startButtons,
+  endButtons,
   startComponent,
   endComponent,
-}: FieldProps): JSX.Element {
+}: ImplFieldProps & FieldProps): JSX.Element {
+  const label = clsx(rawLabel, isRequired && "*");
+
+  const btnWrapper = tw`-mx-2 rounded-full flex`;
+
+  const startElement =
+    startComponent ??
+    (startButtons && (
+      <div css={btnWrapper}>
+        {startButtons.map((startButton, index) => (
+          <IconButton key={index} {...startButton} />
+        ))}
+      </div>
+    ));
+
+  const endElement =
+    endComponent ??
+    (endButtons && (
+      <div css={btnWrapper}>
+        {endButtons.map((endButton, index) => (
+          <IconButton key={index} {...endButton} />
+        ))}
+      </div>
+    ));
+
   return (
     <div tw="pt-2">
       <div
         tw="relative flex items-center"
-        css={[startComponent && tw`pl-3`, endComponent && tw`pr-3`]}
+        css={[startElement && tw`pl-3`, endElement && tw`pr-3`]}
       >
         <fieldset
           tw="absolute inset-0 p-3 rounded-md border border-gray-500 text-sm cursor-text"
           css={[isFocused && tw`border-blue-300 text-blue-300`]}
-          onClick={onFocus}
+          onClick={onTryFocus}
         >
           <legend tw="-ml-1 px-1 line-height[0] whitespace-nowrap">
             {label}
           </legend>
         </fieldset>
 
-        {startComponent && <div tw="relative">{startComponent}</div>}
+        {startElement && <div tw="relative">{startElement}</div>}
 
         {children}
 
-        {endComponent && <div tw="relative">{endComponent}</div>}
+        {endElement && <div tw="relative">{endElement}</div>}
       </div>
     </div>
   );
 }
 
+export type { FieldProps };
 export default Field;

@@ -2,9 +2,9 @@ import { Measurement } from "@prisma/client";
 import Button from "components/Button";
 import Divider from "components/Divider";
 import NumericInput from "components/NumericInput";
+import SelectInput from "components/SelectInput";
 import TextInput from "components/TextInput";
 import React from "react";
-import Select from "react-select";
 import "twin.macro";
 
 function FoodForm(): JSX.Element {
@@ -46,9 +46,9 @@ function FoodForm(): JSX.Element {
         </div>
 
         <div tw="col-span-2">
-          <Select
-            isSearchable
-            noOptionsMessage={() => "Oops... Nenhuma opção encontrada."}
+          <SelectInput
+            isRequired
+            label="Medida"
             options={[
               { value: "chocolate", label: "Chocolate" },
               { value: "strawberry", label: "Strawberry" },
