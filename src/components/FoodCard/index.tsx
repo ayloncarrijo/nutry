@@ -2,6 +2,7 @@ import Card from "components/Card";
 import Divider from "components/Divider";
 import Icon from "components/Icon";
 import "twin.macro";
+import tw from "twin.macro";
 import { MacroIcon } from "types";
 import type { Food } from "types/api";
 
@@ -24,7 +25,7 @@ function FoodCard({ food }: FoodCardProps): JSX.Element {
             {name}
           </h3>
 
-          <div tw="my-2">
+          <div tw="mt-2 mb-4">
             <Divider>
               {proportion}
               {measurement}
@@ -40,8 +41,19 @@ function FoodCard({ food }: FoodCardProps): JSX.Element {
               },
               { icon: MacroIcon.FATS, title: "Gorduras", data: fats },
               { icon: MacroIcon.PROTEINS, title: "Proteínas", data: proteins },
-            ].map(({ icon, title, data }) => (
-              <div key={title} title={title} tw="flex gap-1 items-center">
+            ].map(({ icon, title, data }, index) => (
+              <div
+                key={title}
+                title={title}
+                tw="flex-1 flex gap-1 items-center"
+                css={
+                  {
+                    0: tw`justify-start`,
+                    1: tw`justify-center`,
+                    2: tw`justify-end`,
+                  }[index]
+                }
+              >
                 <Icon icon={icon} size="sm" />
                 <p>{data}g</p>
               </div>
