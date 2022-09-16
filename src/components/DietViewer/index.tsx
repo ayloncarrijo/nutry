@@ -4,7 +4,6 @@ import MessageBox from "components/MessageBox";
 import Api from "lib/api";
 import { useUser } from "providers/UserProvider";
 import React from "react";
-import Swal from "sweetalert2";
 import "twin.macro";
 import { MacroIcon, Status } from "types";
 import type { FullDiet } from "types/api";
@@ -22,33 +21,29 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
 
   const hasSnack = diet.linkedFoods.length > 0 || diet.linkedRecipes.length > 0;
 
-  const clearAll = async () => {
-    const { isConfirmed } = await Swal.fire({
-      icon: "warning",
-      text: "Você tem certeza de que deseja limpar todas as refeições adicionadas nesta lista?",
-      showCancelButton: true,
-      confirmButtonText: "Sim",
-      cancelButtonText: "Não",
-    });
+  const clearAll = () => {
+    void SwalUtil.confirm(
+      "Você tem certeza de que deseja limpar todas as refeições adicionadas nesta lista?"
+    ).then(({ isConfirmed }) => {
+      if (!isConfirmed) {
+        return;
+      }
 
-    if (!isConfirmed) {
-      return;
-    }
+      setCleaningStatus(Status.LOADING);
 
-    setCleaningStatus(Status.LOADING);
-
-    try {
-      const { data } = await Api.MAIN.put<FullDiet>(`/diets/${diet.id}`, {
+      Api.MAIN.put<FullDiet>(`/diets/${diet.id}`, {
         linkedFoods: [],
         linkedRecipes: [],
-      });
-
-      setCleaningStatus(Status.SUCCESS);
-      onDietChange(data);
-    } catch (error) {
-      setCleaningStatus(Status.ERROR);
-      await SwalUtil.fireError();
-    }
+      })
+        .then(({ data }) => {
+          setCleaningStatus(Status.SUCCESS);
+          onDietChange(data);
+        })
+        .catch(() => {
+          setCleaningStatus(Status.ERROR);
+          return SwalUtil.fireError();
+        });
+    });
   };
 
   return (
@@ -84,9 +79,7 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
             startIcon="delete_sweep"
             disabled={!hasSnack}
             isLoading={cleaningStatus === Status.LOADING}
-            onClick={() => {
-              void clearAll();
-            }}
+            onClick={clearAll}
           >
             Limpar
           </Button>

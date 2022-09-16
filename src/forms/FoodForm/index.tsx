@@ -8,18 +8,26 @@ import React from "react";
 import "twin.macro";
 import { Status } from "types";
 import type { Food, NotCreated } from "types/api";
+import SwalUtil from "utils/SwalUtil";
 
 interface FoodFormProps {
   initialData?: Food;
-  status: Status;
+  submitStatus: Status;
+  deleteStatus?: Status;
   onSubmit: (food: NotCreated<Food>) => void;
+  onDelete?: () => void;
 }
 
 function FoodForm({
   initialData,
-  status,
+  submitStatus,
+  deleteStatus,
   onSubmit,
+  onDelete,
 }: FoodFormProps): JSX.Element {
+  const isBusy =
+    submitStatus === Status.LOADING || deleteStatus === Status.LOADING;
+
   const [name, setName] = React.useState(initialData?.name ?? "");
 
   const [measurement, setMeasurement] = React.useState<{
@@ -137,9 +145,27 @@ function FoodForm({
         </div>
       </div>
 
-      <div tw="mt-4 flex justify-end">
+      <div tw="mt-4 flex gap-2 justify-end">
+        {initialData && (
+          <Button
+            isLoading={deleteStatus === Status.LOADING}
+            disabled={isBusy}
+            type="button"
+            variant="outlined"
+            startIcon="delete_sweep"
+            onClick={() => {
+              void SwalUtil.confirm(
+                "Você tem certeza de que deseja deletar esta comida?"
+              ).then(({ isConfirmed }) => isConfirmed && onDelete?.());
+            }}
+          >
+            Deletar
+          </Button>
+        )}
+
         <Button
-          isLoading={status === Status.LOADING}
+          isLoading={submitStatus === Status.LOADING}
+          disabled={isBusy}
           type="submit"
           startIcon={initialData ? "check" : "add"}
         >

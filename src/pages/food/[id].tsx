@@ -20,7 +20,9 @@ type Query = {
 };
 
 const Page: AppPage<PageProps> = ({ food }) => {
-  const [status, setStatus] = React.useState(Status.IDLE);
+  const [submitStatus, setSubmitStatus] = React.useState(Status.IDLE);
+
+  const [deleteStatus, setDeleteStatus] = React.useState(Status.IDLE);
 
   const { back } = useRouter();
 
@@ -28,20 +30,38 @@ const Page: AppPage<PageProps> = ({ food }) => {
     <Container>
       <FoodForm
         initialData={food}
-        status={status}
+        submitStatus={submitStatus}
+        deleteStatus={deleteStatus}
         onSubmit={(data) => {
-          setStatus(Status.LOADING);
+          setSubmitStatus(Status.LOADING);
 
           Api.MAIN.put<Food>(`/foods/${food.id}`, data)
             .then(async () => {
-              setStatus(Status.SUCCESS);
+              setSubmitStatus(Status.SUCCESS);
 
               await SwalUtil.fireSuccess("Informações editadas com sucesso!");
 
               back();
             })
             .catch(() => {
-              setStatus(Status.ERROR);
+              setSubmitStatus(Status.ERROR);
+
+              return SwalUtil.fireError();
+            });
+        }}
+        onDelete={() => {
+          setDeleteStatus(Status.LOADING);
+
+          Api.MAIN.delete(`/foods/${food.id}`)
+            .then(async () => {
+              setDeleteStatus(Status.SUCCESS);
+
+              await SwalUtil.fireSuccess("A comida foi deletada com sucesso!");
+
+              back();
+            })
+            .catch(() => {
+              setDeleteStatus(Status.ERROR);
 
               return SwalUtil.fireError();
             });
