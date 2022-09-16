@@ -2,6 +2,8 @@ import Button from "components/Button";
 import Container from "components/Container";
 import MessageBox from "components/MessageBox";
 import Pagination from "components/Pagination";
+import SnackCard from "components/SnackCard";
+import SnackList from "components/SnackList";
 import TextInput from "components/TextInput";
 import UserLayout from "layouts/UserLayout";
 import authenticate from "middlewares/authenticate";
@@ -11,7 +13,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import "twin.macro";
 import type { AppPage } from "types";
-import type { FullRecipe } from "types/api";
+import { FullRecipe, Measurement } from "types/api";
 
 interface PageProps {
   maximumPage: number;
@@ -76,7 +78,7 @@ const Page: AppPage<PageProps> = ({
           </p>
         </MessageBox>
       ) : (
-        <ul tw="grid grid-cols-3 gap-4">
+        <SnackList>
           {recipes.map((recipe) => (
             <li key={recipe.id}>
               <Link
@@ -87,11 +89,17 @@ const Page: AppPage<PageProps> = ({
                   },
                 }}
               >
-                <a>{/* <FoodCard food={food} /> */}</a>
+                <a>
+                  <SnackCard
+                    measurement={Measurement.UN}
+                    proportion={1}
+                    {...recipe}
+                  />
+                </a>
               </Link>
             </li>
           ))}
-        </ul>
+        </SnackList>
       )}
 
       {maximumPage > 1 && (

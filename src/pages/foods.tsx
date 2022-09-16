@@ -1,8 +1,9 @@
 import Button from "components/Button";
 import Container from "components/Container";
-import FoodCard from "components/FoodCard";
 import MessageBox from "components/MessageBox";
 import Pagination from "components/Pagination";
+import SnackCard from "components/SnackCard";
+import SnackList from "components/SnackList";
 import TextInput from "components/TextInput";
 import UserLayout from "layouts/UserLayout";
 import Api from "lib/api";
@@ -75,7 +76,7 @@ const Page: AppPage<PageProps> = ({ maximumPage, currentPage, foods }) => {
           </p>
         </MessageBox>
       ) : (
-        <ul tw="grid grid-cols-3 gap-4">
+        <SnackList>
           {foods.map((food) => (
             <li key={food.id}>
               <Link
@@ -87,12 +88,12 @@ const Page: AppPage<PageProps> = ({ maximumPage, currentPage, foods }) => {
                 }}
               >
                 <a>
-                  <FoodCard food={food} />
+                  <SnackCard {...food} />
                 </a>
               </Link>
             </li>
           ))}
-        </ul>
+        </SnackList>
       )}
 
       {maximumPage > 1 && (
