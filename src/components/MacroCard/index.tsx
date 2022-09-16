@@ -26,11 +26,11 @@ function MacroCard({
         </div>
 
         {isCompleted ? (
-          <div tw="text-green-500">
+          <div tw="text-green-500" title="A meta foi alcançada">
             <Icon icon="task_alt" />
           </div>
         ) : (
-          <div tw="text-red-500">
+          <div tw="text-red-500" title="A meta não foi alcançada">
             <Icon icon="error" variant="outlined" />
           </div>
         )}

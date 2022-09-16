@@ -24,7 +24,7 @@ function FoodCard({ food }: FoodCardProps): JSX.Element {
             {name}
           </h3>
 
-          <div tw="my-3">
+          <div tw="my-2">
             <Divider>
               {proportion}
               {measurement}
@@ -41,7 +41,7 @@ function FoodCard({ food }: FoodCardProps): JSX.Element {
               { icon: MacroIcon.FATS, title: "Gorduras", data: fats },
               { icon: MacroIcon.PROTEINS, title: "Proteínas", data: proteins },
             ].map(({ icon, title, data }) => (
-              <div key={title} title={title} tw="flex items-center gap-1">
+              <div key={title} title={title} tw="flex gap-1 items-center">
                 <Icon icon={icon} size="sm" />
                 <p>{data}g</p>
               </div>

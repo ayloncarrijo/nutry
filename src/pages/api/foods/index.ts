@@ -7,16 +7,29 @@ import ObjectUtil from "utils/ObjectUtil";
 
 const methods = {
   GET: async (
-    req: TypedApiRequest<unknown, { limit: string; page: string }>,
+    req: TypedApiRequest<
+      unknown,
+      { limit: string; page: string; search?: string }
+    >,
     res: NextApiResponse<Paginated<Food>>
   ) => {
     const limit = Number(req.query.limit);
 
     const page = Number(req.query.page);
 
+    const filter = {
+      where: {
+        name: {
+          mode: "insensitive",
+          contains: req.query.search,
+        },
+      },
+    } as const;
+
     const [total, foods] = await prisma.$transaction([
-      prisma.food.count(),
+      prisma.food.count(filter),
       prisma.food.findMany({
+        ...filter,
         orderBy: {
           createdAt: "desc",
         },

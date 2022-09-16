@@ -35,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = NextUtil.merge(
     if (!food) {
       return {
         redirect: {
-          destination: "/foods/1",
+          destination: "/foods",
           permanent: false,
         },
       };

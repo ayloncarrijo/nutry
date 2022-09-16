@@ -62,9 +62,12 @@
     "object-shorthand": ["error", "always"],
     "no-console": "warn",
     "no-useless-rename": "error",
+    "no-param-reassign": "error",
     "eqeqeq": ["error", "smart"],
+    "prefer-template": "error",
     "prefer-destructuring": ["error", { "object": true, "array": false }],
     "react/self-closing-comp": "error",
+    "react/jsx-curly-brace-presence": "error",
     "react/jsx-no-useless-fragment": ["error", { "allowExpressions": true }]
   }
 }
