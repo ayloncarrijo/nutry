@@ -35,6 +35,7 @@ const Page: AppPage<PageProps> = ({ maximumPage, currentPage, foods }) => {
         tw="mb-8"
         onSubmit={(event) => {
           event.preventDefault();
+
           void replace({
             pathname,
             query: {
