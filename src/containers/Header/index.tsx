@@ -26,35 +26,24 @@ function Header(): JSX.Element {
             {[
               {
                 label: "Início",
-                href: {
-                  pathname: "/",
-                },
+                href: "/",
               },
               {
                 label: "Dieta",
-                href: {
-                  pathname: "/diet",
-                },
+                href: "/diet",
               },
               {
                 label: "Receitas",
-                href: {
-                  pathname: "/recipes",
-                },
+                href: "/recipes",
               },
               {
                 label: "Comidas",
-                href: {
-                  pathname: "/foods/[page]",
-                  query: { page: 1 },
-                },
+                href: "/foods",
               },
             ].map(({ href, label }) => (
-              <li key={href.pathname}>
+              <li key={href}>
                 <Link href={href} passHref>
-                  <NavLink isActive={pathname === href.pathname}>
-                    {label}
-                  </NavLink>
+                  <NavLink isActive={pathname === href}>{label}</NavLink>
                 </Link>
               </li>
             ))}

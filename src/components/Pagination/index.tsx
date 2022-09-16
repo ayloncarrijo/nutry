@@ -20,10 +20,13 @@ function Pagination({
 
   const isLastPage = currentPage === maximumPage;
 
-  const initialPage = Math.min(
-    Math.max(currentPage - Math.floor(visiblePages / 2), 1),
-    Math.abs(maximumPage - visiblePages) + 1
-  );
+  const initialPage =
+    maximumPage < visiblePages
+      ? 1
+      : Math.min(
+          Math.max(currentPage - Math.floor(visiblePages / 2), 1),
+          maximumPage - visiblePages + 1
+        );
 
   const goToPage = (page: number) => {
     if (currentPage !== page) {
