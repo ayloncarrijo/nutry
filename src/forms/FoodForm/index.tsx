@@ -6,8 +6,15 @@ import SelectInput from "components/SelectInput";
 import TextInput from "components/TextInput";
 import React from "react";
 import "twin.macro";
+import { Status } from "types";
+import type { Food, NotCreated } from "types/api";
 
-function FoodForm(): JSX.Element {
+interface FoodFormProps {
+  onSubmit: (food: NotCreated<Food>) => void;
+  status: Status;
+}
+
+function FoodForm({ onSubmit, status }: FoodFormProps): JSX.Element {
   const [name, setName] = React.useState("");
 
   const [measurement, setMeasurement] = React.useState<{
@@ -30,6 +37,19 @@ function FoodForm(): JSX.Element {
     <form
       onSubmit={(event) => {
         event.preventDefault();
+
+        if (!measurement) {
+          return;
+        }
+
+        onSubmit({
+          name,
+          measurement: measurement.value,
+          proportion,
+          carbohydrates,
+          fats,
+          proteins,
+        });
       }}
     >
       <div tw="grid grid-cols-12 gap-4">
@@ -53,10 +73,11 @@ function FoodForm(): JSX.Element {
 
         <div tw="col-span-2">
           <SelectInput
-            isRequired
+            id="measurement"
             label="Medida"
             value={measurement}
             onChange={setMeasurement}
+            isRequired
             options={[
               ...Object.values(Measurement).map((measurement) => ({
                 value: measurement,
@@ -101,7 +122,11 @@ function FoodForm(): JSX.Element {
       </div>
 
       <div tw="mt-4 flex justify-end">
-        <Button type="submit" startIcon="add">
+        <Button
+          isLoading={status === Status.LOADING}
+          type="submit"
+          startIcon="add"
+        >
           Registrar
         </Button>
       </div>

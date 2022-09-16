@@ -72,6 +72,9 @@ const CustomStyles = createGlobalStyle({
       "&__menu-list": {
         ...tw`py-0`,
       },
+      "&__menu-notice": {
+        ...tw`text-gray-300`,
+      },
       "&__option": {
         ...tw`text-base`,
         "&--is-focused": {

@@ -1,7 +1,7 @@
 import prisma from "lib/prisma";
 import type { NextApiResponse } from "next";
 import type { TypedApiRequest } from "types";
-import type { Food, Measurement, Paginated } from "types/api";
+import type { Food, NotCreated, Paginated } from "types/api";
 import HttpStatusCode from "types/HttpStatusCode";
 import ObjectUtil from "utils/ObjectUtil";
 
@@ -44,14 +44,7 @@ const methods = {
   },
 
   POST: async (
-    req: TypedApiRequest<{
-      measurement: Measurement;
-      proportion: number;
-      name: string;
-      carbohydrates: number;
-      fats: number;
-      proteins: number;
-    }>,
+    req: TypedApiRequest<NotCreated<Food>>,
     res: NextApiResponse<Food>
   ) => {
     const { measurement, proportion, name, carbohydrates, fats, proteins } =

@@ -8,6 +8,7 @@ interface SelectInputProps<
   Group extends GroupBase<Option> = GroupBase<Option>
 > extends Props<Option, IsMulti, Group>,
     FieldProps {
+  id: string;
   isRequired?: boolean;
 }
 
@@ -18,6 +19,7 @@ function SelectInput<
 >({
   onFocus,
   onBlur,
+  id,
   isRequired,
   ...props
 }: SelectInputProps<Option, IsMulti, Group>): JSX.Element {
@@ -36,6 +38,8 @@ function SelectInput<
     >
       <Select<Option, IsMulti, Group>
         ref={selectRef}
+        id={id}
+        instanceId={id}
         placeholder=""
         className="react-select"
         classNamePrefix="react-select"

@@ -3,6 +3,8 @@ export * from "@prisma/client";
 
 export type Paginated<T> = [number, Array<T>];
 
+export type NotCreated<T> = Omit<T, "id" | "createdAt" | "updatedAt">;
+
 export type FullDiet = WithMacros<Diet>;
 
 export type FullRecipe = WithMacros<Recipe>;
