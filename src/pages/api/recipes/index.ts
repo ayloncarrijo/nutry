@@ -10,11 +10,16 @@ const include = { linkedFoods: { include: { food: true } } };
 
 const methods = {
   GET: async (
-    req: TypedApiRequest,
+    req: TypedApiRequest<unknown, { user: string }>,
     res: NextApiResponse<Array<FullRecipe>>
   ) => {
+    const { user } = req.query;
+
     const recipes = await prisma.recipe.findMany({
       include,
+      where: {
+        createdBy: user,
+      },
     });
 
     return res
@@ -25,16 +30,18 @@ const methods = {
   POST: async (
     req: TypedApiRequest<{
       name: string;
+      user: string;
       linkedFoods: Array<{ foodId: string; quantity: number }>;
     }>,
     res: NextApiResponse<FullRecipe>
   ) => {
-    const { name, linkedFoods } = req.body;
+    const { name, user, linkedFoods } = req.body;
 
     const recipe = await prisma.recipe.create({
       include,
       data: {
         name,
+        createdBy: user,
         linkedFoods: {
           createMany: {
             data: linkedFoods,

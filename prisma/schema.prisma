@@ -11,25 +11,29 @@ datasource db {
 }
 
 enum Measurement {
+  ML
+  L
   KG
   G
   UN
 }
 
 model User {
-  name               String @id
-  weight             Float  @default(0)
-  carbohydratesPerKg Float  @default(2)
-  fatsPerKg          Float  @default(1)
-  proteinsPerKg      Float  @default(1.5)
-  dailyDiet          Diet   @relation("dailyDiet", fields: [dailyDietId], references: [id])
-  dailyDietId        String @unique
-  goalDiet           Diet   @relation("goalDiet", fields: [goalDietId], references: [id])
-  goalDietId         String @unique
+  name               String   @id
+  weight             Float    @default(0)
+  carbohydratesPerKg Float    @default(2)
+  fatsPerKg          Float    @default(1)
+  proteinsPerKg      Float    @default(1.5)
+  dailyDiet          Diet     @relation("dailyDiet", fields: [dailyDietId], references: [id])
+  dailyDietId        String   @unique
+  goalDiet           Diet     @relation("goalDiet", fields: [goalDietId], references: [id])
+  goalDietId         String   @unique
+  recipes            Recipe[]
 }
 
 model Food {
   id            String       @id @default(uuid())
+  linkedFoods   LinkedFood[]
   measurement   Measurement
   proportion    Float
   name          String
@@ -38,16 +42,17 @@ model Food {
   proteins      Float
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
-  linkedFoods   LinkedFood[]
 }
 
 model Recipe {
   id            String         @id @default(uuid())
-  name          String
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
   linkedFoods   LinkedFood[]
   linkedRecipes LinkedRecipe[]
+  name          String
+  user          User           @relation(fields: [createdBy], references: [name])
+  createdBy     String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 }
 
 model Diet {

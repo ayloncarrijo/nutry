@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useUser } from "providers/UserProvider";
 import "twin.macro";
-import tw from "twin.macro";
 
 function Header(): JSX.Element {
   const { pathname } = useRouter();
@@ -15,9 +14,9 @@ function Header(): JSX.Element {
   return (
     <header tw="py-4 border-b border-opacity-50">
       <Container tw="flex items-center justify-between">
-        <div tw="-m-2" css={[pathname === "/profile" && tw`text-white`]}>
+        <div tw="-m-2">
           <Link href="/profile" passHref>
-            <Profile name={name} />
+            <Profile isActive={pathname === "/profile"} name={name} />
           </Link>
         </div>
 

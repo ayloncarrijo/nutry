@@ -11,8 +11,8 @@ function NavLink(
 ): JSX.Element {
   return (
     <a
-      tw="hover:(text-white)"
-      css={[isActive && tw`text-white underline text-underline-offset[4px]`]}
+      tw="font-medium hover:(text-white)"
+      css={[isActive && tw`text-blue-300`]}
       ref={ref}
       {...props}
     />

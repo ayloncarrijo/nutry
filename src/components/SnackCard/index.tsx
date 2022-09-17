@@ -34,7 +34,7 @@ function SnackCard({
             {name}
           </h3>
 
-          <div tw="mt-2 mb-4">
+          <div tw="my-4">
             <Divider>
               {proportion}
               {measurement}
