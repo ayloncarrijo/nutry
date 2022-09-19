@@ -7,9 +7,9 @@ import SnackList from "components/SnackList";
 import TextInput from "components/TextInput";
 import UserLayout from "layouts/UserLayout";
 import authenticate from "middlewares/authenticate";
-import fetchPaginatedData, {
-  FetchPaginatedDataProps,
-} from "middlewares/fetchPaginatedData";
+import fetchPaginated, {
+  FetchPaginatedProps,
+} from "middlewares/fetchPaginated";
 import type { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -19,7 +19,7 @@ import type { AppPage } from "types";
 import type { Food } from "types/api";
 import NextUtil from "utils/NextUtil";
 
-type PageProps = FetchPaginatedDataProps<Food>;
+type PageProps = FetchPaginatedProps<Food>;
 
 const Page: AppPage<PageProps> = ({
   maximumPage,
@@ -123,6 +123,6 @@ Page.getLayout = (page) => <UserLayout>{page}</UserLayout>;
 
 export const getServerSideProps: GetServerSideProps = NextUtil.mergeGssp([
   authenticate,
-  fetchPaginatedData({ url: "/foods", limit: 9 }),
+  fetchPaginated({ url: "/foods", limit: 9 }),
 ]);
 export default Page;

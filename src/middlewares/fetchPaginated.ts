@@ -2,7 +2,7 @@ import Api from "lib/api";
 import type { GetServerSideProps } from "next";
 import type { Paginated } from "types/api";
 
-interface FetchPaginatedDataProps<T> {
+interface FetchPaginatedProps<T> {
   maximumPage: number;
   currentPage: number;
   data: Array<T>;
@@ -13,9 +13,9 @@ interface Options {
   limit: number;
 }
 
-const fetchPaginatedData: <T>(
+const fetchPaginated: <T>(
   options: Options
-) => GetServerSideProps<FetchPaginatedDataProps<T>> =
+) => GetServerSideProps<FetchPaginatedProps<T>> =
   <T>({ url, limit }: Options) =>
   async (context) => {
     const currentPage = Math.max(1, Number(context.query.page) || 1);
@@ -53,5 +53,5 @@ const fetchPaginatedData: <T>(
     };
   };
 
-export type { FetchPaginatedDataProps };
-export default fetchPaginatedData;
+export type { FetchPaginatedProps };
+export default fetchPaginated;
