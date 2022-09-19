@@ -19,13 +19,13 @@ function Profile(
       css={[isActive && tw`text-white`]}
       {...props}
     >
+      <span tw="font-medium">{name}</span>
       <div
         tw="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center"
         css={[isActive && tw`bg-blue-500`]}
       >
         <Icon icon="person" />
       </div>
-      <span tw="font-medium">{name}</span>
     </a>
   );
 }

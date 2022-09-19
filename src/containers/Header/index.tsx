@@ -16,7 +16,7 @@ function Header(): JSX.Element {
   const { pathname } = useRouter();
 
   return (
-    <header tw="py-4 border-b border-opacity-50">
+    <header tw="z-40 sticky top-0 bg-gray-900 py-4 border-b border-opacity-50">
       <Container tw="flex items-center justify-between">
         <div>
           <IconButton

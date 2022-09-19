@@ -96,7 +96,11 @@ function Drawer(): JSX.Element | null {
               ].map(({ icon, href, label }) => (
                 <li key={href}>
                   <Link href={href} passHref>
-                    <NavLink isActive={pathname === href} icon={icon}>
+                    <NavLink
+                      onClick={() => !isDesktop && setIsOpen(false)}
+                      isActive={pathname === href}
+                      icon={icon}
+                    >
                       {label}
                     </NavLink>
                   </Link>

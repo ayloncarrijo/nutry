@@ -19,7 +19,7 @@ function IconButton({
   return (
     <button
       type="button"
-      tw="flex justify-center items-center rounded-full disabled:(text-gray-300 text-opacity-40 cursor-not-allowed)"
+      tw="flex justify-center items-center rounded-full text-white disabled:(text-gray-300 text-opacity-40 cursor-not-allowed)"
       css={[
         {
           md: tw`w-10 h-10`,
