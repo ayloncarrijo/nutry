@@ -1,38 +1,38 @@
 import type {
+  AttachedFood,
+  AttachedRecipe,
   Diet,
-  LinkedFood,
-  LinkedRecipe,
   Macros,
   Recipe,
   WithMacros,
 } from "types/api";
 
 class DatabaseUtil {
-  public static assignMacrosToLinkedFood(
-    linkedFood: LinkedFood
-  ): WithMacros<LinkedFood> {
-    const proportion = linkedFood.quantity / linkedFood.food.proportion;
+  public static assignMacrosToAttachedFood(
+    attachedFood: AttachedFood
+  ): WithMacros<AttachedFood> {
+    const proportion = attachedFood.quantity / attachedFood.food.proportion;
 
     return {
-      ...linkedFood,
-      carbohydrates: proportion * linkedFood.food.carbohydrates,
-      fats: proportion * linkedFood.food.fats,
-      proteins: proportion * linkedFood.food.proteins,
+      ...attachedFood,
+      carbohydrates: proportion * attachedFood.food.carbohydrates,
+      fats: proportion * attachedFood.food.fats,
+      proteins: proportion * attachedFood.food.proteins,
     };
   }
 
-  public static assignMacrosToLinkedRecipe(
-    linkedRecipe: LinkedRecipe
-  ): WithMacros<LinkedRecipe> {
+  public static assignMacrosToAttachedRecipe(
+    attachedRecipe: AttachedRecipe
+  ): WithMacros<AttachedRecipe> {
     const { carbohydrates, fats, proteins } = DatabaseUtil.assignMacrosToRecipe(
-      linkedRecipe.recipe
+      attachedRecipe.recipe
     );
 
     return {
-      ...linkedRecipe,
-      carbohydrates: linkedRecipe.quantity * carbohydrates,
-      fats: linkedRecipe.quantity * fats,
-      proteins: linkedRecipe.quantity * proteins,
+      ...attachedRecipe,
+      carbohydrates: attachedRecipe.quantity * carbohydrates,
+      fats: attachedRecipe.quantity * fats,
+      proteins: attachedRecipe.quantity * proteins,
     };
   }
 
@@ -40,8 +40,8 @@ class DatabaseUtil {
     return {
       ...recipe,
       ...DatabaseUtil.calculateTotalMacros(
-        recipe.linkedFoods.map((linkedFood) =>
-          DatabaseUtil.assignMacrosToLinkedFood(linkedFood)
+        recipe.attachedFoods.map((attachedFood) =>
+          DatabaseUtil.assignMacrosToAttachedFood(attachedFood)
         )
       ),
     };
@@ -51,11 +51,11 @@ class DatabaseUtil {
     return {
       ...diet,
       ...DatabaseUtil.calculateTotalMacros([
-        ...diet.linkedFoods.map((linkedFood) =>
-          DatabaseUtil.assignMacrosToLinkedFood(linkedFood)
+        ...diet.attachedFoods.map((attachedFood) =>
+          DatabaseUtil.assignMacrosToAttachedFood(attachedFood)
         ),
-        ...diet.linkedRecipes.map((linkedRecipe) =>
-          DatabaseUtil.assignMacrosToLinkedRecipe(linkedRecipe)
+        ...diet.attachedRecipes.map((attachedRecipe) =>
+          DatabaseUtil.assignMacrosToAttachedRecipe(attachedRecipe)
         ),
       ]),
     };

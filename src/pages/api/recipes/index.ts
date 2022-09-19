@@ -6,7 +6,7 @@ import HttpStatusCode from "types/HttpStatusCode";
 import DatabaseUtil from "utils/DatabaseUtil";
 import ObjectUtil from "utils/ObjectUtil";
 
-const include = { linkedFoods: { include: { food: true } } };
+const include = { attachedFoods: { include: { food: true } } };
 
 const methods = {
   GET: async (
@@ -57,20 +57,20 @@ const methods = {
     req: TypedApiRequest<{
       name: string;
       user: string;
-      linkedFoods: Array<{ foodId: string; quantity: number }>;
+      attachedFoods: Array<{ foodId: string; quantity: number }>;
     }>,
     res: NextApiResponse<FullRecipe>
   ) => {
-    const { name, user, linkedFoods } = req.body;
+    const { name, user, attachedFoods } = req.body;
 
     const recipe = await prisma.recipe.create({
       include,
       data: {
         name,
         createdBy: user,
-        linkedFoods: {
+        attachedFoods: {
           createMany: {
-            data: linkedFoods,
+            data: attachedFoods,
           },
         },
       },

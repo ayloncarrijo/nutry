@@ -7,10 +7,10 @@ import DatabaseUtil from "utils/DatabaseUtil";
 import ObjectUtil from "utils/ObjectUtil";
 
 const include = {
-  linkedFoods: { include: { food: true } },
-  linkedRecipes: {
+  attachedFoods: { include: { food: true } },
+  attachedRecipes: {
     include: {
-      recipe: { include: { linkedFoods: { include: { food: true } } } },
+      recipe: { include: { attachedFoods: { include: { food: true } } } },
     },
   },
 };
@@ -28,24 +28,24 @@ const methods = {
 
   POST: async (
     req: TypedApiRequest<{
-      linkedFoods: Array<{ foodId: string; quantity: number }>;
-      linkedRecipes: Array<{ recipeId: string; quantity: number }>;
+      attachedFoods: Array<{ foodId: string; quantity: number }>;
+      attachedRecipes: Array<{ recipeId: string; quantity: number }>;
     }>,
     res: NextApiResponse<FullDiet>
   ) => {
-    const { linkedFoods, linkedRecipes } = req.body;
+    const { attachedFoods, attachedRecipes } = req.body;
 
     const diet = await prisma.diet.create({
       include,
       data: {
-        linkedFoods: {
+        attachedFoods: {
           createMany: {
-            data: linkedFoods,
+            data: attachedFoods,
           },
         },
-        linkedRecipes: {
+        attachedRecipes: {
           createMany: {
-            data: linkedRecipes,
+            data: attachedRecipes,
           },
         },
       },

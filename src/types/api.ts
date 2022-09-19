@@ -10,21 +10,21 @@ export type FullDiet = WithMacros<Diet>;
 export type FullRecipe = WithMacros<Recipe>;
 
 export type Diet = Prisma.Diet & {
-  linkedFoods: Array<LinkedFood>;
-  linkedRecipes: Array<LinkedRecipe>;
+  attachedFoods: Array<AttachedFood>;
+  attachedRecipes: Array<AttachedRecipe>;
 };
 
 export type Food = Prisma.Food;
 
 export type Recipe = Prisma.Recipe & {
-  linkedFoods: Array<LinkedFood>;
+  attachedFoods: Array<AttachedFood>;
 };
 
-export type LinkedFood = Prisma.LinkedFood & {
+export type AttachedFood = Prisma.AttachedFood & {
   food: Food;
 };
 
-export type LinkedRecipe = Prisma.LinkedRecipe & {
+export type AttachedRecipe = Prisma.AttachedRecipe & {
   recipe: Recipe;
 };
 

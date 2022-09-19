@@ -32,38 +32,38 @@ model User {
 }
 
 model Food {
-  id            String       @id @default(uuid())
-  linkedFoods   LinkedFood[]
+  id            String         @id @default(uuid())
+  attachedFoods AttachedFood[]
   measurement   Measurement
   proportion    Float
   name          String
   carbohydrates Float
   fats          Float
   proteins      Float
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-}
-
-model Recipe {
-  id            String         @id @default(uuid())
-  linkedFoods   LinkedFood[]
-  linkedRecipes LinkedRecipe[]
-  name          String
-  user          User           @relation(fields: [createdBy], references: [name])
-  createdBy     String
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 }
 
-model Diet {
-  id               String         @id @default(uuid())
-  linkedFoods      LinkedFood[]
-  linkedRecipes    LinkedRecipe[]
-  createdAsDailyBy User?          @relation("dailyDiet")
-  createdAsGoalBy  User?          @relation("goalDiet")
+model Recipe {
+  id              String           @id @default(uuid())
+  attachedFoods   AttachedFood[]
+  attachedRecipes AttachedRecipe[]
+  name            String
+  user            User             @relation(fields: [createdBy], references: [name])
+  createdBy       String
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
 }
 
-model LinkedFood {
+model Diet {
+  id               String           @id @default(uuid())
+  attachedFoods    AttachedFood[]
+  attachedRecipes  AttachedRecipe[]
+  createdAsDailyBy User?            @relation("dailyDiet")
+  createdAsGoalBy  User?            @relation("goalDiet")
+}
+
+model AttachedFood {
   id       String  @id @default(uuid())
   quantity Int
   food     Food    @relation(fields: [foodId], references: [id], onDelete: Cascade)
@@ -74,7 +74,7 @@ model LinkedFood {
   dietId   String?
 }
 
-model LinkedRecipe {
+model AttachedRecipe {
   id       String @id @default(uuid())
   quantity Int
   recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)

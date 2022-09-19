@@ -19,7 +19,8 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
 
   const [cleaningStatus, setCleaningStatus] = React.useState(Status.IDLE);
 
-  const hasSnack = diet.linkedFoods.length > 0 || diet.linkedRecipes.length > 0;
+  const hasSnack =
+    diet.attachedFoods.length > 0 || diet.attachedRecipes.length > 0;
 
   const clearAll = () => {
     void SwalUtil.confirm(
@@ -32,8 +33,8 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
       setCleaningStatus(Status.LOADING);
 
       Api.MAIN.put<FullDiet>(`/diets/${diet.id}`, {
-        linkedFoods: [],
-        linkedRecipes: [],
+        attachedFoods: [],
+        attachedRecipes: [],
       })
         .then(({ data }) => {
           setCleaningStatus(Status.SUCCESS);

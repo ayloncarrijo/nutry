@@ -33,14 +33,14 @@ const methods = {
   PUT: async (
     req: TypedApiRequest<
       {
-        linkedFoods: Array<{ foodId: string; quantity: number }>;
-        linkedRecipes: Array<{ recipeId: string; quantity: number }>;
+        attachedFoods: Array<{ foodId: string; quantity: number }>;
+        attachedRecipes: Array<{ recipeId: string; quantity: number }>;
       },
       Query
     >,
     res: NextApiResponse<FullDiet>
   ) => {
-    const { linkedFoods, linkedRecipes } = req.body;
+    const { attachedFoods, attachedRecipes } = req.body;
 
     const { id } = req.query;
 
@@ -50,16 +50,16 @@ const methods = {
         id,
       },
       data: {
-        linkedFoods: {
+        attachedFoods: {
           deleteMany: {},
           createMany: {
-            data: linkedFoods,
+            data: attachedFoods,
           },
         },
-        linkedRecipes: {
+        attachedRecipes: {
           deleteMany: {},
           createMany: {
-            data: linkedRecipes,
+            data: attachedRecipes,
           },
         },
       },
