@@ -5,7 +5,7 @@ import tw from "twin.macro";
 interface IconButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   icon: IconProps["icon"];
   size?: "md" | "sm";
-  variant?: "icon" | "contained";
+  variant?: "outlined" | "contained" | "icon";
   iconProps?: Omit<IconProps, "icon">;
 }
 
@@ -26,8 +26,9 @@ function IconButton({
           sm: tw`w-8 h-8`,
         }[size],
         {
-          icon: tw`not-disabled:hover:(bg-white bg-opacity-10)`,
+          outlined: tw`ring-inset ring-1 ring-blue-400 not-disabled:hover:(bg-blue-400 bg-opacity-20) disabled:(ring-gray-400 ring-opacity-25)`,
           contained: tw`bg-blue-500 not-disabled:hover:(bg-blue-600) disabled:(bg-gray-600 bg-opacity-25)`,
+          icon: tw`not-disabled:hover:(bg-white bg-opacity-10)`,
         }[variant],
       ]}
       {...props}

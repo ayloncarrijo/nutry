@@ -3,6 +3,7 @@ import type { AuthenticateProps } from "middlewares/authenticate";
 import { Router } from "next/router";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import DrawerProvider from "providers/DrawerProvider";
 import UserProvider from "providers/UserProvider";
 import type {} from "styled-components/cssprop";
 import type { AppPage } from "types";
@@ -30,9 +31,11 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <GlobalStyles />
-      <UserProvider value={user}>
-        {getLayout(<Component {...pageProps} />)}
-      </UserProvider>
+      <DrawerProvider>
+        <UserProvider value={user}>
+          {getLayout(<Component {...pageProps} />)}
+        </UserProvider>
+      </DrawerProvider>
     </>
   );
 }

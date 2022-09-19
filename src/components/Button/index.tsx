@@ -37,7 +37,7 @@ const Button = ReactUtil.forwardRefWithAs<HTMLButtonElement, ButtonProps>(
           isFullWidth && tw`w-full`,
           isLoading && tw`disabled:(text-opacity-0)`,
           {
-            outlined: tw`ring-inset ring-1 ring-blue-500 not-disabled:hover:(bg-blue-500 bg-opacity-25) disabled:(ring-gray-400 ring-opacity-25)`,
+            outlined: tw`ring-inset ring-1 ring-blue-400 not-disabled:hover:(bg-blue-400 bg-opacity-20) disabled:(ring-gray-400 ring-opacity-25)`,
             contained: tw`bg-blue-500 not-disabled:hover:(bg-blue-600) disabled:(bg-gray-600 bg-opacity-25)`,
           }[variant],
         ]}
