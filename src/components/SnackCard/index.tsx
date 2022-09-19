@@ -2,6 +2,7 @@ import Card from "components/Card";
 import Divider from "components/Divider";
 import Icon from "components/Icon";
 import "twin.macro";
+import tw from "twin.macro";
 import { MacroIcon } from "types";
 import type { Measurement } from "types/api";
 
@@ -41,22 +42,35 @@ function SnackCard({
             </Divider>
           </div>
 
-          <div tw="w-full flex justify-between">
-            {[
-              {
-                icon: MacroIcon.CARBOHYDRATES,
-                title: "Carboidratos",
-                data: carbohydrates,
-              },
-              { icon: MacroIcon.FATS, title: "Gorduras", data: fats },
-              { icon: MacroIcon.PROTEINS, title: "Proteínas", data: proteins },
-            ].map(({ icon, title, data }) => (
-              <div key={title} title={title} tw="flex gap-1 items-center">
-                <Icon icon={icon} size="sm" />
-                <p>{data}g</p>
-              </div>
-            ))}
-          </div>
+          <table
+            css={{
+              ...tw`-my-1`,
+              td: tw`py-1 px-2`,
+            }}
+          >
+            <tbody>
+              {[
+                {
+                  icon: MacroIcon.CARBOHYDRATES,
+                  title: "Carboidratos",
+                  data: carbohydrates,
+                },
+                { icon: MacroIcon.FATS, title: "Gorduras", data: fats },
+                {
+                  icon: MacroIcon.PROTEINS,
+                  title: "Proteínas",
+                  data: proteins,
+                },
+              ].map(({ icon, title, data }) => (
+                <tr key={title} title={title}>
+                  <th>
+                    <Icon icon={icon} size="sm" />
+                  </th>
+                  <td>{data}g</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </Card>

@@ -14,7 +14,7 @@ function Pagination({
   onPageChange,
   maximumPage,
   currentPage,
-  visiblePages = 5,
+  visiblePages = 3,
 }: PaginationProps): JSX.Element {
   const isFirstPage = currentPage === 1;
 

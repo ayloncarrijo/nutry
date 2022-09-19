@@ -1,6 +1,7 @@
 import Card from "components/Card";
 import Icon from "components/Icon";
 import "twin.macro";
+import tw from "twin.macro";
 
 interface MacroCardProps {
   icon: string;
@@ -36,14 +37,19 @@ function MacroCard({
         )}
       </div>
 
-      <table tw="mt-4">
+      <table
+        tw="mt-4"
+        css={{
+          td: tw`px-4`,
+        }}
+      >
         <tbody>
           <tr>
-            <th tw="pr-4">Meta</th>
+            <th>Meta</th>
             <td>{goalValue}g</td>
           </tr>
           <tr>
-            <th tw="pr-4">Atual</th>
+            <th>Atual</th>
             <td>{currentValue}g</td>
           </tr>
         </tbody>

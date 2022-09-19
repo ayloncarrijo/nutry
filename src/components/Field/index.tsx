@@ -65,7 +65,7 @@ function Field({
           css={[isFocused && tw`border-blue-300 text-blue-300`]}
           onClick={onTryFocus}
         >
-          <legend tw="-ml-1 px-1 line-height[0] whitespace-nowrap">
+          <legend tw="-ml-1 px-1 font-medium whitespace-nowrap line-height[0]">
             {label}
           </legend>
         </fieldset>
