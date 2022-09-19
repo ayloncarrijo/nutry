@@ -18,13 +18,25 @@ function Drawer(): JSX.Element | null {
   const { setIsOpen } = useDrawer();
 
   React.useEffect(() => {
+    if (isDesktop) {
+      return;
+    }
+
+    window.document.body.style.overflowY = "hidden";
+
+    return () => {
+      window.document.body.style.overflowY = "";
+    };
+  }, [isDesktop]);
+
+  React.useEffect(() => {
     if (!isDesktop) {
       return;
     }
 
-    const observer = new ResizeObserver((entries) => {
+    const observer = new ResizeObserver(() => {
       window.document.body.style.paddingLeft = `${
-        entries[0]?.target.clientWidth ?? 0
+        wrapperRef.current?.offsetWidth ?? 0
       }px`;
     });
 
@@ -49,7 +61,7 @@ function Drawer(): JSX.Element | null {
 
       <aside
         ref={wrapperRef}
-        tw="z-50 fixed top-0 left-0 bottom-0 shadow-md bg-gray-800 w-64"
+        tw="w-64 z-50 fixed top-0 left-0 bottom-0 shadow-md bg-gray-800 flex flex-col"
       >
         <header tw="p-4 border-b border-opacity-25">
           <div tw="-mx-2">
@@ -57,7 +69,7 @@ function Drawer(): JSX.Element | null {
           </div>
         </header>
 
-        <div>
+        <div tw="overflow-y-auto flex-1">
           <nav>
             <ul>
               {[

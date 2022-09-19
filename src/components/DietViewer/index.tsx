@@ -49,7 +49,7 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
 
   return (
     <div>
-      <div tw="grid gap-4 grid-cols-3">
+      <div tw="grid gap-4 md:grid-cols-3">
         <MacroCard
           icon={MacroIcon.CARBOHYDRATES}
           title="Carboidratos"
