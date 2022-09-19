@@ -8,6 +8,31 @@ import type {
 } from "types/api";
 
 class DatabaseUtil {
+  public static assignMacrosToRecipe(recipe: Recipe): WithMacros<Recipe> {
+    return {
+      ...recipe,
+      ...DatabaseUtil.calculateTotalMacros(
+        recipe.attachedFoods.map((attachedFood) =>
+          DatabaseUtil.assignMacrosToAttachedFood(attachedFood)
+        )
+      ),
+    };
+  }
+
+  public static assignMacrosToDiet(diet: Diet): WithMacros<Diet> {
+    return {
+      ...diet,
+      ...DatabaseUtil.calculateTotalMacros([
+        ...diet.attachedFoods.map((attachedFood) =>
+          DatabaseUtil.assignMacrosToAttachedFood(attachedFood)
+        ),
+        ...diet.attachedRecipes.map((attachedRecipe) =>
+          DatabaseUtil.assignMacrosToAttachedRecipe(attachedRecipe)
+        ),
+      ]),
+    };
+  }
+
   public static assignMacrosToAttachedFood(
     attachedFood: AttachedFood
   ): WithMacros<AttachedFood> {
@@ -33,31 +58,6 @@ class DatabaseUtil {
       carbohydrates: attachedRecipe.quantity * carbohydrates,
       fats: attachedRecipe.quantity * fats,
       proteins: attachedRecipe.quantity * proteins,
-    };
-  }
-
-  public static assignMacrosToRecipe(recipe: Recipe): WithMacros<Recipe> {
-    return {
-      ...recipe,
-      ...DatabaseUtil.calculateTotalMacros(
-        recipe.attachedFoods.map((attachedFood) =>
-          DatabaseUtil.assignMacrosToAttachedFood(attachedFood)
-        )
-      ),
-    };
-  }
-
-  public static assignMacrosToDiet(diet: Diet): WithMacros<Diet> {
-    return {
-      ...diet,
-      ...DatabaseUtil.calculateTotalMacros([
-        ...diet.attachedFoods.map((attachedFood) =>
-          DatabaseUtil.assignMacrosToAttachedFood(attachedFood)
-        ),
-        ...diet.attachedRecipes.map((attachedRecipe) =>
-          DatabaseUtil.assignMacrosToAttachedRecipe(attachedRecipe)
-        ),
-      ]),
     };
   }
 
