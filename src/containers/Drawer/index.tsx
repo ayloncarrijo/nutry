@@ -54,7 +54,7 @@ function Drawer(): JSX.Element | null {
     <>
       {!isDesktop && (
         <div
-          tw="z-50 fixed inset-0 bg-black bg-opacity-25"
+          tw="z-50 fixed inset-0 bg-black bg-opacity-50"
           onClick={() => setIsOpen(false)}
         />
       )}

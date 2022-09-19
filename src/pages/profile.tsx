@@ -55,7 +55,7 @@ const Page: AppPage = () => {
         }}
       >
         <div tw="grid grid-cols-12 gap-4">
-          <div tw="col-span-12">
+          <div tw="col-span-full">
             <NumericInput
               required
               label="Peso"
@@ -64,11 +64,11 @@ const Page: AppPage = () => {
             />
           </div>
 
-          <div tw="col-span-12">
+          <div tw="col-span-full">
             <Divider>Macronutrientes por kilo</Divider>
           </div>
 
-          <div tw="col-span-4">
+          <div tw="col-span-full sm:col-span-4">
             <NumericInput
               required
               label="Carboidratos"
@@ -79,7 +79,7 @@ const Page: AppPage = () => {
             />
           </div>
 
-          <div tw="col-span-4">
+          <div tw="col-span-full sm:col-span-4">
             <NumericInput
               required
               label="Gorduras"
@@ -88,7 +88,7 @@ const Page: AppPage = () => {
             />
           </div>
 
-          <div tw="col-span-4">
+          <div tw="col-span-full sm:col-span-4">
             <NumericInput
               required
               label="Proteínas"

@@ -22,6 +22,12 @@ function Header(): JSX.Element {
       <header tw="z-40 sticky top-0 bg-gray-900 py-4 border-b border-opacity-50">
         <Container tw="flex items-center justify-between">
           <div tw="flex gap-2">
+            <IconButton
+              icon={isOpen ? "menu_open" : "menu"}
+              variant="outlined"
+              onClick={() => setIsOpen((wasOpen) => !wasOpen)}
+            />
+
             {pathname !== "/" && (
               <IconButton
                 icon="chevron_left"
@@ -29,12 +35,6 @@ function Header(): JSX.Element {
                 onClick={back}
               />
             )}
-
-            <IconButton
-              icon={isOpen ? "menu_open" : "menu"}
-              variant="outlined"
-              onClick={() => setIsOpen((wasOpen) => !wasOpen)}
-            />
           </div>
 
           <div tw="-m-2">

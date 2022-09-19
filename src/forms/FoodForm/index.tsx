@@ -76,8 +76,8 @@ function FoodForm({
         });
       }}
     >
-      <div tw="grid grid-cols-12 gap-4">
-        <div tw="col-span-6">
+      <div tw="grid gap-4 grid-cols-12">
+        <div tw="col-span-full md:col-span-6">
           <TextInput
             required
             label="Nome"
@@ -86,7 +86,7 @@ function FoodForm({
           />
         </div>
 
-        <div tw="col-span-4">
+        <div tw="col-span-8 md:col-span-4">
           <NumericInput
             required
             label="Proporção"
@@ -95,7 +95,7 @@ function FoodForm({
           />
         </div>
 
-        <div tw="col-span-2">
+        <div tw="col-span-4 md:col-span-2">
           <SelectInput
             id="measurement"
             label="Medida"
@@ -111,11 +111,11 @@ function FoodForm({
           />
         </div>
 
-        <div tw="col-span-12">
+        <div tw="col-span-full">
           <Divider>Macronutrientes</Divider>
         </div>
 
-        <div tw="col-span-4">
+        <div tw="col-span-full sm:col-span-4">
           <NumericInput
             required
             label="Carboidratos"
@@ -126,7 +126,7 @@ function FoodForm({
           />
         </div>
 
-        <div tw="col-span-4">
+        <div tw="col-span-full sm:col-span-4">
           <NumericInput
             required
             label="Gorduras"
@@ -135,7 +135,7 @@ function FoodForm({
           />
         </div>
 
-        <div tw="col-span-4">
+        <div tw="col-span-full sm:col-span-4">
           <NumericInput
             required
             label="Proteínas"
