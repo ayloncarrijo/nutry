@@ -45,7 +45,8 @@ function SnackCard({
           <table
             css={{
               ...tw`-my-1`,
-              td: tw`py-1 px-2`,
+              "td, th": tw`py-1`,
+              td: tw`px-4`,
             }}
           >
             <tbody>
@@ -63,8 +64,9 @@ function SnackCard({
                 },
               ].map(({ icon, title, data }) => (
                 <tr key={title} title={title}>
-                  <th>
+                  <th tw="flex items-center gap-2">
                     <Icon icon={icon} size="sm" />
+                    {title}
                   </th>
                   <td>{data}g</td>
                 </tr>

@@ -13,27 +13,38 @@ function Header(): JSX.Element {
 
   const { name } = useUser();
 
-  const { pathname } = useRouter();
+  const { pathname, back } = useRouter();
 
   return (
-    <header tw="z-40 sticky top-0 bg-gray-900 py-4 border-b border-opacity-50">
-      <Container tw="flex items-center justify-between">
-        <div>
-          <IconButton
-            icon={isOpen ? "menu_open" : "menu"}
-            variant="outlined"
-            onClick={() => setIsOpen((wasOpen) => !wasOpen)}
-          />
-          {isOpen && <Drawer />}
-        </div>
+    <>
+      {isOpen && <Drawer />}
 
-        <div tw="-m-2">
-          <Link href="/profile" passHref>
-            <Profile isActive={pathname === "/profile"} name={name} />
-          </Link>
-        </div>
-      </Container>
-    </header>
+      <header tw="z-40 sticky top-0 bg-gray-900 py-4 border-b border-opacity-50">
+        <Container tw="flex items-center justify-between">
+          <div tw="flex gap-2">
+            {pathname !== "/" && (
+              <IconButton
+                icon="chevron_left"
+                variant="outlined"
+                onClick={back}
+              />
+            )}
+
+            <IconButton
+              icon={isOpen ? "menu_open" : "menu"}
+              variant="outlined"
+              onClick={() => setIsOpen((wasOpen) => !wasOpen)}
+            />
+          </div>
+
+          <div tw="-m-2">
+            <Link href="/profile" passHref>
+              <Profile isActive={pathname === "/profile"} name={name} />
+            </Link>
+          </div>
+        </Container>
+      </header>
+    </>
   );
 }
 
