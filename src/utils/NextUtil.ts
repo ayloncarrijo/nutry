@@ -13,7 +13,7 @@ type UnwrapProps<T extends GetServerSideProps> = T extends GetServerSideProps<
   : never;
 
 class NextUtil {
-  public static merge<
+  public static mergeGssp<
     T extends Array<GetServerSideProps> | [GetServerSideProps]
   >(
     middlewares: T,

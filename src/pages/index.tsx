@@ -27,7 +27,7 @@ const Page: AppPage<PageProps> = ({ initialState }) => {
 
 Page.getLayout = (page) => <UserLayout>{page}</UserLayout>;
 
-export const getServerSideProps: GetServerSideProps = NextUtil.merge(
+export const getServerSideProps: GetServerSideProps = NextUtil.mergeGssp(
   [authenticate],
   ([{ user }]) =>
     async () => {

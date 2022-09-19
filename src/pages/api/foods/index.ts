@@ -17,7 +17,7 @@ const methods = {
 
     const page = Number(req.query.page);
 
-    const filter = {
+    const sqlFilter = {
       where: {
         name: {
           mode: "insensitive",
@@ -27,9 +27,9 @@ const methods = {
     } as const;
 
     const [total, foods] = await prisma.$transaction([
-      prisma.food.count(filter),
+      prisma.food.count(sqlFilter),
       prisma.food.findMany({
-        ...filter,
+        ...sqlFilter,
         orderBy: {
           createdAt: "desc",
         },

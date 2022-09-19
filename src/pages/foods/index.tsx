@@ -6,24 +6,26 @@ import SnackCard from "components/SnackCard";
 import SnackList from "components/SnackList";
 import TextInput from "components/TextInput";
 import UserLayout from "layouts/UserLayout";
-import Api from "lib/api";
 import authenticate from "middlewares/authenticate";
+import fetchPaginatedData, {
+  FetchPaginatedDataProps,
+} from "middlewares/fetchPaginatedData";
 import type { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import "twin.macro";
 import type { AppPage } from "types";
-import type { Food, Paginated } from "types/api";
+import type { Food } from "types/api";
 import NextUtil from "utils/NextUtil";
 
-interface PageProps {
-  maximumPage: number;
-  currentPage: number;
-  foods: Array<Food>;
-}
+type PageProps = FetchPaginatedDataProps<Food>;
 
-const Page: AppPage<PageProps> = ({ maximumPage, currentPage, foods }) => {
+const Page: AppPage<PageProps> = ({
+  maximumPage,
+  currentPage,
+  data: foods,
+}) => {
   const { query, pathname, replace } = useRouter();
 
   const [search, setSearch] = React.useState(
@@ -119,44 +121,8 @@ const Page: AppPage<PageProps> = ({ maximumPage, currentPage, foods }) => {
 
 Page.getLayout = (page) => <UserLayout>{page}</UserLayout>;
 
-export const getServerSideProps: GetServerSideProps = NextUtil.merge(
-  [authenticate],
-  () => async (context) => {
-    const currentPage = Math.max(1, Number(context.query.page) || 1);
-
-    const {
-      data: [maximumPage, foods],
-    } = await Api.MAIN.get<Paginated<Food>>("/foods", {
-      params: {
-        limit: 12,
-        page: currentPage,
-        search: context.query.search,
-      },
-    });
-
-    if (maximumPage > 0 && currentPage > maximumPage) {
-      return {
-        redirect: {
-          destination: `/foods?${String(
-            new URLSearchParams({
-              ...context.query,
-              page: String(maximumPage),
-            })
-          )}`,
-          permanent: false,
-        },
-      };
-    }
-
-    const props: PageProps = {
-      maximumPage,
-      currentPage,
-      foods,
-    };
-
-    return {
-      props,
-    };
-  }
-);
+export const getServerSideProps: GetServerSideProps = NextUtil.mergeGssp([
+  authenticate,
+  fetchPaginatedData({ url: "/foods", limit: 9 }),
+]);
 export default Page;

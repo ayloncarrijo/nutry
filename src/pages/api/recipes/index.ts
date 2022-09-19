@@ -1,7 +1,7 @@
 import prisma from "lib/prisma";
 import type { NextApiResponse } from "next";
 import type { TypedApiRequest } from "types";
-import type { FullRecipe } from "types/api";
+import type { FullRecipe, Paginated } from "types/api";
 import HttpStatusCode from "types/HttpStatusCode";
 import DatabaseUtil from "utils/DatabaseUtil";
 import ObjectUtil from "utils/ObjectUtil";
@@ -10,21 +10,47 @@ const include = { linkedFoods: { include: { food: true } } };
 
 const methods = {
   GET: async (
-    req: TypedApiRequest<unknown, { user: string }>,
-    res: NextApiResponse<Array<FullRecipe>>
+    req: TypedApiRequest<
+      unknown,
+      { limit: string; page: string; search?: string; user: string }
+    >,
+    res: NextApiResponse<Paginated<FullRecipe>>
   ) => {
+    const limit = Number(req.query.limit);
+
+    const page = Number(req.query.page);
+
     const { user } = req.query;
 
-    const recipes = await prisma.recipe.findMany({
-      include,
+    const sqlFilter = {
       where: {
         createdBy: user,
+        name: {
+          mode: "insensitive",
+          contains: req.query.search,
+        },
       },
-    });
+    } as const;
+
+    const [total, recipes] = await prisma.$transaction([
+      prisma.recipe.count(sqlFilter),
+      prisma.recipe.findMany({
+        ...sqlFilter,
+        include,
+        orderBy: {
+          createdAt: "desc",
+        },
+        skip: limit * (page - 1),
+        take: limit,
+      }),
+    ]);
 
     return res
       .status(HttpStatusCode.OK)
-      .json(recipes.map((recipe) => DatabaseUtil.assignMacrosToRecipe(recipe)));
+      .json([
+        Math.ceil(total / limit),
+        recipes.map((recipe) => DatabaseUtil.assignMacrosToRecipe(recipe)),
+      ]);
   },
 
   POST: async (

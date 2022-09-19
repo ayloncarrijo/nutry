@@ -7,6 +7,8 @@ import SnackList from "components/SnackList";
 import TextInput from "components/TextInput";
 import UserLayout from "layouts/UserLayout";
 import authenticate from "middlewares/authenticate";
+import type { FetchPaginatedDataProps } from "middlewares/fetchPaginatedData";
+import fetchPaginatedData from "middlewares/fetchPaginatedData";
 import type { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -14,17 +16,14 @@ import React from "react";
 import "twin.macro";
 import type { AppPage } from "types";
 import { FullRecipe, Measurement } from "types/api";
+import NextUtil from "utils/NextUtil";
 
-interface PageProps {
-  maximumPage: number;
-  currentPage: number;
-  recipes: Array<FullRecipe>;
-}
+type PageProps = FetchPaginatedDataProps<FullRecipe>;
 
 const Page: AppPage<PageProps> = ({
   maximumPage,
   currentPage,
-  recipes = [],
+  data: recipes,
 }) => {
   const { query, pathname, replace } = useRouter();
 
@@ -125,5 +124,8 @@ const Page: AppPage<PageProps> = ({
 
 Page.getLayout = (page) => <UserLayout>{page}</UserLayout>;
 
-export const getServerSideProps: GetServerSideProps = authenticate;
+export const getServerSideProps: GetServerSideProps = NextUtil.mergeGssp([
+  authenticate,
+  fetchPaginatedData({ url: "/recipes", limit: 9 }),
+]);
 export default Page;
