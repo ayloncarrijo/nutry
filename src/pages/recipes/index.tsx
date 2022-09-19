@@ -62,7 +62,7 @@ const Page: AppPage<PageProps> = ({
       </form>
 
       <div tw="mb-4 flex items-center gap-2">
-        <Link href="/recipe/create" passHref>
+        <Link href="/recipes/create" passHref>
           <Button forwardedAs="a" startIcon="add">
             Registrar
           </Button>
@@ -83,7 +83,7 @@ const Page: AppPage<PageProps> = ({
             <li key={recipe.id}>
               <Link
                 href={{
-                  pathname: "/recipe/[id]",
+                  pathname: "/recipes/[id]",
                   query: {
                     id: recipe.id,
                   },

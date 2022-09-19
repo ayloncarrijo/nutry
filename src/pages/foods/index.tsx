@@ -60,7 +60,7 @@ const Page: AppPage<PageProps> = ({ maximumPage, currentPage, foods }) => {
       </form>
 
       <div tw="mb-4 flex items-center gap-2">
-        <Link href="/food/create" passHref>
+        <Link href="/foods/create" passHref>
           <Button forwardedAs="a" startIcon="add">
             Registrar
           </Button>
@@ -81,7 +81,7 @@ const Page: AppPage<PageProps> = ({ maximumPage, currentPage, foods }) => {
             <li key={food.id}>
               <Link
                 href={{
-                  pathname: "/food/[id]",
+                  pathname: "/foods/[id]",
                   query: {
                     id: food.id,
                   },
