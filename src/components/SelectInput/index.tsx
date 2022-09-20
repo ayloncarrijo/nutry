@@ -53,14 +53,14 @@ function SelectInput<
               ...tw`border-none shadow-none`,
             },
           },
-          "&__single-value": {
-            ...tw`m-0 text-white`,
-          },
           "&__input-container": {
             ...tw`m-0 p-0 text-white`,
           },
           "&__value-container": {
             ...tw`h-full p-0 py-2 mx-3`,
+          },
+          "&__single-value": {
+            ...tw`m-0 text-white`,
           },
           "&__indicators": {
             ...tw`hidden`,

@@ -36,12 +36,12 @@ function Field({
 }: ImplFieldProps & FieldProps): JSX.Element {
   const label = clsx(rawLabel, isRequired && "*");
 
-  const btnWrapper = tw`-mx-2 rounded-full flex relative`;
+  const btnsWrapper = tw`-mx-2 rounded-full flex relative`;
 
   const startElement =
     startComponent ??
     (startButtons && (
-      <div css={btnWrapper}>
+      <div css={btnsWrapper}>
         {startButtons.map((startButton, index) => (
           <IconButton key={index} {...startButton} />
         ))}
@@ -51,7 +51,7 @@ function Field({
   const endElement =
     endComponent ??
     (endButtons && (
-      <div css={btnWrapper}>
+      <div css={btnsWrapper}>
         {endButtons.map((endButton, index) => (
           <IconButton key={index} {...endButton} />
         ))}

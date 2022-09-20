@@ -1,7 +1,6 @@
 import { Measurement } from "@prisma/client";
 import Button from "components/Button";
 import Divider from "components/Divider";
-import Icon from "components/Icon";
 import NumericInput from "components/NumericInput";
 import SelectInput from "components/SelectInput";
 import TextInput from "components/TextInput";
@@ -103,6 +102,7 @@ function FoodForm({
             value={measurement}
             onChange={setMeasurement}
             isRequired
+            isSearchable={false}
             options={[
               ...Object.values(Measurement).map((value) => ({
                 value,
@@ -142,7 +142,6 @@ function FoodForm({
             label="Proteínas"
             value={proteins}
             onValueChange={({ floatValue }) => setProteins(floatValue ?? 0)}
-            endComponent={<Icon icon="expand_more" />}
           />
         </div>
       </div>
