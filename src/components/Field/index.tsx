@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import FieldButtons from "components/Field/FieldButtons";
 import type { IconButtonProps } from "components/IconButton";
 import IconButton from "components/IconButton";
 import type React from "react";
@@ -39,26 +40,24 @@ function Field({
 }: ImplFieldProps & FieldProps): JSX.Element {
   const label = clsx(rawLabel, isRequired && "*");
 
-  const btnWrapper = tw`-mx-2 h-0 flex items-center relative`;
-
   const startElement =
     startElementFromProps ??
     (startButtons && (
-      <div css={btnWrapper}>
+      <FieldButtons>
         {startButtons.map((startButton, index) => (
           <IconButton key={index} {...startButton} />
         ))}
-      </div>
+      </FieldButtons>
     ));
 
   const endElement =
     endElementFromProps ??
     (endButtons && (
-      <div css={btnWrapper}>
+      <FieldButtons>
         {endButtons.map((endButton, index) => (
           <IconButton key={index} {...endButton} />
         ))}
-      </div>
+      </FieldButtons>
     ));
 
   return (

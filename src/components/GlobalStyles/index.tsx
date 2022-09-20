@@ -14,6 +14,12 @@ const CustomStyles = createGlobalStyle({
       ...tw`font-medium text-left`,
     },
   },
+  ".is-drawer-active": {
+    ...tw`overflow-y-hidden`,
+  },
+  ".is-modal-active": {
+    ...tw`overflow-y-hidden`,
+  },
   ".material-symbols": {
     "-webkit-font-feature-settings": "'liga'",
     "-webkit-font-smoothing": "antialiased",
