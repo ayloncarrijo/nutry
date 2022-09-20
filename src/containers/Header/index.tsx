@@ -8,41 +8,42 @@ import { useDrawer } from "providers/DrawerProvider";
 import { useUser } from "providers/UserProvider";
 import React from "react";
 import "twin.macro";
-import tw from "twin.macro";
 
 function Header(): JSX.Element {
-  const [isVisible, setIsVisible] = React.useState(true);
-
-  const { isOpen, setIsOpen } = useDrawer();
-
-  const { pathname, back } = useRouter();
-
-  const { name } = useUser();
-
   const wrapperRef = React.useRef<HTMLElement>(null);
+
+  const offsetY = React.useRef(0);
 
   const prevScroll = React.useRef(0);
 
-  React.useEffect(() => {
-    prevScroll.current = window.scrollY;
+  const { isOpen, setIsOpen } = useDrawer();
 
-    const handleScroll = () => {
+  const { name } = useUser();
+
+  const { pathname, back } = useRouter();
+
+  React.useEffect(() => {
+    const moveHeader = () => {
       if (!wrapperRef.current) {
         return;
       }
 
-      setIsVisible(
-        window.scrollY < wrapperRef.current.offsetHeight ||
-          prevScroll.current > window.scrollY
+      offsetY.current += window.scrollY - prevScroll.current;
+
+      offsetY.current = Math.max(
+        0,
+        Math.min(offsetY.current, wrapperRef.current.offsetHeight)
       );
+
+      wrapperRef.current.style.transform = `translateY(-${offsetY.current}px)`;
 
       prevScroll.current = window.scrollY;
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", moveHeader);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", moveHeader);
     };
   }, []);
 
@@ -52,8 +53,7 @@ function Header(): JSX.Element {
 
       <header
         ref={wrapperRef}
-        tw="z-40 sticky top-0 bg-gray-900 py-4 border-b border-opacity-50 transition-transform"
-        css={[!isVisible && tw`-translate-y-full`]}
+        tw="z-40 sticky top-0 bg-gray-900 py-4 border-b border-opacity-50"
       >
         <Container tw="flex items-center justify-between">
           <div tw="flex gap-2">
