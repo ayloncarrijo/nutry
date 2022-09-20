@@ -42,16 +42,16 @@ function MacroCard({
       <table
         tw="mt-4"
         css={{
-          td: tw`px-4`,
+          td: tw`px-2`,
         }}
       >
         <tbody>
           <tr>
-            <th>Meta</th>
+            <th>Meta:</th>
             <td>{goalValue}g</td>
           </tr>
           <tr>
-            <th>Atual</th>
+            <th>Atual:</th>
             <td>{currentValue}g</td>
           </tr>
         </tbody>

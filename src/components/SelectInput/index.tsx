@@ -24,6 +24,7 @@ function SelectInput<
   onFocus,
   onBlur,
   id,
+  styles,
   isRequired,
   ...props
 }: SelectInputProps<Option, IsMulti, Group>): JSX.Element {
@@ -37,13 +38,22 @@ function SelectInput<
     null
   );
 
+  const wasFocused = React.useRef(false);
+
   return (
     <Field
-      onTryFocus={() => selectRef.current?.focus()}
+      onTryFocus={() => {
+        if (wasFocused.current) {
+          wasFocused.current = false;
+          return;
+        }
+
+        selectRef.current?.focus();
+      }}
       isFocused={isFocused}
       isRequired={!!isRequired}
       wrapperRef={wrapperRef}
-      endComponent={<Icon icon={isOpen ? "expand_less" : "expand_more"} />}
+      endElement={<Icon icon={isOpen ? "expand_less" : "expand_more"} />}
       css={{
         ".react-select": {
           ...tw`w-full h-14`,
@@ -91,12 +101,14 @@ function SelectInput<
       <Select<Option, IsMulti, Group>
         ref={selectRef}
         id={id}
+        styles={styles}
         instanceId={id}
         placeholder=""
         className="react-select"
         classNamePrefix="react-select"
-        openMenuOnFocus
         noOptionsMessage={() => "Oops... Nenhuma opção encontrada."}
+        openMenuOnFocus
+        menuIsOpen={isOpen}
         onMenuOpen={() => {
           setIsOpen(true);
           onMenuOpen?.();
@@ -110,6 +122,8 @@ function SelectInput<
           onFocus?.(event);
         }}
         onBlur={(event) => {
+          wasFocused.current = true;
+
           setIsFocused(false);
           onBlur?.(event);
         }}

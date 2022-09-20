@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextPage } from "next";
+import type { CSSProp } from "styled-components";
 
 export type TypedApiRequest<
   Body = Record<string, unknown>,
@@ -14,6 +15,8 @@ export type AppPage<
 > = NextPage<Props, InitialProps> & {
   getLayout: (page: React.ReactElement) => JSX.Element;
 };
+
+export type Styles<Classes extends string> = Partial<Record<Classes, CSSProp>>;
 
 export enum Status {
   IDLE,

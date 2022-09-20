@@ -1,6 +1,7 @@
 import Field, { FieldProps } from "components/Field";
 import React from "react";
 import "twin.macro";
+import tw from "twin.macro";
 import ReactUtil from "utils/ReactUtil";
 
 interface TextInputProps
@@ -20,6 +21,7 @@ const TextInput = ReactUtil.forwardRefWithAs<HTMLInputElement, TextInputProps>(
         onTryFocus={() => inputRef.current?.focus()}
         isFocused={isFocused}
         isRequired={!!props.required}
+        styles={{ hitbox: tw`cursor-text` }}
         {...props}
       >
         <input

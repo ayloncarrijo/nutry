@@ -4,6 +4,7 @@ import IconButton from "components/IconButton";
 import type React from "react";
 import "twin.macro";
 import tw from "twin.macro";
+import type { Styles } from "types";
 
 interface ImplFieldProps extends React.PropsWithChildren {
   onTryFocus: () => void;
@@ -11,14 +12,15 @@ interface ImplFieldProps extends React.PropsWithChildren {
   isRequired: boolean;
   wrapperRef?: React.Ref<HTMLDivElement>;
   className?: string;
+  styles?: Styles<"hitbox">;
 }
 
 interface FieldProps {
   label: string;
+  startElement?: JSX.Element;
+  endElement?: JSX.Element;
   startButtons?: Array<IconButtonProps>;
   endButtons?: Array<IconButtonProps>;
-  startComponent?: JSX.Element;
-  endComponent?: JSX.Element;
 }
 
 function Field({
@@ -27,21 +29,22 @@ function Field({
   isRequired,
   wrapperRef,
   className,
-  label: rawLabel,
+  styles,
   children,
+  label: rawLabel,
+  startElement: startElementFromProps,
+  endElement: endElementFromProps,
   startButtons,
   endButtons,
-  startComponent,
-  endComponent,
 }: ImplFieldProps & FieldProps): JSX.Element {
   const label = clsx(rawLabel, isRequired && "*");
 
-  const btnsWrapper = tw`-mx-2 rounded-full flex relative`;
+  const btnWrapper = tw`-mx-2 h-0 flex items-center relative`;
 
   const startElement =
-    startComponent ??
+    startElementFromProps ??
     (startButtons && (
-      <div css={btnsWrapper}>
+      <div css={btnWrapper}>
         {startButtons.map((startButton, index) => (
           <IconButton key={index} {...startButton} />
         ))}
@@ -49,9 +52,9 @@ function Field({
     ));
 
   const endElement =
-    endComponent ??
+    endElementFromProps ??
     (endButtons && (
-      <div css={btnsWrapper}>
+      <div css={btnWrapper}>
         {endButtons.map((endButton, index) => (
           <IconButton key={index} {...endButton} />
         ))}
@@ -65,8 +68,8 @@ function Field({
         css={[startElement && tw`pl-3`, endElement && tw`pr-3`]}
       >
         <fieldset
-          tw="absolute inset-0 p-3 rounded-md border border-gray-500 text-sm cursor-text"
-          css={[isFocused && tw`border-blue-300 text-blue-300`]}
+          tw="absolute inset-0 px-3 rounded-md border border-gray-500 text-sm"
+          css={[isFocused && tw`border-blue-300 text-blue-300`, styles?.hitbox]}
           onClick={onTryFocus}
         >
           <legend tw="-ml-1 px-1 font-medium whitespace-nowrap line-height[0]">
@@ -76,7 +79,7 @@ function Field({
 
         {startElement}
 
-        <div tw="w-full min-w-0">{children}</div>
+        <div tw="w-full min-w-0 flex-1">{children}</div>
 
         {endElement}
       </div>
