@@ -11,12 +11,13 @@ interface FetchPaginatedProps<T> {
 interface Options {
   url: string;
   limit: number;
+  params?: Record<string, string>;
 }
 
 const fetchPaginated: <T>(
   options: Options
 ) => GetServerSideProps<FetchPaginatedProps<T>> =
-  <T>({ url, limit }: Options) =>
+  <T>({ url, limit, params }: Options) =>
   async (context) => {
     const currentPage = Math.max(1, Number(context.query.page) || 1);
 
@@ -27,6 +28,7 @@ const fetchPaginated: <T>(
         limit,
         page: currentPage,
         search: context.query.search,
+        ...params,
       },
     });
 
@@ -36,6 +38,7 @@ const fetchPaginated: <T>(
           destination: `${url}?${String(
             new URLSearchParams({
               ...context.query,
+              ...params,
               page: String(maximumPage),
             })
           )}`,

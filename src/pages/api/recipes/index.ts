@@ -12,7 +12,7 @@ const methods = {
   GET: async (
     req: TypedApiRequest<
       unknown,
-      { limit: string; page: string; search?: string; user: string }
+      { limit: string; page: string; search?: string; createdBy: string }
     >,
     res: NextApiResponse<Paginated<FullRecipe>>
   ) => {
@@ -20,11 +20,11 @@ const methods = {
 
     const page = Number(req.query.page);
 
-    const { user } = req.query;
+    const { createdBy } = req.query;
 
     const sqlFilter = {
       where: {
-        createdBy: user,
+        createdBy,
         name: {
           mode: "insensitive",
           contains: req.query.search,
@@ -56,18 +56,18 @@ const methods = {
   POST: async (
     req: TypedApiRequest<{
       name: string;
-      user: string;
+      createdBy: string;
       attachedFoods: Array<{ foodId: string; quantity: number }>;
     }>,
     res: NextApiResponse<FullRecipe>
   ) => {
-    const { name, user, attachedFoods } = req.body;
+    const { name, createdBy, attachedFoods } = req.body;
 
     const recipe = await prisma.recipe.create({
       include,
       data: {
         name,
-        createdBy: user,
+        createdBy,
         attachedFoods: {
           createMany: {
             data: attachedFoods,
