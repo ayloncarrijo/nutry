@@ -9,6 +9,8 @@ interface ImplFieldProps extends React.PropsWithChildren {
   onTryFocus: () => void;
   isFocused: boolean;
   isRequired: boolean;
+  wrapperRef?: React.Ref<HTMLDivElement>;
+  className?: string;
 }
 
 interface FieldProps {
@@ -23,6 +25,8 @@ function Field({
   onTryFocus,
   isFocused,
   isRequired,
+  wrapperRef,
+  className,
   label: rawLabel,
   children,
   startButtons,
@@ -32,7 +36,7 @@ function Field({
 }: ImplFieldProps & FieldProps): JSX.Element {
   const label = clsx(rawLabel, isRequired && "*");
 
-  const btnWrapper = tw`-mx-2 rounded-full flex`;
+  const btnWrapper = tw`-mx-2 rounded-full flex relative`;
 
   const startElement =
     startComponent ??
@@ -55,7 +59,7 @@ function Field({
     ));
 
   return (
-    <div tw="pt-2">
+    <div tw="pt-2" ref={wrapperRef} className={className}>
       <div
         tw="relative flex items-center"
         css={[startElement && tw`pl-3`, endElement && tw`pr-3`]}
@@ -70,11 +74,11 @@ function Field({
           </legend>
         </fieldset>
 
-        {startElement && <div tw="relative">{startElement}</div>}
+        {startElement}
 
-        {children}
+        <div tw="w-full min-w-0">{children}</div>
 
-        {endElement && <div tw="relative">{endElement}</div>}
+        {endElement}
       </div>
     </div>
   );
