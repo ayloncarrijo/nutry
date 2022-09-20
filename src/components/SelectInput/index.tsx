@@ -1,5 +1,4 @@
 import Field, { FieldProps } from "components/Field";
-import Icon from "components/Icon";
 import React from "react";
 import Select, { GroupBase, Props, SelectInstance } from "react-select";
 import tw from "twin.macro";
@@ -19,8 +18,6 @@ function SelectInput<
   IsMulti extends boolean = false,
   Group extends GroupBase<Option> = GroupBase<Option>
 >({
-  onMenuOpen,
-  onMenuClose,
   onFocus,
   onBlur,
   id,
@@ -30,30 +27,16 @@ function SelectInput<
 }: SelectInputProps<Option, IsMulti, Group>): JSX.Element {
   const [isFocused, setIsFocused] = React.useState(false);
 
-  const [isOpen, setIsOpen] = React.useState(false);
-
-  const wrapperRef = React.useRef<HTMLDivElement | null>(null);
-
   const selectRef = React.useRef<SelectInstance<Option, IsMulti, Group> | null>(
     null
   );
 
-  const wasFocused = React.useRef(false);
-
   return (
     <Field
-      onTryFocus={() => {
-        if (wasFocused.current) {
-          wasFocused.current = false;
-          return;
-        }
-
-        selectRef.current?.focus();
-      }}
+      onTryFocus={() => selectRef.current?.focus()}
       isFocused={isFocused}
       isRequired={!!isRequired}
-      wrapperRef={wrapperRef}
-      endElement={<Icon icon={isOpen ? "expand_less" : "expand_more"} />}
+      tw="relative"
       css={{
         ".react-select": {
           ...tw`w-full h-14`,
@@ -73,11 +56,19 @@ function SelectInput<
             ...tw`m-0 text-white`,
           },
           "&__indicators": {
+            ...tw`pr-3`,
+          },
+          "&__indicator": {
+            ...tw`w-6 h-6 p-0 flex justify-center items-center text-gray-300 hover:text-gray-300`,
+          },
+          "&__indicator-separator": {
             ...tw`hidden`,
           },
           "&__menu": {
-            width: wrapperRef.current?.offsetWidth ?? 0,
             ...tw`bg-gray-700 text-gray-300 overflow-hidden rounded-lg`,
+          },
+          "&__menu-portal": {
+            ...tw`w-full absolute inset-auto`,
           },
           "&__menu-list": {
             ...tw`py-0`,
@@ -92,6 +83,9 @@ function SelectInput<
             },
             "&--is-selected": {
               ...tw`bg-blue-500`,
+            },
+            "&:active": {
+              ...tw`bg-gray-800`,
             },
           },
         },
@@ -108,22 +102,11 @@ function SelectInput<
         classNamePrefix="react-select"
         noOptionsMessage={() => "Oops... Nenhuma opção encontrada."}
         openMenuOnFocus
-        menuIsOpen={isOpen}
-        onMenuOpen={() => {
-          setIsOpen(true);
-          onMenuOpen?.();
-        }}
-        onMenuClose={() => {
-          setIsOpen(false);
-          onMenuClose?.();
-        }}
         onFocus={(event) => {
           setIsFocused(true);
           onFocus?.(event);
         }}
         onBlur={(event) => {
-          wasFocused.current = true;
-
           setIsFocused(false);
           onBlur?.(event);
         }}
