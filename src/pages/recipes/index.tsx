@@ -128,11 +128,10 @@ Page.getLayout = (page) => <UserLayout>{page}</UserLayout>;
 export const getServerSideProps: GetServerSideProps = NextUtil.mergeGssp(
   [authenticate],
   ([{ user }]) =>
-    (context) =>
-      fetchPaginated({
-        url: "/recipes",
-        limit: 9,
-        params: { createdBy: user.name },
-      })(context)
+    fetchPaginated({
+      url: "/recipes",
+      limit: 9,
+      params: { createdBy: user.name },
+    })
 );
 export default Page;
