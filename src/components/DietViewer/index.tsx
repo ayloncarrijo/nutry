@@ -51,13 +51,6 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
     <div>
       <div tw="grid gap-4 lg:grid-cols-3">
         <MacroCard
-          icon={MacroIcon.CARBOHYDRATES}
-          title="Carboidratos"
-          goalValue={weight * carbohydratesPerKg}
-          currentValue={diet.carbohydrates}
-        />
-
-        <MacroCard
           icon={MacroIcon.PROTEINS}
           title="Proteínas"
           goalValue={weight * proteinsPerKg}
@@ -69,6 +62,13 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
           title="Gorduras"
           goalValue={weight * fatsPerKg}
           currentValue={diet.fats}
+        />
+
+        <MacroCard
+          icon={MacroIcon.CARBOHYDRATES}
+          title="Carboidratos"
+          goalValue={weight * carbohydratesPerKg}
+          currentValue={diet.carbohydrates}
         />
       </div>
 

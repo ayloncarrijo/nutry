@@ -119,17 +119,6 @@ function FoodForm({
         <div tw="col-span-full sm:col-span-4">
           <NumericInput
             required
-            label="Carboidratos"
-            value={carbohydrates}
-            onValueChange={({ floatValue }) =>
-              setCarbohydrates(floatValue ?? 0)
-            }
-          />
-        </div>
-
-        <div tw="col-span-full sm:col-span-4">
-          <NumericInput
-            required
             label="Proteínas"
             value={proteins}
             onValueChange={({ floatValue }) => setProteins(floatValue ?? 0)}
@@ -142,6 +131,17 @@ function FoodForm({
             label="Gorduras"
             value={fats}
             onValueChange={({ floatValue }) => setFats(floatValue ?? 0)}
+          />
+        </div>
+
+        <div tw="col-span-full sm:col-span-4">
+          <NumericInput
+            required
+            label="Carboidratos"
+            value={carbohydrates}
+            onValueChange={({ floatValue }) =>
+              setCarbohydrates(floatValue ?? 0)
+            }
           />
         </div>
       </div>

@@ -54,16 +54,16 @@ function SnackCard({
             <tbody>
               {[
                 {
-                  icon: MacroIcon.CARBOHYDRATES,
-                  title: "Carboidratos",
-                  data: carbohydrates,
-                },
-                {
                   icon: MacroIcon.PROTEINS,
                   title: "Proteínas",
                   data: proteins,
                 },
                 { icon: MacroIcon.FATS, title: "Gorduras", data: fats },
+                {
+                  icon: MacroIcon.CARBOHYDRATES,
+                  title: "Carboidratos",
+                  data: carbohydrates,
+                },
               ].map(({ icon, title, data }) => (
                 <tr key={title} title={title}>
                   <th>
