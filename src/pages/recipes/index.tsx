@@ -90,6 +90,7 @@ const Page: AppPage<PageProps> = ({
               >
                 <a>
                   <SnackCard
+                    hasHover
                     measurement={Measurement.UN}
                     proportion={1}
                     {...recipe}

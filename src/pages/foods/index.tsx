@@ -90,7 +90,7 @@ const Page: AppPage<PageProps> = ({
                 }}
               >
                 <a>
-                  <SnackCard {...food} />
+                  <SnackCard hasHover {...food} />
                 </a>
               </Link>
             </li>

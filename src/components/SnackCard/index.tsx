@@ -13,6 +13,7 @@ interface SnackCardProps {
   proteins: number;
   proportion: number;
   measurement: Measurement;
+  hasHover?: boolean;
 }
 
 function SnackCard({
@@ -22,9 +23,10 @@ function SnackCard({
   proteins,
   proportion,
   measurement,
+  hasHover,
 }: SnackCardProps): JSX.Element {
   return (
-    <Card hasHover>
+    <Card hasHover={hasHover}>
       <div tw="flex gap-2">
         <div tw="w-12 h-12 bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
           <Icon icon="restaurant" />
@@ -35,7 +37,7 @@ function SnackCard({
             {name}
           </h3>
 
-          <div tw="my-4">
+          <div tw="my-2">
             <Divider>
               {proportion}
               {measurement}
@@ -45,6 +47,7 @@ function SnackCard({
           <table
             css={{
               ...tw`-my-1 w-full text-right`,
+              th: tw`font-normal`,
               "td, th": tw`py-1`,
             }}
           >

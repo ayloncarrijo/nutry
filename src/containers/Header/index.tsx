@@ -23,7 +23,7 @@ function Header(): JSX.Element {
   const { pathname, back } = useRouter();
 
   React.useEffect(() => {
-    const moveHeader = () => {
+    const handleScroll = () => {
       if (!wrapperRef.current) {
         return;
       }
@@ -40,10 +40,10 @@ function Header(): JSX.Element {
       prevScroll.current = window.scrollY;
     };
 
-    window.addEventListener("scroll", moveHeader);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener("scroll", moveHeader);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
