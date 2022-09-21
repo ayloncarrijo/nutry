@@ -20,42 +20,35 @@ function MacroCard({
 
   return (
     <Card>
-      <div tw="flex justify-between items-center">
-        <div tw="flex items-center gap-2">
-          <div>
-            <Icon icon={icon} />
-          </div>
-          <h3 tw="text-xl font-medium">{title}</h3>
+      <div tw="flex items-center gap-4">
+        <div tw="w-12 h-12 bg-gray-700 rounded-full flex justify-center items-center">
+          <Icon icon={icon} />
         </div>
 
-        {isCompleted ? (
-          <div tw="text-green-500" title="A meta foi alcançada">
-            <Icon icon="task_alt" />
-          </div>
-        ) : (
-          <div tw="text-red-500" title="A meta não foi alcançada">
-            <Icon icon="error" variant="outlined" />
-          </div>
-        )}
-      </div>
+        <div tw="flex-1">
+          <div tw="flex justify-between items-center">
+            <h3 tw="text-xl font-medium">{title}</h3>
 
-      <table
-        tw="mt-4"
-        css={{
-          td: tw`px-2`,
-        }}
-      >
-        <tbody>
-          <tr>
-            <th>Meta:</th>
-            <td>{goalValue}g</td>
-          </tr>
-          <tr>
-            <th>Atual:</th>
-            <td>{currentValue}g</td>
-          </tr>
-        </tbody>
-      </table>
+            {isCompleted ? (
+              <div tw="text-green-500" title="A meta foi alcançada">
+                <Icon icon="task_alt" />
+              </div>
+            ) : (
+              <div tw="text-red-500" title="A meta não foi alcançada">
+                <Icon icon="error" variant="outlined" />
+              </div>
+            )}
+          </div>
+
+          <div tw="mt-1">
+            <span css={isCompleted ? tw`text-green-300` : tw`text-red-300`}>
+              {Math.round((currentValue / goalValue) * 100)}%
+            </span>{" "}
+            (<span tw="font-medium">{currentValue}g</span> /{" "}
+            <span tw="font-medium">{goalValue}g</span>)
+          </div>
+        </div>
+      </div>
     </Card>
   );
 }
