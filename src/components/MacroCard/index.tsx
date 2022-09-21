@@ -21,7 +21,7 @@ function MacroCard({
   return (
     <Card>
       <div tw="flex justify-between items-center">
-        <div tw="flex items-center gap-4">
+        <div tw="flex items-center gap-2">
           <div>
             <Icon icon={icon} />
           </div>
