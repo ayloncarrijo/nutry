@@ -45,36 +45,52 @@ function SnackCard({
           </div>
 
           <table
+            tw="w-full table-fixed"
             css={{
-              ...tw`-my-1 w-full text-right`,
-              th: tw`font-normal`,
-              "td, th": tw`py-1`,
+              td: tw`pt-2`,
             }}
           >
-            <tbody>
-              {[
-                {
-                  icon: MacroIcon.PROTEINS,
-                  title: "Proteínas",
-                  data: proteins,
-                },
-                { icon: MacroIcon.FATS, title: "Gorduras", data: fats },
-                {
-                  icon: MacroIcon.CARBOHYDRATES,
-                  title: "Carboidratos",
-                  data: carbohydrates,
-                },
-              ].map(({ icon, title, data }) => (
-                <tr key={title} title={title}>
-                  <th>
-                    <div tw="-ml-1 flex items-center gap-2">
-                      <Icon icon={icon} size="sm" />
-                      <span>{title}</span>
+            <thead>
+              <tr>
+                {[
+                  MacroIcon.CARBOHYDRATES,
+                  MacroIcon.FATS,
+                  MacroIcon.PROTEINS,
+                ].map((icon, index) => (
+                  <th key={icon}>
+                    <div
+                      tw="flex"
+                      css={
+                        {
+                          0: tw`justify-start -ml-1`,
+                          1: tw`justify-center`,
+                          2: tw`justify-end -mr-1`,
+                        }[index]
+                      }
+                    >
+                      <Icon icon={icon} />
                     </div>
                   </th>
-                  <td>{data}g</td>
-                </tr>
-              ))}
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                {[carbohydrates, fats, proteins].map((data, index) => (
+                  <td
+                    key={index}
+                    css={
+                      {
+                        0: tw`text-left`,
+                        1: tw`text-center`,
+                        2: tw`text-right`,
+                      }[index]
+                    }
+                  >
+                    {Math.round(data)}g
+                  </td>
+                ))}
+              </tr>
             </tbody>
           </table>
         </div>

@@ -71,10 +71,10 @@ const Page: AppPage = () => {
           <div tw="col-span-full sm:col-span-4">
             <NumericInput
               required
-              label="Proteínas"
-              value={proteinsPerKg}
+              label="Carboidratos"
+              value={carbohydratesPerKg}
               onValueChange={({ floatValue = 0 }) =>
-                setProteinsPerKg(floatValue)
+                setCarbohydratesPerKg(floatValue)
               }
             />
           </div>
@@ -91,10 +91,10 @@ const Page: AppPage = () => {
           <div tw="col-span-full sm:col-span-4">
             <NumericInput
               required
-              label="Carboidratos"
-              value={carbohydratesPerKg}
+              label="Proteínas"
+              value={proteinsPerKg}
               onValueChange={({ floatValue = 0 }) =>
-                setCarbohydratesPerKg(floatValue)
+                setProteinsPerKg(floatValue)
               }
             />
           </div>
