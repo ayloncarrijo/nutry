@@ -168,7 +168,7 @@ function FoodForm({
           isLoading={submitStatus === Status.LOADING}
           disabled={isBusy}
           type="submit"
-          startIcon={initialData ? "check" : "add"}
+          startIcon="done"
         >
           {initialData ? "Salvar" : "Registrar"}
         </Button>

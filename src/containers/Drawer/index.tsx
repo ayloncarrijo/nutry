@@ -22,10 +22,10 @@ function Drawer(): JSX.Element | null {
       return;
     }
 
-    window.document.body.classList.add(".is-drawer-active");
+    window.document.body.classList.add("is-drawer-active");
 
     return () => {
-      window.document.body.classList.remove(".is-drawer-active");
+      window.document.body.classList.remove("is-drawer-active");
     };
   }, [isDesktop]);
 
