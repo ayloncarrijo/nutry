@@ -30,6 +30,6 @@ Page.getLayout = (page) => <UserLayout>{page}</UserLayout>;
 
 export const getServerSideProps: GetServerSideProps = NextUtil.mergeGssp([
   authenticate,
-  fetchPaginated({ url: "/foods", limit: 8 }),
+  fetchPaginated({ url: "/foods", limit: 9 }),
 ]);
 export default Page;

@@ -20,8 +20,10 @@ function FoodViewer(): JSX.Element {
 
   const { query, pathname, replace } = useRouter();
 
+  const initialSearch = query[queryKeys.search];
+
   const [search, setSearch] = React.useState(
-    typeof query[queryKeys.search] === "string" ? query[queryKeys.search] : ""
+    typeof initialSearch === "string" ? initialSearch : ""
   );
 
   return (
@@ -64,7 +66,7 @@ function FoodViewer(): JSX.Element {
       {!foods.length ? (
         <MessageBox>
           <p>
-            {query[queryKeys.search]
+            {initialSearch
               ? "Ainda não há comidas registradas com este nome."
               : "Ainda não há comidas registradas."}
           </p>

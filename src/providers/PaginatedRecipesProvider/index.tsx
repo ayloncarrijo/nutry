@@ -41,10 +41,10 @@ const useNewPaginatedRecipes = ({
   };
 };
 
-const usePaginatedRecipes = () => {
+const usePaginatedRecipes = (shouldThrowIfNotFound = true) => {
   const value = React.useContext(PaginatedRecipesContext);
 
-  if (!value) {
+  if (!value && shouldThrowIfNotFound) {
     throw new Error("Must be used within a PaginatedRecipesProvider");
   }
 

@@ -1,8 +1,7 @@
 import Button from "components/Button";
+import FoodViewer from "components/FoodViewer";
 import Modal from "components/Modal";
-import SnackCard from "components/SnackCard";
 import { useSnackManager } from "components/SnackManager/SnackManagerContext";
-import { usePaginatedFoods } from "providers/PaginatedFoodsProvider";
 import React from "react";
 import "twin.macro";
 import type { Food } from "types/api";
@@ -39,79 +38,61 @@ function SnackManagerModal(): JSX.Element {
     setModalStep(ModalStep.QUANTITY);
   };
 
-  const paginatedFoods = usePaginatedFoods();
-
-  return (
-    <Modal tw="w-full sm:w-auto" onDismiss={closeModal}>
-      {
-        {
-          [ModalStep.SNACK_TYPE]: (
-            <div>
-              <h6 tw="mb-4">O que você deseja adicionar?</h6>
-
-              <div tw="flex flex-col gap-2 sm:(w-96 flex-row)">
-                <Button
-                  isFullWidth
-                  startIcon="fastfood"
-                  onClick={() => setSnackType(SnackType.FOOD)}
-                >
-                  Comida
-                </Button>
-                <Button
-                  isFullWidth
-                  startIcon="list_alt"
-                  onClick={() => setSnackType(SnackType.RECIPE)}
-                >
-                  Receita
-                </Button>
-              </div>
-            </div>
-          ),
-          [ModalStep.SNACKS]: (
-            <div>
-              {!isFoodOnly && (
-                <div
-                  tw="mb-4"
-                  onClick={() => setModalStep(ModalStep.SNACK_TYPE)}
-                >
-                  <Button startIcon="arrow_back" variant="outlined">
-                    Voltar
-                  </Button>
-                </div>
-              )}
-
-              {
-                {
-                  [SnackType.FOOD]: (
-                    <ul tw="grid gap-4 md:grid-cols-2">
-                      {paginatedFoods.data.map((food) => (
-                        <li key={food.id}>
-                          <button
-                            type="button"
-                            onClick={() => setSelectedFood(food)}
-                          >
-                            <SnackCard
-                              cardProps={{
-                                isHoverable: true,
-                                elevation: "sm",
-                              }}
-                              {...food}
-                            />
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  ),
-                  [SnackType.RECIPE]: <div />,
-                }[snackType]
-              }
-            </div>
-          ),
-          [ModalStep.QUANTITY]: <div>{JSON.stringify(selectedFood)}</div>,
-        }[modalStep]
-      }
-    </Modal>
+  const backBtn = (
+    <Button startIcon="arrow_back" variant="outlined">
+      Voltar
+    </Button>
   );
+
+  return {
+    [ModalStep.SNACK_TYPE]: (
+      <Modal tw="w-full sm:w-auto" onDismiss={closeModal}>
+        <div>
+          <h6 tw="mb-4">O que você deseja adicionar?</h6>
+
+          <div tw="flex flex-col gap-2 sm:(w-96 flex-row)">
+            <Button
+              isFullWidth
+              startIcon="fastfood"
+              onClick={() => setSnackType(SnackType.FOOD)}
+            >
+              Comida
+            </Button>
+            <Button
+              isFullWidth
+              startIcon="list_alt"
+              onClick={() => setSnackType(SnackType.RECIPE)}
+            >
+              Receita
+            </Button>
+          </div>
+        </div>
+      </Modal>
+    ),
+    [ModalStep.SNACKS]: (
+      <Modal tw="w-full" onDismiss={closeModal}>
+        <div>
+          {!isFoodOnly && (
+            <div tw="mb-8" onClick={() => setModalStep(ModalStep.SNACK_TYPE)}>
+              {backBtn}
+            </div>
+          )}
+
+          {
+            {
+              [SnackType.FOOD]: <FoodViewer />,
+              [SnackType.RECIPE]: <div />,
+            }[snackType]
+          }
+        </div>
+      </Modal>
+    ),
+    [ModalStep.QUANTITY]: (
+      <Modal tw="w-full" onDismiss={closeModal}>
+        <div>{JSON.stringify(selectedFood)}</div>
+      </Modal>
+    ),
+  }[modalStep];
 }
 
 export default SnackManagerModal;
