@@ -5,6 +5,7 @@ import authenticate from "middlewares/authenticate";
 import type { FetchPaginatedProps } from "middlewares/fetchPaginated";
 import fetchPaginated from "middlewares/fetchPaginated";
 import type { GetServerSideProps } from "next";
+import PaginatedFoodsProvider from "providers/PaginatedFoodsProvider";
 import type { AppPage } from "types";
 import type { Food } from "types/api";
 import NextUtil from "utils/NextUtil";
@@ -14,7 +15,13 @@ type PageProps = FetchPaginatedProps<Food>;
 const Page: AppPage<PageProps> = ({ maximumPage, currentPage, data }) => {
   return (
     <Container>
-      <RecipeForm paginatedFoods={{ maximumPage, currentPage, data }} />
+      <PaginatedFoodsProvider
+        maximumPage={maximumPage}
+        currentPage={currentPage}
+        data={data}
+      >
+        <RecipeForm />
+      </PaginatedFoodsProvider>
     </Container>
   );
 };

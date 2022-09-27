@@ -1,16 +1,11 @@
 import Button from "components/Button";
 import SnackManager from "components/SnackManager";
 import TextInput from "components/TextInput";
-import type { FetchPaginatedProps } from "middlewares/fetchPaginated";
 import React from "react";
 import "twin.macro";
-import type { AttachedFood, Food } from "types/api";
+import type { AttachedFood } from "types/api";
 
-interface RecipeFormProps {
-  paginatedFoods: FetchPaginatedProps<Food>;
-}
-
-function RecipeForm({ paginatedFoods }: RecipeFormProps): JSX.Element {
+function RecipeForm(): JSX.Element {
   const [attachedFoods, setAttachedFoods] = React.useState<Array<AttachedFood>>(
     []
   );
@@ -31,7 +26,6 @@ function RecipeForm({ paginatedFoods }: RecipeFormProps): JSX.Element {
         <SnackManager
           isFoodOnly
           onWipe={wipe}
-          paginatedFoods={paginatedFoods}
           attachedFoods={attachedFoods}
           onCreateFood={() => {
             //

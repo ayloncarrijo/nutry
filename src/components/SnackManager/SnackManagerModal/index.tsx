@@ -2,6 +2,7 @@ import Button from "components/Button";
 import Modal from "components/Modal";
 import SnackCard from "components/SnackCard";
 import { useSnackManager } from "components/SnackManager/SnackManagerContext";
+import { usePaginatedFoods } from "providers/PaginatedFoodsProvider";
 import React from "react";
 import "twin.macro";
 import type { Food } from "types/api";
@@ -18,7 +19,7 @@ enum SnackType {
 }
 
 function SnackManagerModal(): JSX.Element {
-  const { isFoodOnly, paginatedFoods, closeModal } = useSnackManager();
+  const { isFoodOnly, closeModal } = useSnackManager();
 
   const [modalStep, setModalStep] = React.useState(
     isFoodOnly ? ModalStep.SNACKS : ModalStep.SNACK_TYPE
@@ -37,6 +38,8 @@ function SnackManagerModal(): JSX.Element {
     _setSelectedFood(food);
     setModalStep(ModalStep.QUANTITY);
   };
+
+  const paginatedFoods = usePaginatedFoods();
 
   return (
     <Modal tw="w-full sm:w-auto" onDismiss={closeModal}>
