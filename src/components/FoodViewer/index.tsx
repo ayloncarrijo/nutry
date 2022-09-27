@@ -9,8 +9,13 @@ import { useRouter } from "next/router";
 import { usePaginatedFoods } from "providers/PaginatedFoodsProvider";
 import React from "react";
 import "twin.macro";
+import type { Food } from "types/api";
 
-function FoodViewer(): JSX.Element {
+interface FoodViewerProps {
+  onClickFood: (food: Food) => void;
+}
+
+function FoodViewer({ onClickFood }: FoodViewerProps): JSX.Element {
   const {
     maximumPage,
     currentPage,
@@ -75,18 +80,13 @@ function FoodViewer(): JSX.Element {
         <SnackList>
           {foods.map((food) => (
             <li key={food.id}>
-              <Link
-                href={{
-                  pathname: "/foods/[id]",
-                  query: {
-                    id: food.id,
-                  },
-                }}
+              <button
+                tw="w-full"
+                type="button"
+                onClick={() => onClickFood(food)}
               >
-                <a>
-                  <SnackCard cardProps={{ isHoverable: true }} {...food} />
-                </a>
-              </Link>
+                <SnackCard cardProps={{ isHoverable: true }} {...food} />
+              </button>
             </li>
           ))}
         </SnackList>

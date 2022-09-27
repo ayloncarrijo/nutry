@@ -6,6 +6,7 @@ import fetchPaginated, {
   FetchPaginatedProps,
 } from "middlewares/fetchPaginated";
 import type { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 import PaginatedFoodsProvider from "providers/PaginatedFoodsProvider";
 import "twin.macro";
 import type { AppPage } from "types";
@@ -15,6 +16,8 @@ import NextUtil from "utils/NextUtil";
 type PageProps = FetchPaginatedProps<Food>;
 
 const Page: AppPage<PageProps> = ({ maximumPage, currentPage, data }) => {
+  const { push } = useRouter();
+
   return (
     <Container>
       <PaginatedFoodsProvider
@@ -22,7 +25,16 @@ const Page: AppPage<PageProps> = ({ maximumPage, currentPage, data }) => {
         currentPage={currentPage}
         data={data}
       >
-        <FoodViewer />
+        <FoodViewer
+          onClickFood={(food) => {
+            void push({
+              pathname: "/foods/[id]",
+              query: {
+                id: food.id,
+              },
+            });
+          }}
+        />
       </PaginatedFoodsProvider>
     </Container>
   );

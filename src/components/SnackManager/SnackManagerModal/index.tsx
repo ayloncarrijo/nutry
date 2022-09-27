@@ -80,7 +80,7 @@ function SnackManagerModal(): JSX.Element {
 
           {
             {
-              [SnackType.FOOD]: <FoodViewer />,
+              [SnackType.FOOD]: <FoodViewer onClickFood={setSelectedFood} />,
               [SnackType.RECIPE]: <div />,
             }[snackType]
           }
