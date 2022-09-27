@@ -7,7 +7,7 @@ import fetchPaginated, {
 } from "middlewares/fetchPaginated";
 import type { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import PaginatedFoodsProvider from "providers/PaginatedFoodsProvider";
+import FoodsProvider from "providers/FoodsProvider";
 import "twin.macro";
 import type { AppPage } from "types";
 import type { Food } from "types/api";
@@ -20,7 +20,7 @@ const Page: AppPage<PageProps> = ({ maximumPage, currentPage, data }) => {
 
   return (
     <Container>
-      <PaginatedFoodsProvider
+      <FoodsProvider
         maximumPage={maximumPage}
         currentPage={currentPage}
         data={data}
@@ -35,7 +35,7 @@ const Page: AppPage<PageProps> = ({ maximumPage, currentPage, data }) => {
             });
           }}
         />
-      </PaginatedFoodsProvider>
+      </FoodsProvider>
     </Container>
   );
 };

@@ -41,12 +41,12 @@ const fetchPaginated: <T>(
       },
     });
 
-    const resolvedUrl = context.resolvedUrl.split("?")[0] ?? "";
+    const pathname = context.resolvedUrl.split("?")[0] ?? "";
 
     if (maximumPage > 0 && currentPage > maximumPage) {
       return {
         redirect: {
-          destination: `${resolvedUrl}?${String(
+          destination: `${pathname}?${String(
             new URLSearchParams({
               ...context.query,
               ...params,

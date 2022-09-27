@@ -6,7 +6,7 @@ import SnackList from "components/SnackList";
 import TextInput from "components/TextInput";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { usePaginatedFoods } from "providers/PaginatedFoodsProvider";
+import { useFoods } from "providers/FoodsProvider";
 import React from "react";
 import "twin.macro";
 import type { Food } from "types/api";
@@ -16,12 +16,7 @@ interface FoodViewerProps {
 }
 
 function FoodViewer({ onClickFood }: FoodViewerProps): JSX.Element {
-  const {
-    maximumPage,
-    currentPage,
-    data: foods,
-    queryKeys,
-  } = usePaginatedFoods();
+  const { maximumPage, currentPage, data: foods, queryKeys } = useFoods();
 
   const { query, pathname, replace } = useRouter();
 
