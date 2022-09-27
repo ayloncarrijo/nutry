@@ -12,16 +12,16 @@ function DrawerProvider({ children }: React.PropsWithChildren): JSX.Element {
   );
 }
 
-const useNewDrawer = () => {
+function useNewDrawer() {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return {
     isOpen,
     setIsOpen,
   };
-};
+}
 
-const useDrawer = () => {
+function useDrawer() {
   const value = React.useContext(DrawerContext);
 
   if (!value) {
@@ -29,7 +29,7 @@ const useDrawer = () => {
   }
 
   return value;
-};
+}
 
 export { useDrawer };
 export default DrawerProvider;

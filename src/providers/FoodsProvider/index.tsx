@@ -24,21 +24,21 @@ function FoodsProvider({
   );
 }
 
-const useNewFoods = ({
+function useNewFoods({
   maximumPage,
   currentPage,
   data,
   queryKeys = { search: "search", page: "page" },
-}: FoodsProviderProps) => {
+}: FoodsProviderProps) {
   return {
     maximumPage,
     currentPage,
     data,
     queryKeys,
   };
-};
+}
 
-const useFoods = () => {
+function useFoods() {
   const value = React.useContext(FoodsContext);
 
   if (!value) {
@@ -46,7 +46,7 @@ const useFoods = () => {
   }
 
   return value;
-};
+}
 
 export { useFoods };
 export default FoodsProvider;

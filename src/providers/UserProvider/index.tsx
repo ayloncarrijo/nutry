@@ -15,7 +15,7 @@ function UserProvider({ children, value }: UserProviderProps): JSX.Element {
   );
 }
 
-const useUser = () => {
+function useUser() {
   const value = React.useContext(UserContext);
 
   if (!value) {
@@ -25,7 +25,7 @@ const useUser = () => {
   }
 
   return value;
-};
+}
 
 export { useUser };
 export default UserProvider;

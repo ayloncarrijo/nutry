@@ -24,21 +24,29 @@ function RecipesProvider({
   );
 }
 
-const useNewRecipes = ({
+function useNewRecipes({
   maximumPage,
   currentPage,
   data,
   queryKeys = { search: "search", page: "page" },
-}: RecipesProviderProps) => {
+}: RecipesProviderProps) {
   return {
     maximumPage,
     currentPage,
     data,
     queryKeys,
   };
-};
+}
 
-const useRecipes = (shouldThrowIfNotFound = true) => {
+function useRecipes(
+  shouldThrowIfNotFound?: true
+): ReturnType<typeof useNewRecipes>;
+
+function useRecipes(
+  shouldThrowIfNotFound: false
+): ReturnType<typeof useNewRecipes> | null;
+
+function useRecipes(shouldThrowIfNotFound = true) {
   const value = React.useContext(RecipesContext);
 
   if (!value && shouldThrowIfNotFound) {
@@ -46,7 +54,7 @@ const useRecipes = (shouldThrowIfNotFound = true) => {
   }
 
   return value;
-};
+}
 
 export { useRecipes };
 export default RecipesProvider;
