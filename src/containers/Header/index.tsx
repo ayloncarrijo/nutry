@@ -58,11 +58,7 @@ function Header(): JSX.Element {
         <Container tw="flex items-center justify-between">
           <div tw="flex gap-2">
             {pathname !== "/" && (
-              <IconButton
-                icon="chevron_left"
-                variant="outlined"
-                onClick={back}
-              />
+              <IconButton icon="arrow_back" variant="outlined" onClick={back} />
             )}
 
             <IconButton

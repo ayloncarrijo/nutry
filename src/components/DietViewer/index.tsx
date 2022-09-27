@@ -66,6 +66,24 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
           wipeStatus={wipeStatus}
           attachedFoods={diet.attachedFoods}
           attachedRecipes={diet.attachedRecipes}
+          onCreateFood={() => {
+            //
+          }}
+          onUpdateFood={() => {
+            //
+          }}
+          onDeleteFood={() => {
+            //
+          }}
+          onCreateRecipe={() => {
+            //
+          }}
+          onUpdateRecipe={() => {
+            //
+          }}
+          onDeleteRecipe={() => {
+            //
+          }}
         />
       </div>
     </div>

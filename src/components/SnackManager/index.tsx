@@ -1,80 +1,77 @@
 import Button from "components/Button";
 import MessageBox from "components/MessageBox";
-import Modal from "components/Modal";
-import React from "react";
+import SnackManagerContext, {
+  useNewSnackManager,
+} from "components/SnackManager/SnackManagerContext";
+import SnackManagerModal from "components/SnackManager/SnackManagerModal";
 import "twin.macro";
 import { Status } from "types";
 import type { AttachedFood, AttachedRecipe } from "types/api";
 import SwalUtil from "utils/SwalUtil";
 
-interface SnackManagerProps {
+type SnackManagerProps = {
+  onCreateFood: (data: { foodId: string; quantity: number }) => void;
+  onDeleteFood: (id: string) => void;
+  onUpdateFood: (id: string, quantity: number) => void;
   onWipe: () => void;
   wipeStatus?: Status;
-  attachedFoods?: Array<AttachedFood>;
-  attachedRecipes?: Array<AttachedRecipe>;
-}
+  attachedFoods: Array<AttachedFood>;
+} & (
+  | {
+      isFoodOnly: true;
+    }
+  | {
+      isFoodOnly?: false;
+      attachedRecipes: Array<AttachedRecipe>;
+      onCreateRecipe: (data: { recipeId: string; quantity: number }) => void;
+      onDeleteRecipe: (id: string) => void;
+      onUpdateRecipe: (id: string, quantity: number) => void;
+    }
+);
 
-function SnackManager({
-  onWipe,
-  wipeStatus,
-  attachedFoods = [],
-  attachedRecipes = [],
-}: SnackManagerProps): JSX.Element {
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
+function SnackManager(props: SnackManagerProps): JSX.Element {
+  const snackManager = useNewSnackManager(props);
 
-  const hasSnack = attachedFoods.length > 0 || attachedRecipes.length > 0;
-
-  const openModal = () => setIsModalOpen(true);
-
-  const closeModal = () => setIsModalOpen(false);
+  const { wipeStatus, hasSnack, isModalOpen, openModal, onWipe } = snackManager;
 
   return (
-    <div>
-      {isModalOpen && (
-        <Modal onDismiss={closeModal} tw="w-full sm:w-auto">
-          <p tw="mb-4">O que você deseja adicionar?</p>
+    <SnackManagerContext.Provider value={snackManager}>
+      <div>
+        {isModalOpen && <SnackManagerModal />}
 
-          <div tw="flex flex-col gap-2 sm:(w-96 flex-row)">
-            <Button isFullWidth startIcon="fastfood">
-              Comida
-            </Button>
-            <Button isFullWidth startIcon="list_alt">
-              Receita
-            </Button>
-          </div>
-        </Modal>
-      )}
+        <div tw="flex gap-2">
+          <Button startIcon="add" onClick={openModal}>
+            Adicionar
+          </Button>
 
-      <div tw="flex gap-2">
-        <Button startIcon="add" onClick={openModal}>
-          Adicionar
-        </Button>
-        <Button
-          variant="outlined"
-          startIcon="delete_sweep"
-          onClick={() => {
-            void SwalUtil.confirm(
-              "Você tem certeza de que deseja limpar todas as refeições adicionadas nesta lista?"
-            ).then(({ isConfirmed }) => isConfirmed && onWipe());
-          }}
-          disabled={!hasSnack}
-          isLoading={wipeStatus === Status.LOADING}
-        >
-          Limpar
-        </Button>
+          <Button
+            variant="outlined"
+            startIcon="delete_sweep"
+            onClick={() => {
+              void SwalUtil.confirm(
+                "Você tem certeza de que deseja limpar todas as refeições adicionadas nesta lista?"
+              ).then(({ isConfirmed }) => isConfirmed && onWipe());
+            }}
+            disabled={!hasSnack}
+            isLoading={wipeStatus === Status.LOADING}
+          >
+            Limpar
+          </Button>
+        </div>
+
+        <div tw="mt-4">
+          {hasSnack ? (
+            <MessageBox>...</MessageBox>
+          ) : (
+            <MessageBox>
+              <p>Você ainda não adicionou nenhuma refeição nesta lista.</p>
+            </MessageBox>
+          )}
+        </div>
       </div>
-
-      <div tw="mt-4">
-        {hasSnack ? (
-          <MessageBox>...</MessageBox>
-        ) : (
-          <MessageBox>
-            <p>Você ainda não adicionou nenhuma refeição nesta lista.</p>
-          </MessageBox>
-        )}
-      </div>
-    </div>
+    </SnackManagerContext.Provider>
   );
 }
 
+export type { SnackManagerProps };
 export default SnackManager;

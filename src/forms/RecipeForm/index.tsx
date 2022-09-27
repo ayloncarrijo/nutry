@@ -23,7 +23,20 @@ function RecipeForm(): JSX.Element {
       <TextInput required label="Nome" value={name} onValueChange={setName} />
 
       <div tw="mt-8">
-        <SnackManager onWipe={wipe} attachedFoods={attachedFoods} />
+        <SnackManager
+          isFoodOnly
+          onWipe={wipe}
+          attachedFoods={attachedFoods}
+          onCreateFood={() => {
+            //
+          }}
+          onUpdateFood={() => {
+            //
+          }}
+          onDeleteFood={() => {
+            //
+          }}
+        />
       </div>
 
       <div tw="mt-4 flex justify-end">

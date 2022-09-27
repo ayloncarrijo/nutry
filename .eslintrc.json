@@ -31,7 +31,9 @@
               "does"
             ]
           }
-        ]
+        ],
+        "@typescript-eslint/no-shadow": "error",
+        "no-shadow": "off"
       }
     }
   ],
