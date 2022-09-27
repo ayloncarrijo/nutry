@@ -18,7 +18,7 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
 
   const [wipeStatus, setWipeStatus] = React.useState(Status.IDLE);
 
-  const wipe = () => {
+  const wipeSnacks = () => {
     setWipeStatus(Status.LOADING);
 
     Api.MAIN.put<FullDiet>(`/diets/${diet.id}`, {
@@ -62,8 +62,18 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
 
       <div tw="mt-8">
         <SnackManager
-          onWipe={wipe}
+          onWipe={wipeSnacks}
           wipeStatus={wipeStatus}
+          paginatedFoods={{
+            maximumPage: 1,
+            currentPage: 1,
+            data: [],
+          }}
+          paginatedRecipes={{
+            maximumPage: 1,
+            currentPage: 1,
+            data: [],
+          }}
           attachedFoods={diet.attachedFoods}
           attachedRecipes={diet.attachedRecipes}
           onCreateFood={() => {

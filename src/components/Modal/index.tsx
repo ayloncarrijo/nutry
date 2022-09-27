@@ -26,9 +26,9 @@ function Modal({ onDismiss, className, children }: ModalProps): JSX.Element {
         </div>
       </div>
 
-      <div tw="min-h-0 flex justify-center items-center flex-1 p-2">
+      <div tw="min-h-0 flex justify-center items-center flex-1 p-1">
         <div
-          tw="overflow-y-auto max-w-2xl max-h-full rounded-xl p-4 bg-gray-800 relative"
+          tw="overflow-y-auto max-w-5xl max-h-full rounded-xl p-4 bg-gray-800 relative"
           className={className}
         >
           {children}

@@ -80,7 +80,7 @@ function FoodForm({
         <div tw="col-span-full md:col-span-6">
           <TextInput
             required
-            label="Nome"
+            label="Título"
             value={name}
             onValueChange={setName}
           />

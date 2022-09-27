@@ -90,7 +90,7 @@ const Page: AppPage<PageProps> = ({
                 }}
               >
                 <a>
-                  <SnackCard hasHover {...food} />
+                  <SnackCard cardProps={{ isHoverable: true }} {...food} />
                 </a>
               </Link>
             </li>

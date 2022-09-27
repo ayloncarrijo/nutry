@@ -1,12 +1,15 @@
 import Button from "components/Button";
 import Modal from "components/Modal";
+import SnackCard from "components/SnackCard";
 import { useSnackManager } from "components/SnackManager/SnackManagerContext";
 import React from "react";
 import "twin.macro";
+import type { Food } from "types/api";
 
 enum ModalStep {
   SNACK_TYPE,
   SNACKS,
+  QUANTITY,
 }
 
 enum SnackType {
@@ -15,19 +18,24 @@ enum SnackType {
 }
 
 function SnackManagerModal(): JSX.Element {
-  const { isFoodOnly, closeModal } = useSnackManager();
+  const { isFoodOnly, paginatedFoods, closeModal } = useSnackManager();
 
   const [modalStep, setModalStep] = React.useState(
     isFoodOnly ? ModalStep.SNACKS : ModalStep.SNACK_TYPE
   );
 
-  const [snackType, _setSnackType] = React.useState<SnackType | null>(
-    isFoodOnly ? SnackType.FOOD : null
-  );
+  const [snackType, _setSnackType] = React.useState(SnackType.FOOD);
 
   const setSnackType = (snackTypeIn: SnackType) => {
     _setSnackType(snackTypeIn);
     setModalStep(ModalStep.SNACKS);
+  };
+
+  const [selectedFood, _setSelectedFood] = React.useState<Food | null>(null);
+
+  const setSelectedFood = (food: Food) => {
+    _setSelectedFood(food);
+    setModalStep(ModalStep.QUANTITY);
   };
 
   return (
@@ -56,7 +64,47 @@ function SnackManagerModal(): JSX.Element {
               </div>
             </div>
           ),
-          [ModalStep.SNACKS]: snackType && <div>{snackType}</div>,
+          [ModalStep.SNACKS]: (
+            <div>
+              {!isFoodOnly && (
+                <div
+                  tw="mb-4"
+                  onClick={() => setModalStep(ModalStep.SNACK_TYPE)}
+                >
+                  <Button startIcon="arrow_back" variant="outlined">
+                    Voltar
+                  </Button>
+                </div>
+              )}
+
+              {
+                {
+                  [SnackType.FOOD]: (
+                    <ul tw="grid gap-4 md:grid-cols-2">
+                      {paginatedFoods.data.map((food) => (
+                        <li key={food.id}>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedFood(food)}
+                          >
+                            <SnackCard
+                              cardProps={{
+                                isHoverable: true,
+                                elevation: "sm",
+                              }}
+                              {...food}
+                            />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ),
+                  [SnackType.RECIPE]: <div />,
+                }[snackType]
+              }
+            </div>
+          ),
+          [ModalStep.QUANTITY]: <div>{JSON.stringify(selectedFood)}</div>,
         }[modalStep]
       }
     </Modal>

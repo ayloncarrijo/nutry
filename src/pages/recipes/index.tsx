@@ -90,7 +90,7 @@ const Page: AppPage<PageProps> = ({
               >
                 <a>
                   <SnackCard
-                    hasHover
+                    cardProps={{ isHoverable: true }}
                     measurement={Measurement.UN}
                     proportion={1}
                     {...recipe}

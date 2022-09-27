@@ -4,9 +4,10 @@ import SnackManagerContext, {
   useNewSnackManager,
 } from "components/SnackManager/SnackManagerContext";
 import SnackManagerModal from "components/SnackManager/SnackManagerModal";
+import type { FetchPaginatedProps } from "middlewares/fetchPaginated";
 import "twin.macro";
 import { Status } from "types";
-import type { AttachedFood, AttachedRecipe } from "types/api";
+import type { AttachedFood, AttachedRecipe, Food, FullRecipe } from "types/api";
 import SwalUtil from "utils/SwalUtil";
 
 type SnackManagerProps = {
@@ -15,6 +16,7 @@ type SnackManagerProps = {
   onUpdateFood: (id: string, quantity: number) => void;
   onWipe: () => void;
   wipeStatus?: Status;
+  paginatedFoods: FetchPaginatedProps<Food>;
   attachedFoods: Array<AttachedFood>;
 } & (
   | {
@@ -22,6 +24,7 @@ type SnackManagerProps = {
     }
   | {
       isFoodOnly?: false;
+      paginatedRecipes: FetchPaginatedProps<FullRecipe>;
       attachedRecipes: Array<AttachedRecipe>;
       onCreateRecipe: (data: { recipeId: string; quantity: number }) => void;
       onDeleteRecipe: (id: string) => void;
