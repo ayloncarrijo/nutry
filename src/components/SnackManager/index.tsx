@@ -1,7 +1,7 @@
 import Button from "components/Button";
 import MessageBox from "components/MessageBox";
 import SnackManagerContext, {
-  useNewSnackManager,
+  useSnackManagerInitializer,
 } from "components/SnackManager/SnackManagerContext";
 import SnackManagerModal from "components/SnackManager/SnackManagerModal";
 import "twin.macro";
@@ -30,7 +30,7 @@ type SnackManagerProps = {
 );
 
 function SnackManager(props: SnackManagerProps): JSX.Element {
-  const snackManager = useNewSnackManager(props);
+  const snackManager = useSnackManagerInitializer(props);
 
   const { wipeStatus, hasSnack, isModalOpen, openModal, onWipe } = snackManager;
 

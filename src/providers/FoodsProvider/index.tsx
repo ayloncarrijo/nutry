@@ -2,9 +2,9 @@ import type { FetchPaginatedProps } from "middlewares/fetchPaginated";
 import React from "react";
 import type { Food } from "types/api";
 
-const FoodsContext = React.createContext<ReturnType<typeof useNewFoods> | null>(
-  null
-);
+const FoodsContext = React.createContext<ReturnType<
+  typeof useFoodsInitializer
+> | null>(null);
 
 interface FoodsProviderProps extends FetchPaginatedProps<Food> {
   queryKeys?: {
@@ -17,14 +17,14 @@ function FoodsProvider({
   children,
   ...props
 }: React.PropsWithChildren<FoodsProviderProps>): JSX.Element {
-  const value = useNewFoods(props);
+  const value = useFoodsInitializer(props);
 
   return (
     <FoodsContext.Provider value={value}>{children}</FoodsContext.Provider>
   );
 }
 
-function useNewFoods({
+function useFoodsInitializer({
   maximumPage,
   currentPage,
   data,

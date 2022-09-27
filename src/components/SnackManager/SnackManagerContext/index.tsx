@@ -2,10 +2,10 @@ import type { SnackManagerProps } from "components/SnackManager";
 import React from "react";
 
 const SnackManagerContext = React.createContext<ReturnType<
-  typeof useNewSnackManager
+  typeof useSnackManagerInitializer
 > | null>(null);
 
-const useNewSnackManager = (props: SnackManagerProps) => {
+const useSnackManagerInitializer = (props: SnackManagerProps) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   const openModal = React.useCallback(() => setIsModalOpen(true), []);
@@ -35,5 +35,5 @@ const useSnackManager = () => {
   return value;
 };
 
-export { useSnackManager, useNewSnackManager };
+export { useSnackManager, useSnackManagerInitializer };
 export default SnackManagerContext;

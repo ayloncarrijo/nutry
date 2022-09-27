@@ -3,7 +3,7 @@ import React from "react";
 import type { FullRecipe } from "types/api";
 
 const RecipesContext = React.createContext<ReturnType<
-  typeof useNewRecipes
+  typeof useRecipesInitializer
 > | null>(null);
 
 interface RecipesProviderProps extends FetchPaginatedProps<FullRecipe> {
@@ -17,14 +17,14 @@ function RecipesProvider({
   children,
   ...props
 }: React.PropsWithChildren<RecipesProviderProps>): JSX.Element {
-  const value = useNewRecipes(props);
+  const value = useRecipesInitializer(props);
 
   return (
     <RecipesContext.Provider value={value}>{children}</RecipesContext.Provider>
   );
 }
 
-function useNewRecipes({
+function useRecipesInitializer({
   maximumPage,
   currentPage,
   data,
@@ -40,11 +40,11 @@ function useNewRecipes({
 
 function useRecipes(
   shouldThrowIfNotFound?: true
-): ReturnType<typeof useNewRecipes>;
+): ReturnType<typeof useRecipesInitializer>;
 
 function useRecipes(
   shouldThrowIfNotFound: false
-): ReturnType<typeof useNewRecipes> | null;
+): ReturnType<typeof useRecipesInitializer> | null;
 
 function useRecipes(shouldThrowIfNotFound = true) {
   const value = React.useContext(RecipesContext);

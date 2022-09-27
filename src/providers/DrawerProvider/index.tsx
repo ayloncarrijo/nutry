@@ -1,18 +1,18 @@
 import React from "react";
 
 const DrawerContext = React.createContext<ReturnType<
-  typeof useNewDrawer
+  typeof useDrawerInitializer
 > | null>(null);
 
 function DrawerProvider({ children }: React.PropsWithChildren): JSX.Element {
-  const value = useNewDrawer();
+  const value = useDrawerInitializer();
 
   return (
     <DrawerContext.Provider value={value}>{children}</DrawerContext.Provider>
   );
 }
 
-function useNewDrawer() {
+function useDrawerInitializer() {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return {
