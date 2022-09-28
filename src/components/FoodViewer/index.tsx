@@ -12,10 +12,16 @@ import "twin.macro";
 import type { Food } from "types/api";
 
 interface FoodViewerProps {
-  onClickFood: (food: Food) => void;
+  onFoodClick: (food: Food) => void;
+  startButton?: React.ReactNode;
+  endButton?: React.ReactNode;
 }
 
-function FoodViewer({ onClickFood }: FoodViewerProps): JSX.Element {
+function FoodViewer({
+  onFoodClick,
+  startButton,
+  endButton,
+}: FoodViewerProps): JSX.Element {
   const { maximumPage, currentPage, data: foods, queryKeys } = useFoods();
 
   const { query, pathname, replace } = useRouter();
@@ -56,11 +62,15 @@ function FoodViewer({ onClickFood }: FoodViewerProps): JSX.Element {
       </form>
 
       <div tw="mb-4 flex items-center gap-2">
+        {startButton}
+
         <Link href="/foods/create" passHref>
           <Button forwardedAs="a" startIcon="add">
             Registrar
           </Button>
         </Link>
+
+        {endButton}
       </div>
 
       {!foods.length ? (
@@ -78,7 +88,7 @@ function FoodViewer({ onClickFood }: FoodViewerProps): JSX.Element {
               <button
                 tw="w-full"
                 type="button"
-                onClick={() => onClickFood(food)}
+                onClick={() => onFoodClick(food)}
               >
                 <SnackCard cardProps={{ isHoverable: true }} {...food} />
               </button>

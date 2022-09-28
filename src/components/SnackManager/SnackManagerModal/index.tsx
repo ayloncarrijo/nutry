@@ -38,12 +38,6 @@ function SnackManagerModal(): JSX.Element {
     setModalStep(ModalStep.QUANTITY);
   };
 
-  const backBtn = (
-    <Button startIcon="arrow_back" variant="outlined">
-      Voltar
-    </Button>
-  );
-
   return {
     [ModalStep.SNACK_TYPE]: (
       <Modal tw="w-full sm:w-auto" onDismiss={closeModal}>
@@ -70,21 +64,37 @@ function SnackManagerModal(): JSX.Element {
       </Modal>
     ),
     [ModalStep.SNACKS]: (
-      <Modal tw="w-full" onDismiss={closeModal}>
-        <div>
-          {!isFoodOnly && (
-            <div tw="mb-8" onClick={() => setModalStep(ModalStep.SNACK_TYPE)}>
-              {backBtn}
-            </div>
-          )}
-
+      <Modal
+        tw="w-full"
+        title={
           {
-            {
-              [SnackType.FOOD]: <FoodViewer onClickFood={setSelectedFood} />,
-              [SnackType.RECIPE]: <div />,
-            }[snackType]
-          }
-        </div>
+            [SnackType.FOOD]: "Comidas",
+            [SnackType.RECIPE]: "Receitas",
+          }[snackType]
+        }
+        onDismiss={closeModal}
+      >
+        {
+          {
+            [SnackType.FOOD]: (
+              <FoodViewer
+                onFoodClick={setSelectedFood}
+                startButton={
+                  !isFoodOnly && (
+                    <Button
+                      startIcon="arrow_back"
+                      variant="outlined"
+                      onClick={() => setModalStep(ModalStep.SNACK_TYPE)}
+                    >
+                      Voltar
+                    </Button>
+                  )
+                }
+              />
+            ),
+            [SnackType.RECIPE]: <div />,
+          }[snackType]
+        }
       </Modal>
     ),
     [ModalStep.QUANTITY]: (
