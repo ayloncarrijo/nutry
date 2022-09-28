@@ -28,8 +28,9 @@ function Modal({
       <div tw="z-50 fixed inset-0 flex flex-col">
         <div tw="absolute inset-0 bg-black bg-opacity-50" onClick={onDismiss} />
 
-        <div tw="relative bg-gray-900 p-4 flex justify-end">
-          <div tw="-mx-2">
+        <div tw="relative bg-gray-900 p-4 flex items-center">
+          {title && <h3 tw="text-2xl">{title}</h3>}
+          <div tw="ml-auto -mr-2">
             <IconButton icon="close" onClick={onDismiss} />
           </div>
         </div>
@@ -39,10 +40,7 @@ function Modal({
             tw="overflow-y-auto max-w-5xl max-h-full rounded-xl p-4 bg-gray-900 shadow-lg relative"
             className={className}
           >
-            {title && (
-              <h3 tw="mb-4 text-2xl font-medium text-center">{title}</h3>
-            )}
-            <div>{children}</div>
+            {children}
           </div>
         </div>
       </div>
