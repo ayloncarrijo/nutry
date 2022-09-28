@@ -1,16 +1,19 @@
 import Button from "components/Button";
 import MessageBox from "components/MessageBox";
+import SnackCard from "components/SnackCard";
+import SnackList from "components/SnackList";
 import SnackManagerContext, {
   useSnackManagerInitializer,
 } from "components/SnackManager/SnackManagerContext";
 import SnackManagerModal from "components/SnackManager/SnackManagerModal";
 import "twin.macro";
 import { Status } from "types";
-import type { AttachedFood, AttachedRecipe } from "types/api";
+import { AttachedFood, AttachedRecipe, Measurement } from "types/api";
+import DatabaseUtil from "utils/DatabaseUtil";
 import SwalUtil from "utils/SwalUtil";
 
 type SnackManagerProps = {
-  onCreateFood: (data: { foodId: string; quantity: number }) => void;
+  onCreateFood: (data: AttachedFood) => void;
   onDeleteFood: (id: string) => void;
   onUpdateFood: (id: string, quantity: number) => void;
   onWipe: () => void;
@@ -23,7 +26,7 @@ type SnackManagerProps = {
   | {
       isFoodOnly?: false;
       attachedRecipes: Array<AttachedRecipe>;
-      onCreateRecipe: (data: { recipeId: string; quantity: number }) => void;
+      onCreateRecipe: (data: AttachedRecipe) => void;
       onDeleteRecipe: (id: string) => void;
       onUpdateRecipe: (id: string, quantity: number) => void;
     }
@@ -33,6 +36,11 @@ function SnackManager(props: SnackManagerProps): JSX.Element {
   const snackManager = useSnackManagerInitializer(props);
 
   const { wipeStatus, hasSnack, isModalOpen, openModal, onWipe } = snackManager;
+
+  const attachedSnacks = [
+    ...(!snackManager.isFoodOnly ? snackManager.attachedRecipes : []),
+    ...snackManager.attachedFoods,
+  ];
 
   return (
     <SnackManagerContext.Provider value={snackManager}>
@@ -61,7 +69,35 @@ function SnackManager(props: SnackManagerProps): JSX.Element {
 
         <div tw="mt-4">
           {hasSnack ? (
-            <MessageBox>...</MessageBox>
+            <SnackList>
+              {attachedSnacks.map((attachedSnack) => {
+                const isRecipe = "recipe" in attachedSnack;
+
+                const measurement = isRecipe
+                  ? Measurement.UN
+                  : attachedSnack.food.measurement;
+
+                const snack = isRecipe
+                  ? attachedSnack.recipe
+                  : attachedSnack.food;
+
+                const { carbohydrates, fats, proteins } =
+                  DatabaseUtil.assignMacrosToAttachedSnack(attachedSnack);
+
+                return (
+                  <li key={attachedSnack.id}>
+                    <SnackCard
+                      name={snack.name}
+                      measurement={measurement}
+                      proportion={attachedSnack.quantity}
+                      carbohydrates={carbohydrates}
+                      fats={fats}
+                      proteins={proteins}
+                    />
+                  </li>
+                );
+              })}
+            </SnackList>
           ) : (
             <MessageBox>
               <p>Você ainda não adicionou nenhuma refeição nesta lista.</p>

@@ -49,7 +49,9 @@ const methods = {
       .status(HttpStatusCode.OK)
       .json([
         Math.ceil(total / limit),
-        recipes.map((recipe) => DatabaseUtil.assignMacrosToRecipe(recipe)),
+        recipes.map((recipe) =>
+          DatabaseUtil.assignMacrosToSnackContainer(recipe)
+        ),
       ]);
   },
 
@@ -78,7 +80,7 @@ const methods = {
 
     return res
       .status(HttpStatusCode.OK)
-      .json(DatabaseUtil.assignMacrosToRecipe(recipe));
+      .json(DatabaseUtil.assignMacrosToSnackContainer(recipe));
   },
 };
 

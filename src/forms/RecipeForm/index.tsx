@@ -27,9 +27,9 @@ function RecipeForm(): JSX.Element {
           isFoodOnly
           onWipe={wipe}
           attachedFoods={attachedFoods}
-          onCreateFood={() => {
-            //
-          }}
+          onCreateFood={(data) =>
+            setAttachedFoods((prevState) => [data, ...prevState])
+          }
           onUpdateFood={() => {
             //
           }}

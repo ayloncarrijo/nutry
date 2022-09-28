@@ -27,7 +27,7 @@ const methods = {
 
     return res
       .status(HttpStatusCode.OK)
-      .json(DatabaseUtil.assignMacrosToRecipe(recipe));
+      .json(DatabaseUtil.assignMacrosToSnackContainer(recipe));
   },
 
   PUT: async (
@@ -62,7 +62,7 @@ const methods = {
 
     return res
       .status(HttpStatusCode.OK)
-      .json(DatabaseUtil.assignMacrosToRecipe(recipe));
+      .json(DatabaseUtil.assignMacrosToSnackContainer(recipe));
   },
 
   DELETE: async (

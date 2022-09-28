@@ -26,7 +26,7 @@ const Page: AppPage<PageProps> = ({ maximumPage, currentPage, data }) => {
         data={data}
       >
         <FoodViewer
-          onClickFood={(food) => {
+          onFoodClick={(food) => {
             void push({
               pathname: "/foods/[id]",
               query: {

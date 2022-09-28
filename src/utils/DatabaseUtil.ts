@@ -1,63 +1,45 @@
 import type {
   AttachedFood,
   AttachedRecipe,
-  Diet,
   Macros,
-  Recipe,
+  SnackContainer,
   WithMacros,
 } from "types/api";
 
 class DatabaseUtil {
-  public static assignMacrosToRecipe(recipe: Recipe): WithMacros<Recipe> {
+  public static assignMacrosToSnackContainer<T extends SnackContainer>(
+    container: T
+  ): WithMacros<T> {
+    const { attachedFoods, attachedRecipes = [] } = container;
+
     return {
-      ...recipe,
+      ...container,
       ...DatabaseUtil.calculateTotalMacros(
-        recipe.attachedFoods.map((attachedFood) =>
-          DatabaseUtil.assignMacrosToAttachedFood(attachedFood)
+        [...attachedFoods, ...attachedRecipes].map((attachedSnack) =>
+          DatabaseUtil.assignMacrosToAttachedSnack(attachedSnack)
         )
       ),
     };
   }
 
-  public static assignMacrosToDiet(diet: Diet): WithMacros<Diet> {
-    return {
-      ...diet,
-      ...DatabaseUtil.calculateTotalMacros([
-        ...diet.attachedFoods.map((attachedFood) =>
-          DatabaseUtil.assignMacrosToAttachedFood(attachedFood)
-        ),
-        ...diet.attachedRecipes.map((attachedRecipe) =>
-          DatabaseUtil.assignMacrosToAttachedRecipe(attachedRecipe)
-        ),
-      ]),
-    };
-  }
+  public static assignMacrosToAttachedSnack<
+    T extends AttachedFood | AttachedRecipe
+  >(attachedSnack: T): WithMacros<T> {
+    const isRecipe = "recipe" in attachedSnack;
 
-  public static assignMacrosToAttachedFood(
-    attachedFood: AttachedFood
-  ): WithMacros<AttachedFood> {
-    const proportion = attachedFood.quantity / attachedFood.food.proportion;
+    const proportion = isRecipe
+      ? attachedSnack.quantity
+      : attachedSnack.quantity / attachedSnack.food.proportion;
+
+    const { carbohydrates, fats, proteins } = isRecipe
+      ? DatabaseUtil.assignMacrosToSnackContainer(attachedSnack.recipe)
+      : attachedSnack.food;
 
     return {
-      ...attachedFood,
-      carbohydrates: proportion * attachedFood.food.carbohydrates,
-      fats: proportion * attachedFood.food.fats,
-      proteins: proportion * attachedFood.food.proteins,
-    };
-  }
-
-  public static assignMacrosToAttachedRecipe(
-    attachedRecipe: AttachedRecipe
-  ): WithMacros<AttachedRecipe> {
-    const { carbohydrates, fats, proteins } = DatabaseUtil.assignMacrosToRecipe(
-      attachedRecipe.recipe
-    );
-
-    return {
-      ...attachedRecipe,
-      carbohydrates: attachedRecipe.quantity * carbohydrates,
-      fats: attachedRecipe.quantity * fats,
-      proteins: attachedRecipe.quantity * proteins,
+      ...attachedSnack,
+      carbohydrates: carbohydrates * proportion,
+      fats: fats * proportion,
+      proteins: proteins * proportion,
     };
   }
 

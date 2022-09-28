@@ -23,7 +23,9 @@ const methods = {
 
     return res
       .status(HttpStatusCode.OK)
-      .json(diets.map((diet) => DatabaseUtil.assignMacrosToDiet(diet)));
+      .json(
+        diets.map((diet) => DatabaseUtil.assignMacrosToSnackContainer(diet))
+      );
   },
 
   POST: async (
@@ -53,7 +55,7 @@ const methods = {
 
     return res
       .status(HttpStatusCode.OK)
-      .json(DatabaseUtil.assignMacrosToDiet(diet));
+      .json(DatabaseUtil.assignMacrosToSnackContainer(diet));
   },
 };
 

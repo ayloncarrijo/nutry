@@ -27,7 +27,7 @@ const methods = {
 
     return res
       .status(HttpStatusCode.OK)
-      .json(DatabaseUtil.assignMacrosToDiet(diet));
+      .json(DatabaseUtil.assignMacrosToSnackContainer(diet));
   },
 
   PUT: async (
@@ -67,7 +67,7 @@ const methods = {
 
     return res
       .status(HttpStatusCode.OK)
-      .json(DatabaseUtil.assignMacrosToDiet(diet));
+      .json(DatabaseUtil.assignMacrosToSnackContainer(diet));
   },
 
   DELETE: async (

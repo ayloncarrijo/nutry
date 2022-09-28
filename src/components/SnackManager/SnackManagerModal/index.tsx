@@ -6,6 +6,7 @@ import { useSnackManager } from "components/SnackManager/SnackManagerContext";
 import React from "react";
 import "twin.macro";
 import type { Food, FullRecipe } from "types/api";
+import { v4 as uuid } from "uuid";
 
 enum ModalStep {
   SNACK_TYPE,
@@ -19,7 +20,7 @@ type FoodOrRecipe =
   | { type: "recipe"; data: FullRecipe };
 
 function SnackManagerModal(): JSX.Element {
-  const { isFoodOnly, closeModal } = useSnackManager();
+  const { isFoodOnly, closeModal, onCreateFood } = useSnackManager();
 
   const [history, setHistory] = React.useState<Array<ModalStep>>([
     isFoodOnly ? ModalStep.FOODS : ModalStep.SNACK_TYPE,
@@ -49,22 +50,37 @@ function SnackManagerModal(): JSX.Element {
     </Button>
   );
 
-  const [selectedData, _setSelectedData] = React.useState<FoodOrRecipe | null>(
-    null
-  );
+  const [snack, _setSnack] = React.useState<FoodOrRecipe | null>(null);
 
-  const setSelectedData = (data: FoodOrRecipe) => {
-    _setSelectedData(data);
+  const setSnack = (data: FoodOrRecipe) => {
+    _setSnack(data);
     pushStep(ModalStep.QUANTITY);
   };
-
-  const [quantity, setQuantity] = React.useState<number>();
 
   const [quantityInput, setQuantityInput] =
     React.useState<HTMLInputElement | null>(null);
 
+  const [quantity, setQuantity] = React.useState<number>();
+
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
+
+    if (!snack || !quantity) {
+      return;
+    }
+
+    if (snack.type === "food") {
+      onCreateFood({
+        id: uuid(),
+        food: snack.data,
+        foodId: snack.data.id,
+        quantity,
+        recipeId: null,
+        dietId: null,
+      });
+    }
+
+    closeModal();
   };
 
   React.useEffect(() => {
@@ -99,7 +115,7 @@ function SnackManagerModal(): JSX.Element {
     [ModalStep.FOODS]: (
       <Modal tw="w-full" title="Comidas" onDismiss={closeModal}>
         <FoodViewer
-          onFoodClick={(food) => setSelectedData({ type: "food", data: food })}
+          onFoodClick={(food) => setSnack({ type: "food", data: food })}
           startButton={backButton}
         />
       </Modal>
@@ -111,9 +127,9 @@ function SnackManagerModal(): JSX.Element {
     ),
     [ModalStep.QUANTITY]: (
       <Modal tw="w-full sm:w-112" onDismiss={closeModal}>
-        {selectedData && (
+        {snack && (
           <form onSubmit={submit}>
-            <h4 tw="mb-6 text-2xl">{selectedData.data.name}</h4>
+            <h4 tw="mb-6 text-2xl">{snack.data.name}</h4>
 
             <div>
               <NumericInput
@@ -124,9 +140,7 @@ function SnackManagerModal(): JSX.Element {
                 onValueChange={({ floatValue }) => setQuantity(floatValue)}
                 endElement={
                   <span>
-                    {selectedData.type === "recipe"
-                      ? "UN"
-                      : selectedData.data.measurement}
+                    {snack.type === "recipe" ? "UN" : snack.data.measurement}
                   </span>
                 }
               />
@@ -134,6 +148,7 @@ function SnackManagerModal(): JSX.Element {
 
             <div tw="mt-4 flex gap-2 justify-end">
               {backButton}
+
               <Button type="submit" startIcon="done">
                 Salvar
               </Button>

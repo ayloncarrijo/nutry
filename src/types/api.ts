@@ -28,6 +28,11 @@ export type AttachedRecipe = Prisma.AttachedRecipe & {
   recipe: Recipe;
 };
 
+export type SnackContainer = {
+  attachedFoods: Array<AttachedFood>;
+  attachedRecipes?: Array<AttachedRecipe>;
+};
+
 export type Macros = {
   carbohydrates: number;
   fats: number;
