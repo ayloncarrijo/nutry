@@ -56,7 +56,9 @@ const Page: AppPage<PageProps> = ({ food }) => {
             .then(async () => {
               setDeleteStatus(Status.SUCCESS);
 
-              await SwalUtil.fireSuccess("A comida foi deletada com sucesso!");
+              await SwalUtil.fireSuccess(
+                "O ingrediente foi deletado com sucesso!"
+              );
 
               back();
             })

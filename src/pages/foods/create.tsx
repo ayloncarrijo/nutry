@@ -27,7 +27,7 @@ const Page: AppPage = () => {
               setSubmitStatus(Status.SUCCESS);
 
               await SwalUtil.fireSuccess(
-                "A comida foi registrada com sucesso!"
+                "O ingrediente foi registrado com sucesso!"
               );
 
               back();

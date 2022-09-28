@@ -99,7 +99,7 @@ function SnackManagerModal(): JSX.Element {
               startIcon="fastfood"
               onClick={() => pushStep(ModalStep.FOODS)}
             >
-              Comida
+              Ingrediente
             </Button>
             <Button
               isFullWidth
@@ -113,7 +113,7 @@ function SnackManagerModal(): JSX.Element {
       </Modal>
     ),
     [ModalStep.FOODS]: (
-      <Modal tw="w-full" title="Comidas" onDismiss={closeModal}>
+      <Modal tw="w-full" title="Ingredientes" onDismiss={closeModal}>
         <FoodViewer
           onFoodClick={(food) => setSnack({ type: "food", data: food })}
           startButton={backButton}

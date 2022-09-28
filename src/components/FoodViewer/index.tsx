@@ -77,8 +77,8 @@ function FoodViewer({
         <MessageBox>
           <p>
             {initialSearch
-              ? "Ainda não há comidas registradas com este nome."
-              : "Ainda não há comidas registradas."}
+              ? "Ainda não há ingredientes registrados com este nome."
+              : "Ainda não há ingredientes registrados."}
           </p>
         </MessageBox>
       ) : (

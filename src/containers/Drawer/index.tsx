@@ -90,7 +90,7 @@ function Drawer(): JSX.Element | null {
                 },
                 {
                   icon: "fastfood",
-                  label: "Comidas",
+                  label: "Ingredientes",
                   href: "/foods",
                 },
               ].map(({ icon, href, label }) => (
