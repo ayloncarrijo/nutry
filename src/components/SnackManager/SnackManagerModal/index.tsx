@@ -50,17 +50,17 @@ function SnackManagerModal(): JSX.Element {
     </Button>
   );
 
+  const [quantity, setQuantity] = React.useState<number>();
+
+  const [quantityInput, setQuantityInput] =
+    React.useState<HTMLInputElement | null>(null);
+
   const [snack, _setSnack] = React.useState<FoodOrRecipe | null>(null);
 
   const setSnack = (data: FoodOrRecipe) => {
     _setSnack(data);
     pushStep(ModalStep.QUANTITY);
   };
-
-  const [quantityInput, setQuantityInput] =
-    React.useState<HTMLInputElement | null>(null);
-
-  const [quantity, setQuantity] = React.useState<number>();
 
   const submit = (event: React.FormEvent) => {
     event.preventDefault();

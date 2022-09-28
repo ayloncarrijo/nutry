@@ -25,8 +25,9 @@ function SnackCard({
   proteins,
   proportion,
   measurement,
+  children,
   cardProps,
-}: SnackCardProps): JSX.Element {
+}: React.PropsWithChildren<SnackCardProps>): JSX.Element {
   return (
     <Card {...cardProps}>
       <div tw="min-w-0 flex-1">
@@ -101,6 +102,8 @@ function SnackCard({
             </tr>
           </tbody>
         </table>
+
+        {children}
       </div>
     </Card>
   );

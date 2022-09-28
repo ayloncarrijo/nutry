@@ -1,4 +1,5 @@
 import Button from "components/Button";
+import Manageable from "components/Manageable";
 import MessageBox from "components/MessageBox";
 import SnackCard from "components/SnackCard";
 import SnackList from "components/SnackList";
@@ -84,17 +85,46 @@ function SnackManager(props: SnackManagerProps): JSX.Element {
                 const { carbohydrates, fats, proteins } =
                   DatabaseUtil.assignMacrosToAttachedSnack(attachedSnack);
 
+                const onUpdate =
+                  !snackManager.isFoodOnly && isRecipe
+                    ? snackManager.onUpdateRecipe
+                    : snackManager.onUpdateFood;
+
+                const onDelete =
+                  !snackManager.isFoodOnly && isRecipe
+                    ? snackManager.onDeleteRecipe
+                    : snackManager.onDeleteFood;
+
                 return (
                   <li key={attachedSnack.id}>
-                    <SnackCard
-                      type={isRecipe ? "recipe" : "food"}
-                      name={snack.name}
-                      measurement={measurement}
-                      proportion={attachedSnack.quantity}
-                      carbohydrates={carbohydrates}
-                      fats={fats}
-                      proteins={proteins}
-                    />
+                    <Manageable
+                      updateButtonProps={{
+                        onClick: () => {
+                          openModal();
+                          onUpdate(attachedSnack.id, 15);
+                        },
+                      }}
+                      deleteButtonProps={{
+                        onClick: () => {
+                          void SwalUtil.confirm(
+                            "Você tem certeza de que deseja deletar esta refeição?"
+                          ).then(
+                            ({ isConfirmed }) =>
+                              isConfirmed && onDelete(attachedSnack.id)
+                          );
+                        },
+                      }}
+                    >
+                      <SnackCard
+                        type={isRecipe ? "recipe" : "food"}
+                        name={snack.name}
+                        measurement={measurement}
+                        proportion={attachedSnack.quantity}
+                        carbohydrates={carbohydrates}
+                        fats={fats}
+                        proteins={proteins}
+                      />
+                    </Manageable>
                   </li>
                 );
               })}
