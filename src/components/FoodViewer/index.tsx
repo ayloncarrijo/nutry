@@ -91,7 +91,7 @@ function FoodViewer({
                 onClick={() => onFoodClick(food)}
               >
                 <SnackCard
-                  type="food"
+                  caption="Ingrediente"
                   cardProps={{ isHoverable: true }}
                   {...food}
                 />

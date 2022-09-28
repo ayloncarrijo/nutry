@@ -4,7 +4,7 @@ import MessageBox from "components/MessageBox";
 import SnackCard from "components/SnackCard";
 import SnackList from "components/SnackList";
 import SnackManagerContext, {
-  useSnackManagerInitializer,
+  useSnackManagerInitializer
 } from "components/SnackManager/SnackManagerContext";
 import SnackManagerModal from "components/SnackManager/SnackManagerModal";
 import "twin.macro";
@@ -116,7 +116,7 @@ function SnackManager(props: SnackManagerProps): JSX.Element {
                       }}
                     >
                       <SnackCard
-                        type={isRecipe ? "recipe" : "food"}
+                        caption={isRecipe ? "Receita" : "Ingrediente"}
                         name={snack.name}
                         measurement={measurement}
                         proportion={attachedSnack.quantity}

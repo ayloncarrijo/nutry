@@ -90,10 +90,10 @@ const Page: AppPage<PageProps> = ({
               >
                 <a>
                   <SnackCard
-                    type="recipe"
-                    cardProps={{ isHoverable: true }}
+                    caption="Receita"
                     measurement={Measurement.UN}
                     proportion={1}
+                    cardProps={{ isHoverable: true }}
                     {...recipe}
                   />
                 </a>

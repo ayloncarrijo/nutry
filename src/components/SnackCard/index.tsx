@@ -7,40 +7,31 @@ import { MacroIcon } from "types";
 import type { Measurement } from "types/api";
 
 interface SnackCardProps {
-  type: "food" | "recipe";
   name: string;
   carbohydrates: number;
   fats: number;
   proteins: number;
   proportion: number;
   measurement: Measurement;
+  caption: string;
   cardProps?: CardProps;
 }
 
 function SnackCard({
-  type,
   name,
   carbohydrates,
   fats,
   proteins,
   proportion,
   measurement,
-  children,
+  caption,
   cardProps,
-}: React.PropsWithChildren<SnackCardProps>): JSX.Element {
+}: SnackCardProps): JSX.Element {
   return (
     <Card {...cardProps}>
       <div tw="min-w-0 flex-1">
         <div tw="text-left">
-          <p tw="mb-1 text-xs">
-            {
-              {
-                food: "Ingrediente",
-                recipe: "Receita",
-              }[type]
-            }
-          </p>
-
+          <p tw="mb-1 text-xs">{caption}</p>
           <h3 tw="whitespace-nowrap overflow-hidden overflow-ellipsis font-medium text-lg">
             {name}
           </h3>
@@ -102,8 +93,6 @@ function SnackCard({
             </tr>
           </tbody>
         </table>
-
-        {children}
       </div>
     </Card>
   );
