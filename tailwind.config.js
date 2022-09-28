@@ -3,6 +3,9 @@
 module.exports = {
   theme: {
     extend: {
+      width: {
+        112: '28rem',
+      },
       gridTemplateColumns: (theme) =>
         Object.fromEntries(
           Object.entries(theme("width"))

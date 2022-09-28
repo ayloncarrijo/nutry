@@ -1,10 +1,11 @@
 import Button from "components/Button";
 import FoodViewer from "components/FoodViewer";
 import Modal from "components/Modal";
+import NumericInput from "components/NumericInput";
 import { useSnackManager } from "components/SnackManager/SnackManagerContext";
 import React from "react";
 import "twin.macro";
-import type { Food } from "types/api";
+import type { Food, FullRecipe } from "types/api";
 
 enum ModalStep {
   SNACK_TYPE,
@@ -12,6 +13,10 @@ enum ModalStep {
   RECIPES,
   QUANTITY,
 }
+
+type FoodOrRecipe =
+  | { type: "food"; data: Food }
+  | { type: "recipe"; data: FullRecipe };
 
 function SnackManagerModal(): JSX.Element {
   const { isFoodOnly, closeModal } = useSnackManager();
@@ -28,15 +33,15 @@ function SnackManagerModal(): JSX.Element {
 
   const hasPrevious = history.length > 1;
 
-  const backStep = () => {
+  const backStep = React.useCallback(() => {
     if (hasPrevious) {
       setHistory((prevState) => prevState.slice(0, -1));
     }
-  };
+  }, [hasPrevious]);
 
-  const pushStep = (step: ModalStep) => {
+  const pushStep = React.useCallback((step: ModalStep) => {
     setHistory((prevState) => [...prevState, step]);
-  };
+  }, []);
 
   const backButton = hasPrevious && (
     <Button startIcon="arrow_back" variant="outlined" onClick={backStep}>
@@ -44,20 +49,35 @@ function SnackManagerModal(): JSX.Element {
     </Button>
   );
 
-  const [selectedFood, _setSelectedFood] = React.useState<Food | null>(null);
+  const [selectedData, _setSelectedData] = React.useState<FoodOrRecipe | null>(
+    null
+  );
 
-  const setSelectedFood = (food: Food) => {
-    _setSelectedFood(food);
+  const setSelectedData = (data: FoodOrRecipe) => {
+    _setSelectedData(data);
     pushStep(ModalStep.QUANTITY);
   };
 
+  const [quantity, setQuantity] = React.useState(0);
+
+  const [quantityInput, setQuantityInput] =
+    React.useState<HTMLInputElement | null>(null);
+
+  const submit = (event: React.FormEvent) => {
+    event.preventDefault();
+  };
+
+  React.useEffect(() => {
+    quantityInput?.focus();
+  }, [quantityInput]);
+
   return {
     [ModalStep.SNACK_TYPE]: (
-      <Modal tw="w-full sm:w-auto" onDismiss={closeModal}>
+      <Modal tw="w-full sm:w-112" onDismiss={closeModal}>
         <div>
           <h6 tw="mb-4">O que você deseja adicionar?</h6>
 
-          <div tw="flex flex-col gap-2 sm:(w-96 flex-row)">
+          <div tw="flex gap-2 flex-col sm:flex-row">
             <Button
               isFullWidth
               startIcon="fastfood"
@@ -78,7 +98,10 @@ function SnackManagerModal(): JSX.Element {
     ),
     [ModalStep.FOODS]: (
       <Modal tw="w-full" title="Comidas" onDismiss={closeModal}>
-        <FoodViewer onFoodClick={setSelectedFood} startButton={backButton} />
+        <FoodViewer
+          onFoodClick={(food) => setSelectedData({ type: "food", data: food })}
+          startButton={backButton}
+        />
       </Modal>
     ),
     [ModalStep.RECIPES]: (
@@ -87,8 +110,36 @@ function SnackManagerModal(): JSX.Element {
       </Modal>
     ),
     [ModalStep.QUANTITY]: (
-      <Modal tw="w-full" onDismiss={closeModal}>
-        <div>{JSON.stringify(selectedFood)}</div>
+      <Modal tw="w-full sm:w-112" onDismiss={closeModal}>
+        {selectedData && (
+          <form onSubmit={submit}>
+            <h4 tw="mb-6 text-2xl">{selectedData.data.name}</h4>
+
+            <div>
+              <NumericInput
+                getInputRef={setQuantityInput}
+                required
+                label="Quantidade"
+                value={quantity}
+                onValueChange={({ floatValue }) => setQuantity(floatValue ?? 0)}
+                endElement={
+                  <span>
+                    {selectedData.type === "recipe"
+                      ? "UN"
+                      : selectedData.data.measurement}
+                  </span>
+                }
+              />
+            </div>
+
+            <div tw="mt-4 flex gap-2 justify-end">
+              {backButton}
+              <Button type="submit" startIcon="done">
+                Salvar
+              </Button>
+            </div>
+          </form>
+        )}
       </Modal>
     ),
   }[modalStep];

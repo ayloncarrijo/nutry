@@ -45,11 +45,6 @@ const CustomStyles = createGlobalStyle({
       fontVariationSettings: "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48",
     },
   },
-  '#nprogress': {
-    '.bar': {
-      ...tw`h-1`
-    }
-  }
 });
 
 const GlobalStyles = () => (
