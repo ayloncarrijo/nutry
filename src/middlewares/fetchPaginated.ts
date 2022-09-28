@@ -41,18 +41,17 @@ const fetchPaginated: <T>(
       },
     });
 
-    const pathname = context.resolvedUrl.split("?")[0] ?? "";
-
     if (maximumPage > 0 && currentPage > maximumPage) {
+      const redirectUrl = new URL(
+        context.resolvedUrl,
+        "http://www.placeholder.com"
+      );
+
+      redirectUrl.searchParams.set(queryKeys.page, String(maximumPage));
+
       return {
         redirect: {
-          destination: `${pathname}?${String(
-            new URLSearchParams({
-              ...context.query,
-              ...params,
-              [queryKeys.page]: String(maximumPage),
-            } as Record<string, string>)
-          )}`,
+          destination: `${redirectUrl.pathname}${redirectUrl.search}`,
           permanent: false,
         },
       };
