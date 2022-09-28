@@ -58,7 +58,7 @@ function SnackManagerModal(): JSX.Element {
     pushStep(ModalStep.QUANTITY);
   };
 
-  const [quantity, setQuantity] = React.useState(0);
+  const [quantity, setQuantity] = React.useState<number>();
 
   const [quantityInput, setQuantityInput] =
     React.useState<HTMLInputElement | null>(null);
@@ -121,7 +121,7 @@ function SnackManagerModal(): JSX.Element {
                 required
                 label="Quantidade"
                 value={quantity}
-                onValueChange={({ floatValue }) => setQuantity(floatValue ?? 0)}
+                onValueChange={({ floatValue }) => setQuantity(floatValue)}
                 endElement={
                   <span>
                     {selectedData.type === "recipe"

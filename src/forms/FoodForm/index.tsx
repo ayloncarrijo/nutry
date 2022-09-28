@@ -8,6 +8,7 @@ import React from "react";
 import "twin.macro";
 import { Status } from "types";
 import type { Food, NotCreated } from "types/api";
+import ObjectUtil from "utils/ObjectUtil";
 import SwalUtil from "utils/SwalUtil";
 
 interface FoodFormProps {
@@ -45,35 +46,33 @@ function FoodForm({
         }
   );
 
-  const [proportion, setProportion] = React.useState(
-    initialData?.proportion ?? 0
-  );
+  const [proportion, setProportion] = React.useState(initialData?.proportion);
 
   const [carbohydrates, setCarbohydrates] = React.useState(
-    initialData?.carbohydrates ?? 0
+    initialData?.carbohydrates
   );
 
-  const [fats, setFats] = React.useState(initialData?.fats ?? 0);
+  const [fats, setFats] = React.useState(initialData?.fats);
 
-  const [proteins, setProteins] = React.useState(initialData?.proteins ?? 0);
+  const [proteins, setProteins] = React.useState(initialData?.proteins);
 
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault();
 
-        if (!measurement) {
-          return;
-        }
-
-        onSubmit({
+        const data = {
           name,
-          measurement: measurement.value,
+          measurement: measurement?.value,
           proportion,
           carbohydrates,
           fats,
           proteins,
-        });
+        };
+
+        if (ObjectUtil.isAllDefined(data)) {
+          onSubmit(data);
+        }
       }}
     >
       <div tw="grid gap-4 grid-cols-12">
@@ -91,7 +90,7 @@ function FoodForm({
             required
             label="Proporção"
             value={proportion}
-            onValueChange={({ floatValue }) => setProportion(floatValue ?? 0)}
+            onValueChange={({ floatValue }) => setProportion(floatValue)}
           />
         </div>
 
@@ -121,9 +120,7 @@ function FoodForm({
             required
             label="Carboidratos"
             value={carbohydrates}
-            onValueChange={({ floatValue }) =>
-              setCarbohydrates(floatValue ?? 0)
-            }
+            onValueChange={({ floatValue }) => setCarbohydrates(floatValue)}
           />
         </div>
 
@@ -132,7 +129,7 @@ function FoodForm({
             required
             label="Gorduras"
             value={fats}
-            onValueChange={({ floatValue }) => setFats(floatValue ?? 0)}
+            onValueChange={({ floatValue }) => setFats(floatValue)}
           />
         </div>
 
@@ -141,7 +138,7 @@ function FoodForm({
             required
             label="Proteínas"
             value={proteins}
-            onValueChange={({ floatValue }) => setProteins(floatValue ?? 0)}
+            onValueChange={({ floatValue }) => setProteins(floatValue)}
           />
         </div>
       </div>
