@@ -4,7 +4,7 @@ import MessageBox from "components/MessageBox";
 import SnackCard from "components/SnackCard";
 import SnackList from "components/SnackList";
 import SnackManagerContext, {
-  useSnackManagerInitializer
+  useSnackManagerInitializer,
 } from "components/SnackManager/SnackManagerContext";
 import SnackManagerModal from "components/SnackManager/SnackManagerModal";
 import "twin.macro";
@@ -39,8 +39,8 @@ function SnackManager(props: SnackManagerProps): JSX.Element {
   const { wipeStatus, hasSnack, isModalOpen, openModal, onWipe } = snackManager;
 
   const attachedSnacks = [
-    ...(!snackManager.isFoodOnly ? snackManager.attachedRecipes : []),
     ...snackManager.attachedFoods,
+    ...(!snackManager.isFoodOnly ? snackManager.attachedRecipes : []),
   ];
 
   return (
