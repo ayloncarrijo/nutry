@@ -7,6 +7,7 @@ import { MacroIcon } from "types";
 import type { Measurement } from "types/api";
 
 interface SnackCardProps {
+  type: "food" | "recipe";
   name: string;
   carbohydrates: number;
   fats: number;
@@ -17,6 +18,7 @@ interface SnackCardProps {
 }
 
 function SnackCard({
+  type,
   name,
   carbohydrates,
   fats,
@@ -28,9 +30,20 @@ function SnackCard({
   return (
     <Card {...cardProps}>
       <div tw="min-w-0 flex-1">
-        <h3 tw="whitespace-nowrap overflow-hidden overflow-ellipsis font-medium text-lg text-center">
-          {name}
-        </h3>
+        <div tw="text-left">
+          <p tw="mb-1 text-xs">
+            {
+              {
+                food: "Ingrediente",
+                recipe: "Receita",
+              }[type]
+            }
+          </p>
+
+          <h3 tw="whitespace-nowrap overflow-hidden overflow-ellipsis font-medium text-lg">
+            {name}
+          </h3>
+        </div>
 
         <div tw="my-4">
           <Divider>

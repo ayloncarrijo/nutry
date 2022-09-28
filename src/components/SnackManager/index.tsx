@@ -87,6 +87,7 @@ function SnackManager(props: SnackManagerProps): JSX.Element {
                 return (
                   <li key={attachedSnack.id}>
                     <SnackCard
+                      type={isRecipe ? "recipe" : "food"}
                       name={snack.name}
                       measurement={measurement}
                       proportion={attachedSnack.quantity}

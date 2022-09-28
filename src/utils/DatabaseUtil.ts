@@ -14,7 +14,7 @@ class DatabaseUtil {
 
     return {
       ...container,
-      ...DatabaseUtil.calculateTotalMacros(
+      ...DatabaseUtil.calculateTotalMacronutrients(
         [...attachedFoods, ...attachedRecipes].map((attachedSnack) =>
           DatabaseUtil.assignMacrosToAttachedSnack(attachedSnack)
         )
@@ -43,7 +43,7 @@ class DatabaseUtil {
     };
   }
 
-  public static calculateTotalMacros(macros: Array<Macros>): Macros {
+  public static calculateTotalMacronutrients(macros: Array<Macros>): Macros {
     return macros.reduce(
       (accumulator, { carbohydrates, fats, proteins }) => ({
         carbohydrates: accumulator.carbohydrates + carbohydrates,

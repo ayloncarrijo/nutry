@@ -90,7 +90,11 @@ function FoodViewer({
                 type="button"
                 onClick={() => onFoodClick(food)}
               >
-                <SnackCard cardProps={{ isHoverable: true }} {...food} />
+                <SnackCard
+                  type="food"
+                  cardProps={{ isHoverable: true }}
+                  {...food}
+                />
               </button>
             </li>
           ))}
