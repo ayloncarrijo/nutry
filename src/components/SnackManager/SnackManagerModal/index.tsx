@@ -60,7 +60,7 @@ function SnackManagerModal(): JSX.Element {
   const modalStep = history[history.length - 1];
 
   if (modalStep == null) {
-    throw new Error("ModalStep is undefined");
+    throw new Error("The current step is undefined");
   }
 
   const callbacks =
@@ -82,19 +82,17 @@ function SnackManagerModal(): JSX.Element {
         : null,
     }[snack.type];
 
-  const hasPrevious = history.length > 1;
-
   const backStep = React.useCallback(() => {
-    if (hasPrevious) {
-      setHistory((prevState) => prevState.slice(0, -1));
-    }
-  }, [hasPrevious]);
+    setHistory((prevState) =>
+      prevState.length > 1 ? prevState.slice(0, -1) : prevState
+    );
+  }, []);
 
   const pushStep = React.useCallback((step: ModalStep) => {
     setHistory((prevState) => [...prevState, step]);
   }, []);
 
-  const backButton = hasPrevious && (
+  const backBtn = history.length > 1 && (
     <Button startIcon="arrow_back" variant="outlined" onClick={backStep}>
       Voltar
     </Button>
@@ -102,6 +100,7 @@ function SnackManagerModal(): JSX.Element {
 
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
+    event.stopPropagation();
 
     if (!callbacks || !snack || !quantity) {
       return;
@@ -165,7 +164,7 @@ function SnackManagerModal(): JSX.Element {
       <Modal tw="w-full" title="Ingredientes" onDismiss={closeModal}>
         <FoodViewer
           onFoodClick={(food) => setSnack({ type: "food", data: food })}
-          startButton={backButton}
+          startButton={backBtn}
         />
       </Modal>
     ),
@@ -198,7 +197,7 @@ function SnackManagerModal(): JSX.Element {
             </div>
 
             <div tw="mt-4 flex gap-2 justify-end">
-              {backButton}
+              {backBtn}
 
               {isEditing && (
                 <Button startIcon="delete" variant="outlined" onClick={remove}>

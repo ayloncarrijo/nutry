@@ -2,6 +2,7 @@ import Button from "components/Button";
 import SnackManager from "components/SnackManager";
 import TextInput from "components/TextInput";
 import React from "react";
+import Swal from "sweetalert2";
 import "twin.macro";
 import type { SimpleAttachedFood } from "types/api";
 
@@ -18,6 +19,13 @@ function RecipeForm(): JSX.Element {
     <form
       onSubmit={(event) => {
         event.preventDefault();
+
+        if (!attachedFoods.length) {
+          void Swal.fire({
+            icon: "warning",
+            text: "Você deve adicionar ao menos uma refeição para criar uma receita.",
+          });
+        }
       }}
     >
       <TextInput required label="Título" value={name} onValueChange={setName} />
