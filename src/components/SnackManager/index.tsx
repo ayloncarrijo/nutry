@@ -9,25 +9,29 @@ import SnackManagerModal from "components/SnackManager/SnackManagerModal";
 import React from "react";
 import "twin.macro";
 import { Status } from "types";
-import { AttachedFood, AttachedRecipe, Measurement } from "types/api";
+import {
+  Measurement,
+  SimpleAttachedFood,
+  SimpleAttachedRecipe,
+} from "types/api";
 import DatabaseUtil from "utils/DatabaseUtil";
 import SwalUtil from "utils/SwalUtil";
 
 type SnackManagerProps = {
-  onCreateFood: (data: AttachedFood) => void;
+  onCreateFood: (data: SimpleAttachedFood) => void;
   onDeleteFood: (id: string) => void;
   onUpdateFood: (id: string, quantity: number) => void;
   onWipe: () => void;
   wipeStatus?: Status;
-  attachedFoods: Array<AttachedFood>;
+  attachedFoods: Array<SimpleAttachedFood>;
 } & (
   | {
       isFoodOnly: true;
     }
   | {
       isFoodOnly?: false;
-      attachedRecipes: Array<AttachedRecipe>;
-      onCreateRecipe: (data: AttachedRecipe) => void;
+      attachedRecipes: Array<SimpleAttachedRecipe>;
+      onCreateRecipe: (data: SimpleAttachedRecipe) => void;
       onDeleteRecipe: (id: string) => void;
       onUpdateRecipe: (id: string, quantity: number) => void;
     }

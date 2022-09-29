@@ -1,7 +1,7 @@
 import type {
-  AttachedFood,
-  AttachedRecipe,
   Macros,
+  SimpleAttachedFood,
+  SimpleAttachedRecipe,
   SnackContainer,
   WithMacros,
 } from "types/api";
@@ -23,13 +23,13 @@ class DatabaseUtil {
   }
 
   public static assignMacrosToAttachedSnack<
-    T extends AttachedFood | AttachedRecipe
+    T extends SimpleAttachedFood | SimpleAttachedRecipe
   >(attachedSnack: T): WithMacros<T> {
     const isRecipe = "recipe" in attachedSnack;
 
-    const proportion = isRecipe
-      ? attachedSnack.quantity
-      : attachedSnack.quantity / attachedSnack.food.proportion;
+    const proportion = isRecipe ? 1 : attachedSnack.food.proportion;
+
+    const rate = attachedSnack.quantity / proportion;
 
     const { carbohydrates, fats, proteins } = isRecipe
       ? DatabaseUtil.assignMacrosToSnackContainer(attachedSnack.recipe)
@@ -37,9 +37,9 @@ class DatabaseUtil {
 
     return {
       ...attachedSnack,
-      carbohydrates: carbohydrates * proportion,
-      fats: fats * proportion,
-      proteins: proteins * proportion,
+      carbohydrates: carbohydrates * rate,
+      fats: fats * rate,
+      proteins: proteins * rate,
     };
   }
 

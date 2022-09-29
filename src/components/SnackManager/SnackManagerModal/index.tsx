@@ -20,6 +20,8 @@ type FoodOrRecipe =
   | { type: "recipe"; data: Recipe };
 
 function SnackManagerModal(): JSX.Element {
+  const snackManager = useSnackManager();
+
   const {
     isFoodOnly,
     initialAttachedSnack,
@@ -27,7 +29,7 @@ function SnackManagerModal(): JSX.Element {
     onCreateFood,
     onUpdateFood,
     onDeleteFood,
-  } = useSnackManager();
+  } = snackManager;
 
   const isEditing = initialAttachedSnack != null;
 
@@ -86,39 +88,73 @@ function SnackManagerModal(): JSX.Element {
     </Button>
   );
 
+  const callbacks =
+    snack &&
+    (() => {
+      if (snack.type === "food") {
+        return {
+          type: snack.type,
+          onCreate: onCreateFood,
+          onUpdate: onUpdateFood,
+          onDelete: onDeleteFood,
+        };
+      }
+
+      if (snack.type === "recipe" && !snackManager.isFoodOnly) {
+        const { onCreateRecipe, onUpdateRecipe, onDeleteRecipe } = snackManager;
+
+        return {
+          type: snack.type,
+          onCreate: onCreateRecipe,
+          onUpdate: onUpdateRecipe,
+          onDelete: onDeleteRecipe,
+        };
+      }
+
+      return null;
+    })();
+
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!snack || !quantity) {
+    if (!callbacks || !snack || !quantity) {
       return;
     }
 
-    if (snack.type === "food") {
-      if (isEditing) {
-        onUpdateFood(initialAttachedSnack.id, quantity);
-      } else {
-        onCreateFood({
-          id: uuid(),
-          food: snack.data,
-          foodId: snack.data.id,
-          quantity,
-          recipeId: null,
-          dietId: null,
-        });
-      }
+    if (isEditing) {
+      callbacks.onUpdate(initialAttachedSnack.id, quantity);
+      return;
+    }
+
+    if (callbacks.type === "food" && snack.type === "food") {
+      callbacks.onCreate({
+        id: uuid(),
+        quantity,
+        food: snack.data,
+      });
+
+      return;
+    }
+
+    if (callbacks.type === "recipe" && snack.type === "recipe") {
+      callbacks.onCreate({
+        id: uuid(),
+        quantity,
+        recipe: snack.data,
+      });
+
+      return;
     }
 
     closeModal();
   };
 
   const remove = () => {
-    if (!snack || !initialAttachedSnack) {
+    if (!callbacks || !initialAttachedSnack) {
       return;
     }
 
-    if (snack.type === "food") {
-      onDeleteFood(initialAttachedSnack.id);
-    }
+    callbacks.onDelete(initialAttachedSnack.id);
 
     closeModal();
   };

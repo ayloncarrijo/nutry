@@ -28,6 +28,13 @@ export type AttachedRecipe = Prisma.AttachedRecipe & {
   recipe: Recipe;
 };
 
+export type SimpleAttachedFood = Pick<AttachedFood, "id" | "quantity" | "food">;
+
+export type SimpleAttachedRecipe = Pick<
+  AttachedRecipe,
+  "id" | "quantity" | "recipe"
+>;
+
 export type SnackContainer = {
   attachedFoods: Array<AttachedFood>;
   attachedRecipes?: Array<AttachedRecipe>;

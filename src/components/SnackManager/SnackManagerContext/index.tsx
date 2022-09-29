@@ -1,6 +1,6 @@
 import type { SnackManagerProps } from "components/SnackManager";
 import React from "react";
-import type { AttachedFood, AttachedRecipe } from "types/api";
+import type { SimpleAttachedFood, SimpleAttachedRecipe } from "types/api";
 
 const SnackManagerContext = React.createContext<ReturnType<
   typeof useSnackManagerInitializer
@@ -24,7 +24,7 @@ const useSnackManagerInitializer = (props: SnackManagerProps) => {
     props.attachedFoods.length > 0 || (attachedRecipes?.length ?? 0) > 0;
 
   const [initialAttachedSnack, setInitialAttachedSnack] = React.useState<
-    AttachedFood | AttachedRecipe | null
+    SimpleAttachedFood | SimpleAttachedRecipe | null
   >(null);
 
   React.useEffect(() => {

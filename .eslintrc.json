@@ -66,6 +66,7 @@
     "no-shadow": "error",
     "no-useless-rename": "error",
     "no-param-reassign": "error",
+    "no-else-return": "error",
     "eqeqeq": ["error", "smart"],
     "prefer-template": "error",
     "prefer-destructuring": ["error", { "object": true, "array": false }],
