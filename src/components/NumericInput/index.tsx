@@ -11,7 +11,9 @@ interface NumericInputProps
     React.ComponentProps<typeof NumericFormat> {}
 
 function NumericInput(props: NumericInputProps): JSX.Element {
-  return <NumericFormat {...props} customInput={TextInput} />;
+  return (
+    <NumericFormat allowNegative={false} {...props} customInput={TextInput} />
+  );
 }
 
 export default NumericInput;

@@ -23,9 +23,15 @@ const useSnackManagerInitializer = (props: SnackManagerProps) => {
   const hasSnack =
     props.attachedFoods.length > 0 || (attachedRecipes?.length ?? 0) > 0;
 
-  const [updatingSnack, setUpdatingSnack] = React.useState<
+  const [initialAttachedSnack, setInitialAttachedSnack] = React.useState<
     AttachedFood | AttachedRecipe | null
   >(null);
+
+  React.useEffect(() => {
+    if (!isModalOpen) {
+      setInitialAttachedSnack(null);
+    }
+  }, [isModalOpen]);
 
   return {
     ...props,
@@ -34,8 +40,8 @@ const useSnackManagerInitializer = (props: SnackManagerProps) => {
     closeModal,
     hasSnack,
     attachedSnacks,
-    updatingSnack,
-    setUpdatingSnack,
+    initialAttachedSnack,
+    setInitialAttachedSnack,
   };
 };
 

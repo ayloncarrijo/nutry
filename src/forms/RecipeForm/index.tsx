@@ -30,12 +30,20 @@ function RecipeForm(): JSX.Element {
           onCreateFood={(data) =>
             setAttachedFoods((prevState) => [data, ...prevState])
           }
-          onUpdateFood={() => {
-            //
-          }}
-          onDeleteFood={() => {
-            //
-          }}
+          onUpdateFood={(id, quantity) =>
+            setAttachedFoods((prevState) =>
+              prevState.map((attachedFood) =>
+                attachedFood.id !== id
+                  ? attachedFood
+                  : { ...attachedFood, quantity }
+              )
+            )
+          }
+          onDeleteFood={(id) =>
+            setAttachedFoods((prevState) =>
+              prevState.filter((attachedFood) => attachedFood.id !== id)
+            )
+          }
         />
       </div>
 

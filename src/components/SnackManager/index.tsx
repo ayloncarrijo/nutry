@@ -43,7 +43,7 @@ function SnackManager(props: SnackManagerProps): JSX.Element {
     attachedSnacks,
     onWipe,
     openModal,
-    setUpdatingSnack,
+    setInitialAttachedSnack,
   } = snackManager;
 
   const snackItemsEl = React.useMemo(
@@ -66,7 +66,7 @@ function SnackManager(props: SnackManagerProps): JSX.Element {
               tw="w-full"
               type="button"
               onClick={() => {
-                setUpdatingSnack(attachedSnack);
+                setInitialAttachedSnack(attachedSnack);
                 openModal();
               }}
             >
@@ -84,7 +84,7 @@ function SnackManager(props: SnackManagerProps): JSX.Element {
           </li>
         );
       }),
-    [attachedSnacks, openModal, setUpdatingSnack]
+    [attachedSnacks, openModal, setInitialAttachedSnack]
   );
 
   return (

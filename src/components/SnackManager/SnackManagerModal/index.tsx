@@ -5,7 +5,7 @@ import NumericInput from "components/NumericInput";
 import { useSnackManager } from "components/SnackManager/SnackManagerContext";
 import React from "react";
 import "twin.macro";
-import type { Food, FullRecipe } from "types/api";
+import { Food, Measurement, Recipe } from "types/api";
 import { v4 as uuid } from "uuid";
 
 enum ModalStep {
@@ -17,14 +17,50 @@ enum ModalStep {
 
 type FoodOrRecipe =
   | { type: "food"; data: Food }
-  | { type: "recipe"; data: FullRecipe };
+  | { type: "recipe"; data: Recipe };
 
 function SnackManagerModal(): JSX.Element {
-  const { isFoodOnly, closeModal, onCreateFood } = useSnackManager();
+  const {
+    isFoodOnly,
+    initialAttachedSnack,
+    closeModal,
+    onCreateFood,
+    onUpdateFood,
+    onDeleteFood,
+  } = useSnackManager();
 
-  const [history, setHistory] = React.useState<Array<ModalStep>>([
-    isFoodOnly ? ModalStep.FOODS : ModalStep.SNACK_TYPE,
-  ]);
+  const isEditing = initialAttachedSnack != null;
+
+  const [history, setHistory] = React.useState<Array<ModalStep>>(() => {
+    if (isEditing) {
+      return [ModalStep.QUANTITY];
+    }
+
+    if (isFoodOnly) {
+      return [ModalStep.FOODS];
+    }
+
+    return [ModalStep.SNACK_TYPE];
+  });
+
+  const [snack, _setSnack] = React.useState<FoodOrRecipe | null>(() => {
+    if (isEditing) {
+      return "recipe" in initialAttachedSnack
+        ? { type: "recipe", data: initialAttachedSnack.recipe }
+        : { type: "food", data: initialAttachedSnack.food };
+    }
+
+    return null;
+  });
+
+  const setSnack = (data: FoodOrRecipe) => {
+    _setSnack(data);
+    pushStep(ModalStep.QUANTITY);
+  };
+
+  const [quantity, setQuantity] = React.useState(
+    isEditing ? initialAttachedSnack.quantity : undefined
+  );
 
   const modalStep = history[history.length - 1];
 
@@ -50,18 +86,6 @@ function SnackManagerModal(): JSX.Element {
     </Button>
   );
 
-  const [quantity, setQuantity] = React.useState<number>();
-
-  const [quantityInput, setQuantityInput] =
-    React.useState<HTMLInputElement | null>(null);
-
-  const [snack, _setSnack] = React.useState<FoodOrRecipe | null>(null);
-
-  const setSnack = (data: FoodOrRecipe) => {
-    _setSnack(data);
-    pushStep(ModalStep.QUANTITY);
-  };
-
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -70,22 +94,34 @@ function SnackManagerModal(): JSX.Element {
     }
 
     if (snack.type === "food") {
-      onCreateFood({
-        id: uuid(),
-        food: snack.data,
-        foodId: snack.data.id,
-        quantity,
-        recipeId: null,
-        dietId: null,
-      });
+      if (isEditing) {
+        onUpdateFood(initialAttachedSnack.id, quantity);
+      } else {
+        onCreateFood({
+          id: uuid(),
+          food: snack.data,
+          foodId: snack.data.id,
+          quantity,
+          recipeId: null,
+          dietId: null,
+        });
+      }
     }
 
     closeModal();
   };
 
-  React.useEffect(() => {
-    quantityInput?.focus();
-  }, [quantityInput]);
+  const remove = () => {
+    if (!snack || !initialAttachedSnack) {
+      return;
+    }
+
+    if (snack.type === "food") {
+      onDeleteFood(initialAttachedSnack.id);
+    }
+
+    closeModal();
+  };
 
   return {
     [ModalStep.SNACK_TYPE]: (
@@ -133,14 +169,16 @@ function SnackManagerModal(): JSX.Element {
 
             <div>
               <NumericInput
-                getInputRef={setQuantityInput}
+                autoFocus
                 required
                 label="Quantidade"
                 value={quantity}
                 onValueChange={({ floatValue }) => setQuantity(floatValue)}
                 endElement={
                   <span>
-                    {snack.type === "recipe" ? "UN" : snack.data.measurement}
+                    {snack.type === "recipe"
+                      ? Measurement.UN
+                      : snack.data.measurement}
                   </span>
                 }
               />
@@ -148,6 +186,12 @@ function SnackManagerModal(): JSX.Element {
 
             <div tw="mt-4 flex gap-2 justify-end">
               {backButton}
+
+              {isEditing && (
+                <Button startIcon="delete" variant="outlined" onClick={remove}>
+                  Deletar
+                </Button>
+              )}
 
               <Button type="submit" startIcon="done">
                 Salvar
