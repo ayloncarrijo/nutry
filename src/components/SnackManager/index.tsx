@@ -1,5 +1,4 @@
 import Button from "components/Button";
-import Manageable from "components/Manageable";
 import MessageBox from "components/MessageBox";
 import SnackCard from "components/SnackCard";
 import SnackList from "components/SnackList";
@@ -7,6 +6,7 @@ import SnackManagerContext, {
   useSnackManagerInitializer,
 } from "components/SnackManager/SnackManagerContext";
 import SnackManagerModal from "components/SnackManager/SnackManagerModal";
+import React from "react";
 import "twin.macro";
 import { Status } from "types";
 import { AttachedFood, AttachedRecipe, Measurement } from "types/api";
@@ -36,12 +36,56 @@ type SnackManagerProps = {
 function SnackManager(props: SnackManagerProps): JSX.Element {
   const snackManager = useSnackManagerInitializer(props);
 
-  const { wipeStatus, hasSnack, isModalOpen, openModal, onWipe } = snackManager;
+  const {
+    isModalOpen,
+    hasSnack,
+    wipeStatus,
+    attachedSnacks,
+    onWipe,
+    openModal,
+    setUpdatingSnack,
+  } = snackManager;
 
-  const attachedSnacks = [
-    ...snackManager.attachedFoods,
-    ...(!snackManager.isFoodOnly ? snackManager.attachedRecipes : []),
-  ];
+  const snackItemsEl = React.useMemo(
+    () =>
+      attachedSnacks.map((attachedSnack) => {
+        const isRecipe = "recipe" in attachedSnack;
+
+        const measurement = isRecipe
+          ? Measurement.UN
+          : attachedSnack.food.measurement;
+
+        const snack = isRecipe ? attachedSnack.recipe : attachedSnack.food;
+
+        const { carbohydrates, fats, proteins } =
+          DatabaseUtil.assignMacrosToAttachedSnack(attachedSnack);
+
+        return (
+          <li key={attachedSnack.id}>
+            <button
+              tw="w-full"
+              type="button"
+              onClick={() => {
+                setUpdatingSnack(attachedSnack);
+                openModal();
+              }}
+            >
+              <SnackCard
+                caption={isRecipe ? "Receita" : "Ingrediente"}
+                name={snack.name}
+                measurement={measurement}
+                proportion={attachedSnack.quantity}
+                carbohydrates={carbohydrates}
+                fats={fats}
+                proteins={proteins}
+                cardProps={{ isHoverable: true }}
+              />
+            </button>
+          </li>
+        );
+      }),
+    [attachedSnacks, openModal, setUpdatingSnack]
+  );
 
   return (
     <SnackManagerContext.Provider value={snackManager}>
@@ -70,65 +114,7 @@ function SnackManager(props: SnackManagerProps): JSX.Element {
 
         <div tw="mt-4">
           {hasSnack ? (
-            <SnackList>
-              {attachedSnacks.map((attachedSnack) => {
-                const isRecipe = "recipe" in attachedSnack;
-
-                const measurement = isRecipe
-                  ? Measurement.UN
-                  : attachedSnack.food.measurement;
-
-                const snack = isRecipe
-                  ? attachedSnack.recipe
-                  : attachedSnack.food;
-
-                const { carbohydrates, fats, proteins } =
-                  DatabaseUtil.assignMacrosToAttachedSnack(attachedSnack);
-
-                const onUpdate =
-                  !snackManager.isFoodOnly && isRecipe
-                    ? snackManager.onUpdateRecipe
-                    : snackManager.onUpdateFood;
-
-                const onDelete =
-                  !snackManager.isFoodOnly && isRecipe
-                    ? snackManager.onDeleteRecipe
-                    : snackManager.onDeleteFood;
-
-                return (
-                  <li key={attachedSnack.id}>
-                    <Manageable
-                      updateButtonProps={{
-                        onClick: () => {
-                          openModal();
-                          onUpdate(attachedSnack.id, 15);
-                        },
-                      }}
-                      deleteButtonProps={{
-                        onClick: () => {
-                          void SwalUtil.confirm(
-                            "Você tem certeza de que deseja deletar esta refeição?"
-                          ).then(
-                            ({ isConfirmed }) =>
-                              isConfirmed && onDelete(attachedSnack.id)
-                          );
-                        },
-                      }}
-                    >
-                      <SnackCard
-                        caption={isRecipe ? "Receita" : "Ingrediente"}
-                        name={snack.name}
-                        measurement={measurement}
-                        proportion={attachedSnack.quantity}
-                        carbohydrates={carbohydrates}
-                        fats={fats}
-                        proteins={proteins}
-                      />
-                    </Manageable>
-                  </li>
-                );
-              })}
-            </SnackList>
+            <SnackList>{snackItemsEl}</SnackList>
           ) : (
             <MessageBox>
               <p>Você ainda não adicionou nenhuma refeição nesta lista.</p>

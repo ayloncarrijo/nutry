@@ -37,7 +37,7 @@ function SnackCard({
           </h3>
         </div>
 
-        <div tw="my-4">
+        <div tw="my-4 text-blue-300">
           <Divider>
             {proportion}
             {measurement}
