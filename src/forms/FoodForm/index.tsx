@@ -26,8 +26,11 @@ function FoodForm({
   onSubmit,
   onDelete,
 }: FoodFormProps): JSX.Element {
-  const isBusy =
-    submitStatus === Status.LOADING || deleteStatus === Status.LOADING;
+  const isBusy = React.useMemo(
+    () =>
+      [submitStatus, deleteStatus].some((status) => status === Status.LOADING),
+    [submitStatus, deleteStatus]
+  );
 
   const [name, setName] = React.useState(initialData?.name ?? "");
 

@@ -5,6 +5,7 @@ import NumericInput from "components/NumericInput";
 import { useSnackManager } from "components/SnackManager/SnackManagerContext";
 import React from "react";
 import "twin.macro";
+import { Status } from "types";
 import { Food, Measurement, Recipe } from "types/api";
 import { v4 as uuid } from "uuid";
 
@@ -22,7 +23,17 @@ type FoodOrRecipe =
 function SnackManagerModal(): JSX.Element {
   const snackManager = useSnackManager();
 
-  const { isFoodOnly, initialAttachedSnack, closeModal } = snackManager;
+  const { initialAttachedSnack, isFoodOnly, setIsModalOpen } = snackManager;
+
+  const [submitStatus, setSubmitStatus] = React.useState(Status.IDLE);
+
+  const [removeStatus, setRemoveStatus] = React.useState(Status.IDLE);
+
+  const isBusy = React.useMemo(
+    () =>
+      [submitStatus, removeStatus].some((status) => status === Status.LOADING),
+    [submitStatus, removeStatus]
+  );
 
   const isEditing = initialAttachedSnack != null;
 
@@ -38,10 +49,6 @@ function SnackManagerModal(): JSX.Element {
     return [ModalStep.SNACK_TYPE];
   });
 
-  const [quantity, setQuantity] = React.useState(
-    isEditing ? initialAttachedSnack.quantity : undefined
-  );
-
   const [snack, _setSnack] = React.useState<FoodOrRecipe | null>(() => {
     if (isEditing) {
       return "recipe" in initialAttachedSnack
@@ -56,6 +63,10 @@ function SnackManagerModal(): JSX.Element {
     _setSnack(data);
     pushStep(ModalStep.QUANTITY);
   };
+
+  const [quantity, setQuantity] = React.useState(
+    isEditing ? initialAttachedSnack.quantity : undefined
+  );
 
   const modalStep = history[history.length - 1];
 
@@ -93,10 +104,21 @@ function SnackManagerModal(): JSX.Element {
   }, []);
 
   const backBtn = history.length > 1 && (
-    <Button startIcon="arrow_back" variant="outlined" onClick={backStep}>
+    <Button
+      startIcon="arrow_back"
+      variant="outlined"
+      disabled={isBusy}
+      onClick={backStep}
+    >
       Voltar
     </Button>
   );
+
+  const closeModal = React.useCallback(() => {
+    if (!isBusy) {
+      setIsModalOpen(false);
+    }
+  }, [setIsModalOpen, isBusy]);
 
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -106,23 +128,41 @@ function SnackManagerModal(): JSX.Element {
       return;
     }
 
-    if (isEditing) {
-      callbacks.onUpdate(initialAttachedSnack.id, quantity);
-    } else if (callbacks.type === "food" && snack.type === "food") {
-      callbacks.onCreate({
-        id: uuid(),
-        quantity,
-        food: snack.data,
-      });
-    } else if (callbacks.type === "recipe" && snack.type === "recipe") {
-      callbacks.onCreate({
-        id: uuid(),
-        quantity,
-        recipe: snack.data,
-      });
-    }
+    setSubmitStatus(Status.LOADING);
 
-    closeModal();
+    (async () => {
+      if (isEditing) {
+        await callbacks.onUpdate(initialAttachedSnack.id, quantity);
+        return;
+      }
+
+      if (callbacks.type === "food" && snack.type === "food") {
+        await callbacks.onCreate({
+          id: uuid(),
+          quantity,
+          food: snack.data,
+        });
+
+        return;
+      }
+
+      if (callbacks.type === "recipe" && snack.type === "recipe") {
+        await callbacks.onCreate({
+          id: uuid(),
+          quantity,
+          recipe: snack.data,
+        });
+
+        return;
+      }
+    })()
+      .then(() => {
+        setSubmitStatus(Status.SUCCESS);
+        closeModal();
+      })
+      .catch(() => {
+        setSubmitStatus(Status.ERROR);
+      });
   };
 
   const remove = () => {
@@ -130,9 +170,16 @@ function SnackManagerModal(): JSX.Element {
       return;
     }
 
-    callbacks.onDelete(initialAttachedSnack.id);
+    setRemoveStatus(Status.LOADING);
 
-    closeModal();
+    Promise.resolve(callbacks.onDelete(initialAttachedSnack.id))
+      .then(() => {
+        setRemoveStatus(Status.SUCCESS);
+        closeModal();
+      })
+      .catch(() => {
+        setRemoveStatus(Status.ERROR);
+      });
   };
 
   return {
@@ -200,12 +247,23 @@ function SnackManagerModal(): JSX.Element {
               {backBtn}
 
               {isEditing && (
-                <Button startIcon="delete" variant="outlined" onClick={remove}>
+                <Button
+                  startIcon="delete"
+                  variant="outlined"
+                  isLoading={removeStatus === Status.LOADING}
+                  disabled={isBusy}
+                  onClick={remove}
+                >
                   Remover
                 </Button>
               )}
 
-              <Button type="submit" startIcon="done">
+              <Button
+                type="submit"
+                startIcon="done"
+                isLoading={submitStatus === Status.LOADING}
+                disabled={isBusy}
+              >
                 Salvar
               </Button>
             </div>

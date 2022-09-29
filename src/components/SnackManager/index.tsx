@@ -18,9 +18,9 @@ import DatabaseUtil from "utils/DatabaseUtil";
 import SwalUtil from "utils/SwalUtil";
 
 type SnackManagerProps = {
-  onCreateFood: (data: SimpleAttachedFood) => void;
-  onDeleteFood: (id: string) => void;
-  onUpdateFood: (id: string, quantity: number) => void;
+  onCreateFood: (data: SimpleAttachedFood) => Promise<void> | void;
+  onDeleteFood: (id: string) => Promise<void> | void;
+  onUpdateFood: (id: string, quantity: number) => Promise<void> | void;
   onWipe: () => void;
   wipeStatus?: Status;
   attachedFoods: Array<SimpleAttachedFood>;
@@ -31,9 +31,9 @@ type SnackManagerProps = {
   | {
       isFoodOnly?: false;
       attachedRecipes: Array<SimpleAttachedRecipe>;
-      onCreateRecipe: (data: SimpleAttachedRecipe) => void;
-      onDeleteRecipe: (id: string) => void;
-      onUpdateRecipe: (id: string, quantity: number) => void;
+      onCreateRecipe: (data: SimpleAttachedRecipe) => Promise<void> | void;
+      onDeleteRecipe: (id: string) => Promise<void> | void;
+      onUpdateRecipe: (id: string, quantity: number) => Promise<void> | void;
     }
 );
 
@@ -46,20 +46,23 @@ function SnackManager(props: SnackManagerProps): JSX.Element {
     wipeStatus,
     attachedSnacks,
     onWipe,
-    openModal,
+    setIsModalOpen,
     setInitialAttachedSnack,
   } = snackManager;
+
+  const openModal = React.useCallback(
+    () => setIsModalOpen(true),
+    [setIsModalOpen]
+  );
 
   const snackItemsEl = React.useMemo(
     () =>
       attachedSnacks.map((attachedSnack) => {
         const isRecipe = "recipe" in attachedSnack;
 
-        const measurement = isRecipe
-          ? Measurement.UN
-          : attachedSnack.food.measurement;
-
-        const snack = isRecipe ? attachedSnack.recipe : attachedSnack.food;
+        const { measurement, name } = isRecipe
+          ? { ...attachedSnack.recipe, measurement: Measurement.UN }
+          : attachedSnack.food;
 
         const { carbohydrates, fats, proteins } =
           DatabaseUtil.assignMacrosToAttachedSnack(attachedSnack);
@@ -76,7 +79,7 @@ function SnackManager(props: SnackManagerProps): JSX.Element {
             >
               <SnackCard
                 caption={isRecipe ? "Receita" : "Ingrediente"}
-                name={snack.name}
+                name={name}
                 measurement={measurement}
                 proportion={attachedSnack.quantity}
                 carbohydrates={carbohydrates}

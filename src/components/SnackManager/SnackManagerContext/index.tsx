@@ -9,10 +9,6 @@ const SnackManagerContext = React.createContext<ReturnType<
 const useSnackManagerInitializer = (props: SnackManagerProps) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
-  const openModal = React.useCallback(() => setIsModalOpen(true), []);
-
-  const closeModal = React.useCallback(() => setIsModalOpen(false), []);
-
   const attachedRecipes = !props.isFoodOnly ? props.attachedRecipes : undefined;
 
   const attachedSnacks = React.useMemo(
@@ -36,8 +32,7 @@ const useSnackManagerInitializer = (props: SnackManagerProps) => {
   return {
     ...props,
     isModalOpen,
-    openModal,
-    closeModal,
+    setIsModalOpen,
     hasSnack,
     attachedSnacks,
     initialAttachedSnack,
