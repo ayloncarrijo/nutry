@@ -3,16 +3,16 @@ import SnackManager from "components/SnackManager";
 import TextInput from "components/TextInput";
 import React from "react";
 import "twin.macro";
-import type { AttachedFood } from "types/api";
+import type { SimpleAttachedFood } from "types/api";
 
 function RecipeForm(): JSX.Element {
-  const [attachedFoods, setAttachedFoods] = React.useState<Array<AttachedFood>>(
-    []
-  );
+  const [attachedFoods, setAttachedFoods] = React.useState<
+    Array<SimpleAttachedFood>
+  >([]);
+
+  const wipeAttacheds = () => setAttachedFoods([]);
 
   const [name, setName] = React.useState("");
-
-  const wipe = () => setAttachedFoods([]);
 
   return (
     <form
@@ -25,7 +25,7 @@ function RecipeForm(): JSX.Element {
       <div tw="mt-8">
         <SnackManager
           isFoodOnly
-          onWipe={wipe}
+          onWipe={wipeAttacheds}
           attachedFoods={attachedFoods}
           onCreateFood={(data) =>
             setAttachedFoods((prevState) => [data, ...prevState])

@@ -22,14 +22,7 @@ type FoodOrRecipe =
 function SnackManagerModal(): JSX.Element {
   const snackManager = useSnackManager();
 
-  const {
-    isFoodOnly,
-    initialAttachedSnack,
-    closeModal,
-    onCreateFood,
-    onUpdateFood,
-    onDeleteFood,
-  } = snackManager;
+  const { isFoodOnly, initialAttachedSnack, closeModal } = snackManager;
 
   const isEditing = initialAttachedSnack != null;
 
@@ -44,6 +37,10 @@ function SnackManagerModal(): JSX.Element {
 
     return [ModalStep.SNACK_TYPE];
   });
+
+  const [quantity, setQuantity] = React.useState(
+    isEditing ? initialAttachedSnack.quantity : undefined
+  );
 
   const [snack, _setSnack] = React.useState<FoodOrRecipe | null>(() => {
     if (isEditing) {
@@ -60,15 +57,30 @@ function SnackManagerModal(): JSX.Element {
     pushStep(ModalStep.QUANTITY);
   };
 
-  const [quantity, setQuantity] = React.useState(
-    isEditing ? initialAttachedSnack.quantity : undefined
-  );
-
   const modalStep = history[history.length - 1];
 
   if (modalStep == null) {
     throw new Error("ModalStep is undefined");
   }
+
+  const callbacks =
+    snack &&
+    {
+      food: {
+        type: "food" as const,
+        onCreate: snackManager.onCreateFood,
+        onUpdate: snackManager.onUpdateFood,
+        onDelete: snackManager.onDeleteFood,
+      },
+      recipe: !snackManager.isFoodOnly
+        ? {
+            type: "recipe" as const,
+            onCreate: snackManager.onCreateRecipe,
+            onUpdate: snackManager.onUpdateRecipe,
+            onDelete: snackManager.onDeleteRecipe,
+          }
+        : null,
+    }[snack.type];
 
   const hasPrevious = history.length > 1;
 
@@ -88,32 +100,6 @@ function SnackManagerModal(): JSX.Element {
     </Button>
   );
 
-  const callbacks =
-    snack &&
-    (() => {
-      if (snack.type === "food") {
-        return {
-          type: snack.type,
-          onCreate: onCreateFood,
-          onUpdate: onUpdateFood,
-          onDelete: onDeleteFood,
-        };
-      }
-
-      if (snack.type === "recipe" && !snackManager.isFoodOnly) {
-        const { onCreateRecipe, onUpdateRecipe, onDeleteRecipe } = snackManager;
-
-        return {
-          type: snack.type,
-          onCreate: onCreateRecipe,
-          onUpdate: onUpdateRecipe,
-          onDelete: onDeleteRecipe,
-        };
-      }
-
-      return null;
-    })();
-
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -123,27 +109,18 @@ function SnackManagerModal(): JSX.Element {
 
     if (isEditing) {
       callbacks.onUpdate(initialAttachedSnack.id, quantity);
-      return;
-    }
-
-    if (callbacks.type === "food" && snack.type === "food") {
+    } else if (callbacks.type === "food" && snack.type === "food") {
       callbacks.onCreate({
         id: uuid(),
         quantity,
         food: snack.data,
       });
-
-      return;
-    }
-
-    if (callbacks.type === "recipe" && snack.type === "recipe") {
+    } else if (callbacks.type === "recipe" && snack.type === "recipe") {
       callbacks.onCreate({
         id: uuid(),
         quantity,
         recipe: snack.data,
       });
-
-      return;
     }
 
     closeModal();
@@ -225,7 +202,7 @@ function SnackManagerModal(): JSX.Element {
 
               {isEditing && (
                 <Button startIcon="delete" variant="outlined" onClick={remove}>
-                  Deletar
+                  Remover
                 </Button>
               )}
 
