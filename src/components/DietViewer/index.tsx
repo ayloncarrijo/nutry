@@ -5,23 +5,29 @@ import { useUser } from "providers/UserProvider";
 import React from "react";
 import "twin.macro";
 import { MacroIcon, Status } from "types";
-import type { FullDiet } from "types/api";
+import type { Diet } from "types/api";
+import DatabaseUtil from "utils/DatabaseUtil";
 import SwalUtil from "utils/SwalUtil";
 
 interface DietViewerProps {
-  diet: FullDiet;
-  onDietChange: (diet: FullDiet) => void;
+  diet: Diet;
+  onDietChange: (diet: Diet) => void;
 }
 
 function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
   const { weight, carbohydratesPerKg, fatsPerKg, proteinsPerKg } = useUser();
+
+  const { carbohydrates, fats, proteins } = React.useMemo(
+    () => DatabaseUtil.getMacrosFromSnackContainer(diet),
+    [diet]
+  );
 
   const [wipeStatus, setWipeStatus] = React.useState(Status.IDLE);
 
   const wipeSnacks = () => {
     setWipeStatus(Status.LOADING);
 
-    Api.MAIN.put<FullDiet>(`/diets/${diet.id}`, {
+    Api.MAIN.put<Diet>(`/diets/${diet.id}`, {
       attachedFoods: [],
       attachedRecipes: [],
     })
@@ -42,21 +48,21 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
           icon={MacroIcon.CARBOHYDRATES}
           title="Carboidratos"
           goalValue={weight * carbohydratesPerKg}
-          currentValue={diet.carbohydrates}
+          currentValue={carbohydrates}
         />
 
         <MacroCard
           icon={MacroIcon.FATS}
           title="Gorduras"
           goalValue={weight * fatsPerKg}
-          currentValue={diet.fats}
+          currentValue={fats}
         />
 
         <MacroCard
           icon={MacroIcon.PROTEINS}
           title="Proteínas"
           goalValue={weight * proteinsPerKg}
-          currentValue={diet.proteins}
+          currentValue={proteins}
         />
       </div>
 

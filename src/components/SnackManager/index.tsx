@@ -65,7 +65,7 @@ function SnackManager(props: SnackManagerProps): JSX.Element {
           : attachedSnack.food;
 
         const { carbohydrates, fats, proteins } =
-          DatabaseUtil.assignMacrosToAttachedSnack(attachedSnack);
+          DatabaseUtil.getMacrosFromAttachedSnack(attachedSnack);
 
         return (
           <li key={attachedSnack.id}>

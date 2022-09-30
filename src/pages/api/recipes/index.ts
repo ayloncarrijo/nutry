@@ -1,9 +1,8 @@
 import prisma from "lib/prisma";
 import type { NextApiResponse } from "next";
 import type { TypedApiRequest } from "types";
-import type { FullRecipe, Paginated } from "types/api";
+import type { Paginated, Recipe } from "types/api";
 import HttpStatusCode from "types/HttpStatusCode";
-import DatabaseUtil from "utils/DatabaseUtil";
 import ObjectUtil from "utils/ObjectUtil";
 
 const include = { attachedFoods: { include: { food: true } } };
@@ -14,7 +13,7 @@ const methods = {
       unknown,
       { limit: string; page: string; search?: string; createdBy: string }
     >,
-    res: NextApiResponse<Paginated<FullRecipe>>
+    res: NextApiResponse<Paginated<Recipe>>
   ) => {
     const limit = Number(req.query.limit);
 
@@ -47,12 +46,7 @@ const methods = {
 
     return res
       .status(HttpStatusCode.OK)
-      .json([
-        Math.ceil(total / limit),
-        recipes.map((recipe) =>
-          DatabaseUtil.assignMacrosToSnackContainer(recipe)
-        ),
-      ]);
+      .json([Math.ceil(total / limit), recipes]);
   },
 
   POST: async (
@@ -61,7 +55,7 @@ const methods = {
       createdBy: string;
       attachedFoods: Array<{ foodId: string; quantity: number }>;
     }>,
-    res: NextApiResponse<FullRecipe>
+    res: NextApiResponse<Recipe>
   ) => {
     const { name, createdBy, attachedFoods } = req.body;
 
@@ -78,9 +72,7 @@ const methods = {
       },
     });
 
-    return res
-      .status(HttpStatusCode.OK)
-      .json(DatabaseUtil.assignMacrosToSnackContainer(recipe));
+    return res.status(HttpStatusCode.OK).json(recipe);
   },
 };
 

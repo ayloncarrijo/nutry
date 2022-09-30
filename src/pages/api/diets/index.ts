@@ -1,9 +1,8 @@
 import prisma from "lib/prisma";
 import type { NextApiResponse } from "next";
 import type { TypedApiRequest } from "types";
-import type { FullDiet } from "types/api";
+import type { Diet } from "types/api";
 import HttpStatusCode from "types/HttpStatusCode";
-import DatabaseUtil from "utils/DatabaseUtil";
 import ObjectUtil from "utils/ObjectUtil";
 
 const include = {
@@ -16,16 +15,12 @@ const include = {
 };
 
 const methods = {
-  GET: async (req: TypedApiRequest, res: NextApiResponse<Array<FullDiet>>) => {
+  GET: async (req: TypedApiRequest, res: NextApiResponse<Array<Diet>>) => {
     const diets = await prisma.diet.findMany({
       include,
     });
 
-    return res
-      .status(HttpStatusCode.OK)
-      .json(
-        diets.map((diet) => DatabaseUtil.assignMacrosToSnackContainer(diet))
-      );
+    return res.status(HttpStatusCode.OK).json(diets);
   },
 
   POST: async (
@@ -33,7 +28,7 @@ const methods = {
       attachedFoods: Array<{ foodId: string; quantity: number }>;
       attachedRecipes: Array<{ recipeId: string; quantity: number }>;
     }>,
-    res: NextApiResponse<FullDiet>
+    res: NextApiResponse<Diet>
   ) => {
     const { attachedFoods, attachedRecipes } = req.body;
 
@@ -53,9 +48,7 @@ const methods = {
       },
     });
 
-    return res
-      .status(HttpStatusCode.OK)
-      .json(DatabaseUtil.assignMacrosToSnackContainer(diet));
+    return res.status(HttpStatusCode.OK).json(diet);
   },
 };
 

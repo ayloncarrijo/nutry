@@ -16,10 +16,11 @@ import { useRouter } from "next/router";
 import React from "react";
 import "twin.macro";
 import type { AppPage } from "types";
-import { FullRecipe, Measurement } from "types/api";
+import { Measurement, Recipe } from "types/api";
+import DatabaseUtil from "utils/DatabaseUtil";
 import NextUtil from "utils/NextUtil";
 
-type PageProps = FetchPaginatedProps<FullRecipe>;
+type PageProps = FetchPaginatedProps<Recipe>;
 
 const Page: AppPage<PageProps> = ({
   maximumPage,
@@ -30,6 +31,41 @@ const Page: AppPage<PageProps> = ({
 
   const [search, setSearch] = React.useState(
     typeof query.search === "string" ? query.search : ""
+  );
+
+  const itemsEl = React.useMemo(
+    () =>
+      recipes.map((recipe) => {
+        const { carbohydrates, fats, proteins } =
+          DatabaseUtil.getMacrosFromSnackContainer(recipe);
+
+        return (
+          <li key={recipe.id}>
+            <Link
+              href={{
+                pathname: "/recipes/[id]",
+                query: {
+                  id: recipe.id,
+                },
+              }}
+            >
+              <a>
+                <SnackCard
+                  caption="Receita"
+                  carbohydrates={carbohydrates}
+                  fats={fats}
+                  proteins={proteins}
+                  measurement={Measurement.UN}
+                  proportion={1}
+                  cardProps={{ isHoverable: true }}
+                  {...recipe}
+                />
+              </a>
+            </Link>
+          </li>
+        );
+      }),
+    [recipes]
   );
 
   return (
@@ -76,30 +112,7 @@ const Page: AppPage<PageProps> = ({
           </p>
         </MessageBox>
       ) : (
-        <SnackList>
-          {recipes.map((recipe) => (
-            <li key={recipe.id}>
-              <Link
-                href={{
-                  pathname: "/recipes/[id]",
-                  query: {
-                    id: recipe.id,
-                  },
-                }}
-              >
-                <a>
-                  <SnackCard
-                    caption="Receita"
-                    measurement={Measurement.UN}
-                    proportion={1}
-                    cardProps={{ isHoverable: true }}
-                    {...recipe}
-                  />
-                </a>
-              </Link>
-            </li>
-          ))}
-        </SnackList>
+        <SnackList>{itemsEl}</SnackList>
       )}
 
       {maximumPage > 1 && (

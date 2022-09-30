@@ -1,12 +1,12 @@
 import type { FetchPaginatedProps } from "middlewares/fetchPaginated";
 import React from "react";
-import type { FullRecipe } from "types/api";
+import type { Recipe } from "types/api";
 
 const RecipesContext = React.createContext<ReturnType<
   typeof useRecipesInitializer
 > | null>(null);
 
-interface RecipesProviderProps extends FetchPaginatedProps<FullRecipe> {
+interface RecipesProviderProps extends FetchPaginatedProps<Recipe> {
   queryKeys?: {
     search: string;
     page: string;

@@ -1,9 +1,8 @@
 import prisma from "lib/prisma";
 import type { NextApiResponse } from "next";
 import type { TypedApiRequest } from "types";
-import type { FullRecipe } from "types/api";
+import type { Recipe } from "types/api";
 import HttpStatusCode from "types/HttpStatusCode";
-import DatabaseUtil from "utils/DatabaseUtil";
 import ObjectUtil from "utils/ObjectUtil";
 import { include } from "./";
 
@@ -14,7 +13,7 @@ type Query = {
 const methods = {
   GET: async (
     req: TypedApiRequest<unknown, Query>,
-    res: NextApiResponse<FullRecipe>
+    res: NextApiResponse<Recipe>
   ) => {
     const { id } = req.query;
 
@@ -25,9 +24,7 @@ const methods = {
       },
     });
 
-    return res
-      .status(HttpStatusCode.OK)
-      .json(DatabaseUtil.assignMacrosToSnackContainer(recipe));
+    return res.status(HttpStatusCode.OK).json(recipe);
   },
 
   PUT: async (
@@ -38,7 +35,7 @@ const methods = {
       },
       Query
     >,
-    res: NextApiResponse<FullRecipe>
+    res: NextApiResponse<Recipe>
   ) => {
     const { id } = req.query;
 
@@ -60,9 +57,7 @@ const methods = {
       },
     });
 
-    return res
-      .status(HttpStatusCode.OK)
-      .json(DatabaseUtil.assignMacrosToSnackContainer(recipe));
+    return res.status(HttpStatusCode.OK).json(recipe);
   },
 
   DELETE: async (

@@ -7,12 +7,12 @@ import type { GetServerSideProps } from "next";
 import React from "react";
 import "twin.macro";
 import type { AppPage } from "types";
-import type { FullDiet } from "types/api";
+import type { Diet } from "types/api";
 import NextUtil from "utils/NextUtil";
 
 interface PageProps {
   initialState: {
-    dailyDiet: FullDiet;
+    dailyDiet: Diet;
   };
 }
 
@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = NextUtil.mergeGssp(
   [authenticate],
   ([{ user }]) =>
     async () => {
-      const { data: dailyDiet } = await Api.MAIN.get<FullDiet>(
+      const { data: dailyDiet } = await Api.MAIN.get<Diet>(
         `/diets/${user.dailyDietId}`
       );
 
