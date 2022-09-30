@@ -1,5 +1,6 @@
 import Button from "components/Button";
 import FoodViewer from "components/FoodViewer";
+import Form from "components/Form";
 import Modal from "components/Modal";
 import NumericInput from "components/NumericInput";
 import { useSnackManager } from "components/SnackManager/SnackManagerContext";
@@ -120,10 +121,7 @@ function SnackManagerModal(): JSX.Element {
     }
   }, [setIsModalOpen, isBusy]);
 
-  const submit = (event: React.FormEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-
+  const submit = () => {
     if (!callbacks || !snack || !quantity) {
       return;
     }
@@ -223,7 +221,7 @@ function SnackManagerModal(): JSX.Element {
     [ModalStep.QUANTITY]: (
       <Modal tw="w-full sm:w-112" onDismiss={closeModal}>
         {snack && (
-          <form onSubmit={submit}>
+          <Form onSubmit={submit}>
             <h4 tw="mb-6 text-2xl">{snack.data.name}</h4>
 
             <div>
@@ -267,7 +265,7 @@ function SnackManagerModal(): JSX.Element {
                 Salvar
               </Button>
             </div>
-          </form>
+          </Form>
         )}
       </Modal>
     ),

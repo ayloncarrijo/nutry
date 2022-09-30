@@ -1,5 +1,6 @@
 import Button from "components/Button";
 import Container from "components/Container";
+import Form from "components/Form";
 import MessageBox from "components/MessageBox";
 import Pagination from "components/Pagination";
 import SnackCard from "components/SnackCard";
@@ -33,11 +34,9 @@ const Page: AppPage<PageProps> = ({
 
   return (
     <Container>
-      <form
+      <Form
         tw="mb-8"
-        onSubmit={(event) => {
-          event.preventDefault();
-
+        onSubmit={() => {
           void replace({
             pathname,
             query: {
@@ -58,7 +57,7 @@ const Page: AppPage<PageProps> = ({
             },
           ]}
         />
-      </form>
+      </Form>
 
       <div tw="mb-4 flex items-center gap-2">
         <Link href="/recipes/create" passHref>

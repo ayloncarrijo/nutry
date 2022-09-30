@@ -1,6 +1,7 @@
 import { Measurement } from "@prisma/client";
 import Button from "components/Button";
 import Divider from "components/Divider";
+import Form from "components/Form";
 import NumericInput from "components/NumericInput";
 import SelectInput from "components/SelectInput";
 import TextInput from "components/TextInput";
@@ -60,10 +61,8 @@ function FoodForm({
   const [proteins, setProteins] = React.useState(initialData?.proteins);
 
   return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-
+    <Form
+      onSubmit={() => {
         const data = {
           name,
           measurement: measurement?.value,
@@ -173,7 +172,7 @@ function FoodForm({
           {initialData ? "Salvar" : "Registrar"}
         </Button>
       </div>
-    </form>
+    </Form>
   );
 }
 

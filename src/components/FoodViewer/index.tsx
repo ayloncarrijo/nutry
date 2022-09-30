@@ -1,4 +1,5 @@
 import Button from "components/Button";
+import Form from "components/Form";
 import MessageBox from "components/MessageBox";
 import Pagination from "components/Pagination";
 import SnackCard from "components/SnackCard";
@@ -34,11 +35,9 @@ function FoodViewer({
 
   return (
     <div>
-      <form
+      <Form
         tw="mb-8"
-        onSubmit={(event) => {
-          event.preventDefault();
-
+        onSubmit={() => {
           void replace({
             pathname,
             query: {
@@ -59,7 +58,7 @@ function FoodViewer({
             },
           ]}
         />
-      </form>
+      </Form>
 
       <div tw="mb-4 flex items-center gap-2">
         {startButton}

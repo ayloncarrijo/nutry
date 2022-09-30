@@ -1,4 +1,5 @@
 import Button from "components/Button";
+import Form from "components/Form";
 import TextInput from "components/TextInput";
 import AuthLayout from "layouts/AuthLayout";
 import { useRouter } from "next/router";
@@ -12,9 +13,7 @@ const Page: AppPage = () => {
 
   const { push } = useRouter();
 
-  const signIn = (event: React.FormEvent) => {
-    event.preventDefault();
-
+  const signIn = () => {
     setCookie(null, "userName", name, {
       maxAge: Number.MAX_SAFE_INTEGER,
     });
@@ -24,7 +23,7 @@ const Page: AppPage = () => {
 
   return (
     <div tw="min-h-screen flex justify-center items-center">
-      <form tw="w-full max-w-xs" onSubmit={signIn}>
+      <Form tw="w-full max-w-xs" onSubmit={signIn}>
         <TextInput
           required
           label="Usuário"
@@ -37,7 +36,7 @@ const Page: AppPage = () => {
             Entrar
           </Button>
         </div>
-      </form>
+      </Form>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import Button from "components/Button";
 import Container from "components/Container";
 import Divider from "components/Divider";
+import Form from "components/Form";
 import NumericInput from "components/NumericInput";
 import UserLayout from "layouts/UserLayout";
 import Api from "lib/api";
@@ -48,9 +49,8 @@ const Page: AppPage = () => {
 
   return (
     <Container>
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
+      <Form
+        onSubmit={() => {
           void submit();
         }}
       >
@@ -109,7 +109,7 @@ const Page: AppPage = () => {
             Salvar
           </Button>
         </div>
-      </form>
+      </Form>
     </Container>
   );
 };

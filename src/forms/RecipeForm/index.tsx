@@ -1,4 +1,5 @@
 import Button from "components/Button";
+import Form from "components/Form";
 import SnackManager from "components/SnackManager";
 import TextInput from "components/TextInput";
 import React from "react";
@@ -16,10 +17,8 @@ function RecipeForm(): JSX.Element {
   const [name, setName] = React.useState("");
 
   return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-
+    <Form
+      onSubmit={() => {
         if (!attachedFoods.length) {
           void Swal.fire({
             icon: "warning",
@@ -60,7 +59,7 @@ function RecipeForm(): JSX.Element {
           Registrar
         </Button>
       </div>
-    </form>
+    </Form>
   );
 }
 
