@@ -26,15 +26,15 @@ class DatabaseUtil {
   public static getMacrosFromAttachedSnack(
     attachedSnack: SimpleAttachedFood | SimpleAttachedRecipe
   ): Macros {
-    const isRecipe = "recipe" in attachedSnack;
+    const isAttachedRecipe = "recipe" in attachedSnack;
 
-    const proportion = isRecipe ? 1 : attachedSnack.food.proportion;
-
-    const rate = attachedSnack.quantity / proportion;
-
-    const { carbohydrates, fats, proteins } = isRecipe
+    const { carbohydrates, fats, proteins } = isAttachedRecipe
       ? DatabaseUtil.getMacrosFromSnackContainer(attachedSnack.recipe)
       : attachedSnack.food;
+
+    const rate =
+      attachedSnack.quantity /
+      (isAttachedRecipe ? 1 : attachedSnack.food.proportion);
 
     return {
       carbohydrates: carbohydrates * rate,
