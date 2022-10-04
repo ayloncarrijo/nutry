@@ -37,7 +37,12 @@ function MacroCard({
           }}
         >
           {isPercentageVisible ? (
-            <span tw="font-medium text-xs">{percentage}%</span>
+            <span
+              tw="font-medium"
+              css={percentage >= 100 ? tw`text-xs` : tw`text-sm`}
+            >
+              {percentage}%
+            </span>
           ) : (
             <Icon icon={icon} size="sm" />
           )}

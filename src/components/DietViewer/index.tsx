@@ -1,4 +1,3 @@
-import Card from "components/Card";
 import MacroCard from "components/MacroCard";
 import SnackManager from "components/SnackManager";
 import Api from "lib/api";
@@ -12,11 +11,16 @@ import DatabaseUtil from "utils/DatabaseUtil";
 import SwalUtil from "utils/SwalUtil";
 
 interface DietViewerProps {
+  title: string;
   diet: Diet;
   onDietChange: (diet: Diet) => void;
 }
 
-function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
+function DietViewer({
+  title,
+  diet,
+  onDietChange,
+}: DietViewerProps): JSX.Element {
   const { weight, carbohydratesPerKg, fatsPerKg, proteinsPerKg } = useUser();
 
   const { carbohydrates, fats, proteins } = React.useMemo(
@@ -45,45 +49,45 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
 
   return (
     <div>
-      <Card>
-        <div>
-          <h2 tw="text-2xl">Ingestão de Macronutrientes</h2>
-          <div tw="mt-3">
-            <div tw="w-32 h-1 bg-blue-400 rounded-full" />
+      <div>
+        <h2 tw="inline-block text-2xl">
+          <span>{title}</span>
+          <div tw="mt-2">
+            <div tw="w-2/3 h-1 bg-blue-400 rounded-full" />
           </div>
-        </div>
+        </h2>
+      </div>
 
-        <div tw="mt-6">
-          <ul tw="divide-y divide-gray-700 -my-3" css={{ li: tw`py-3` }}>
-            <li>
-              <MacroCard
-                icon={MacroIcon.CARBOHYDRATES}
-                title="Carboidratos"
-                goalValue={weight * carbohydratesPerKg}
-                currentValue={carbohydrates}
-              />
-            </li>
+      <div tw="mt-8">
+        <ul tw="divide-y divide-gray-700 -my-4" css={{ li: tw`py-4` }}>
+          <li>
+            <MacroCard
+              icon={MacroIcon.CARBOHYDRATES}
+              title="Carboidratos"
+              goalValue={weight * carbohydratesPerKg}
+              currentValue={carbohydrates}
+            />
+          </li>
 
-            <li>
-              <MacroCard
-                icon={MacroIcon.FATS}
-                title="Gorduras"
-                goalValue={weight * fatsPerKg}
-                currentValue={fats}
-              />
-            </li>
+          <li>
+            <MacroCard
+              icon={MacroIcon.FATS}
+              title="Gorduras"
+              goalValue={weight * fatsPerKg}
+              currentValue={fats}
+            />
+          </li>
 
-            <li>
-              <MacroCard
-                icon={MacroIcon.PROTEINS}
-                title="Proteínas"
-                goalValue={weight * proteinsPerKg}
-                currentValue={proteins}
-              />
-            </li>
-          </ul>
-        </div>
-      </Card>
+          <li>
+            <MacroCard
+              icon={MacroIcon.PROTEINS}
+              title="Proteínas"
+              goalValue={weight * proteinsPerKg}
+              currentValue={proteins}
+            />
+          </li>
+        </ul>
+      </div>
 
       <div tw="mt-8">
         <SnackManager

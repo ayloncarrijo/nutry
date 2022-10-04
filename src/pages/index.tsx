@@ -34,7 +34,11 @@ const Page: AppPage<PageProps> = ({
     <Container>
       <FoodsProvider {...paginatedFoods}>
         <RecipesProvider {...paginatedRecipes}>
-          <DietViewer diet={dailyDiet} onDietChange={setDailyDiet} />
+          <DietViewer
+            title="Ingestão diária"
+            diet={dailyDiet}
+            onDietChange={setDailyDiet}
+          />
         </RecipesProvider>
       </FoodsProvider>
     </Container>

@@ -20,7 +20,11 @@ const Page: AppPage<PageProps> = ({ initialState }) => {
 
   return (
     <Container>
-      <DietViewer diet={goalDiet} onDietChange={setGoalDiet} />
+      <DietViewer
+        title="Minha dieta"
+        diet={goalDiet}
+        onDietChange={setGoalDiet}
+      />
     </Container>
   );
 };
