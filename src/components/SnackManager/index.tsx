@@ -58,9 +58,9 @@ function SnackManager(props: SnackManagerProps): JSX.Element {
   const snackItemsEl = React.useMemo(
     () =>
       attachedSnacks.map((attachedSnack) => {
-        const isRecipe = "recipe" in attachedSnack;
+        const isAttachedRecipe = "recipe" in attachedSnack;
 
-        const { measurement, name } = isRecipe
+        const { measurement, name } = isAttachedRecipe
           ? { ...attachedSnack.recipe, measurement: Measurement.UN }
           : attachedSnack.food;
 
@@ -78,7 +78,7 @@ function SnackManager(props: SnackManagerProps): JSX.Element {
               }}
             >
               <SnackCard
-                caption={isRecipe ? "Receita" : "Ingrediente"}
+                caption={isAttachedRecipe ? "Receita" : "Ingrediente"}
                 name={name}
                 measurement={measurement}
                 proportion={attachedSnack.quantity}
