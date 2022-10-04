@@ -1,5 +1,7 @@
-import Card from "components/Card";
 import Icon from "components/Icon";
+import React from "react";
+import { CircularProgressbarWithChildren } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import "twin.macro";
 import tw from "twin.macro";
 
@@ -16,42 +18,41 @@ function MacroCard({
   goalValue,
   currentValue,
 }: MacroCardProps): JSX.Element {
-  const isCompleted = currentValue >= goalValue;
+  const [isPercentageVisible, setIsPercentageVisible] = React.useState(false);
+
+  const percentage = Math.floor((currentValue / goalValue) * 100);
 
   return (
-    <Card>
-      <div tw="flex items-center gap-2">
-        <div tw="w-14 h-14 bg-gray-700 rounded-full flex justify-center items-center">
-          <Icon icon={icon} />
-        </div>
-
-        <div tw="flex-1">
-          <div tw="flex justify-between items-center">
-            <h3 tw="text-lg font-medium">{title}</h3>
-
-            {isCompleted ? (
-              <div tw="text-green-500" title="A meta foi alcançada">
-                <Icon icon="task_alt" />
-              </div>
-            ) : (
-              <div tw="text-red-500" title="A meta não foi alcançada">
-                <Icon icon="error" variant="outlined" />
-              </div>
-            )}
-          </div>
-
-          <div tw="mt-1 flex justify-between items-center">
-            <span>
-              {currentValue}g / {goalValue}g
-            </span>
-
-            <span css={isCompleted ? tw`text-green-300` : tw`text-red-300`}>
-              {Math.round((currentValue / goalValue) * 100)}%
-            </span>
-          </div>
-        </div>
+    <button
+      type="button"
+      tw="flex items-center gap-4"
+      onClick={() =>
+        setIsPercentageVisible((wasPercentageVisible) => !wasPercentageVisible)
+      }
+    >
+      <div tw="w-12">
+        <CircularProgressbarWithChildren
+          value={percentage}
+          styles={{
+            path: tw`stroke-current text-blue-400`,
+            trail: tw`stroke-current text-gray-700`,
+          }}
+        >
+          {isPercentageVisible ? (
+            <span tw="font-medium text-xs">{percentage}%</span>
+          ) : (
+            <Icon icon={icon} size="sm" />
+          )}
+        </CircularProgressbarWithChildren>
       </div>
-    </Card>
+
+      <div tw="text-left">
+        <h3 tw="text-lg text-white font-medium">{title}</h3>
+        <p tw="text-sm">
+          {currentValue}g / {goalValue}g
+        </p>
+      </div>
+    </button>
   );
 }
 

@@ -12,8 +12,8 @@ interface ImplFieldProps extends React.PropsWithChildren {
   isFocused: boolean;
   isRequired: boolean;
   wrapperRef?: React.Ref<HTMLDivElement>;
-  className?: string;
   styles?: Styles<"hitbox">;
+  className?: string;
 }
 
 interface FieldProps {

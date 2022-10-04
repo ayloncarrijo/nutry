@@ -1,3 +1,4 @@
+import Card from "components/Card";
 import MacroCard from "components/MacroCard";
 import SnackManager from "components/SnackManager";
 import Api from "lib/api";
@@ -43,28 +44,41 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
 
   return (
     <div>
-      <div tw="grid gap-4 lg:grid-cols-3">
-        <MacroCard
-          icon={MacroIcon.CARBOHYDRATES}
-          title="Carboidratos"
-          goalValue={weight * carbohydratesPerKg}
-          currentValue={carbohydrates}
-        />
+      <Card>
+        <div>
+          <h2 tw="text-2xl">Ingestão de Macronutrientes</h2>
+          <div tw="mt-2 w-32 h-1 bg-blue-400 rounded-full" />
+        </div>
 
-        <MacroCard
-          icon={MacroIcon.FATS}
-          title="Gorduras"
-          goalValue={weight * fatsPerKg}
-          currentValue={fats}
-        />
+        <ul tw="mt-6 grid gap-4">
+          <li>
+            <MacroCard
+              icon={MacroIcon.CARBOHYDRATES}
+              title="Carboidratos"
+              goalValue={weight * carbohydratesPerKg}
+              currentValue={carbohydrates}
+            />
+          </li>
 
-        <MacroCard
-          icon={MacroIcon.PROTEINS}
-          title="Proteínas"
-          goalValue={weight * proteinsPerKg}
-          currentValue={proteins}
-        />
-      </div>
+          <li>
+            <MacroCard
+              icon={MacroIcon.FATS}
+              title="Gorduras"
+              goalValue={weight * fatsPerKg}
+              currentValue={fats}
+            />
+          </li>
+
+          <li>
+            <MacroCard
+              icon={MacroIcon.PROTEINS}
+              title="Proteínas"
+              goalValue={weight * proteinsPerKg}
+              currentValue={proteins}
+            />
+          </li>
+        </ul>
+      </Card>
 
       <div tw="mt-8">
         <SnackManager
