@@ -21,6 +21,10 @@ const methods = {
 
     const { createdBy } = req.query;
 
+    if (!createdBy) {
+      return res.status(HttpStatusCode.BAD_REQUEST).end();
+    }
+
     const sqlFilter = {
       where: {
         createdBy,

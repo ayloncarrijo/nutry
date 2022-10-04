@@ -13,25 +13,22 @@ import ObjectUtil from "utils/ObjectUtil";
 import SwalUtil from "utils/SwalUtil";
 
 interface FoodFormProps {
+  onSubmit: (food: NotCreated<Food>) => void;
+  onDelete?: () => void;
   initialData?: Food;
   submitStatus: Status;
   deleteStatus?: Status;
-  onSubmit: (food: NotCreated<Food>) => void;
-  onDelete?: () => void;
 }
 
 function FoodForm({
+  onSubmit,
+  onDelete,
   initialData,
   submitStatus,
   deleteStatus,
-  onSubmit,
-  onDelete,
 }: FoodFormProps): JSX.Element {
-  const isBusy = React.useMemo(
-    () =>
-      [submitStatus, deleteStatus].some((status) => status === Status.LOADING),
-    [submitStatus, deleteStatus]
-  );
+  const isLoading =
+    submitStatus === Status.LOADING || deleteStatus === Status.LOADING;
 
   const [name, setName] = React.useState(initialData?.name ?? "");
 
@@ -149,7 +146,7 @@ function FoodForm({
         {initialData && (
           <Button
             isLoading={deleteStatus === Status.LOADING}
-            disabled={isBusy}
+            disabled={isLoading}
             type="button"
             variant="outlined"
             startIcon="delete_sweep"
@@ -165,7 +162,7 @@ function FoodForm({
 
         <Button
           isLoading={submitStatus === Status.LOADING}
-          disabled={isBusy}
+          disabled={isLoading}
           type="submit"
           startIcon="done"
         >

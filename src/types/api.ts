@@ -1,17 +1,6 @@
 import type * as Prisma from "@prisma/client";
 export * from "@prisma/client";
 
-export type Diet = Prisma.Diet & {
-  attachedFoods: Array<AttachedFood>;
-  attachedRecipes: Array<AttachedRecipe>;
-};
-
-export type Food = Prisma.Food;
-
-export type Recipe = Prisma.Recipe & {
-  attachedFoods: Array<AttachedFood>;
-};
-
 export type AttachedFood = Prisma.AttachedFood & {
   food: Food;
 };
@@ -30,6 +19,17 @@ export type SimpleAttachedRecipe = Pick<
 export type SnackContainer = {
   attachedFoods: Array<AttachedFood>;
   attachedRecipes?: Array<AttachedRecipe>;
+};
+
+export type Diet = Prisma.Diet & {
+  attachedFoods: Array<AttachedFood>;
+  attachedRecipes: Array<AttachedRecipe>;
+};
+
+export type Food = Prisma.Food;
+
+export type Recipe = Prisma.Recipe & {
+  attachedFoods: Array<AttachedFood>;
 };
 
 export type Macros = {

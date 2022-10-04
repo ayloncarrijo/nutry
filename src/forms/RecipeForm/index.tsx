@@ -5,9 +5,18 @@ import TextInput from "components/TextInput";
 import React from "react";
 import Swal from "sweetalert2";
 import "twin.macro";
+import { Status } from "types";
 import type { SimpleAttachedFood } from "types/api";
 
-function RecipeForm(): JSX.Element {
+interface RecipeFormProps {
+  onSubmit: (recipe: {
+    name: string;
+    attachedFoods: Array<SimpleAttachedFood>;
+  }) => void;
+  submitStatus: Status;
+}
+
+function RecipeForm({ onSubmit, submitStatus }: RecipeFormProps): JSX.Element {
   const [attachedFoods, setAttachedFoods] = React.useState<
     Array<SimpleAttachedFood>
   >([]);
@@ -15,6 +24,8 @@ function RecipeForm(): JSX.Element {
   const wipeAttacheds = () => setAttachedFoods([]);
 
   const [name, setName] = React.useState("");
+
+  const isLoading = submitStatus === Status.LOADING;
 
   return (
     <Form
@@ -25,6 +36,11 @@ function RecipeForm(): JSX.Element {
             text: "Você deve adicionar ao menos uma refeição para criar uma receita.",
           });
         }
+
+        onSubmit({
+          attachedFoods,
+          name,
+        });
       }}
     >
       <TextInput required label="Título" value={name} onValueChange={setName} />
@@ -55,7 +71,12 @@ function RecipeForm(): JSX.Element {
       </div>
 
       <div tw="mt-4 flex justify-end">
-        <Button type="submit" startIcon="done">
+        <Button
+          type="submit"
+          startIcon="done"
+          isLoading={submitStatus === Status.LOADING}
+          disabled={isLoading}
+        >
           Registrar
         </Button>
       </div>

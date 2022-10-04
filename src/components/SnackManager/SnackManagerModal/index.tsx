@@ -22,19 +22,16 @@ type FoodOrRecipe =
   | { type: "recipe"; data: Recipe };
 
 function SnackManagerModal(): JSX.Element {
-  const snackManager = useSnackManager();
+  const manager = useSnackManager();
 
-  const { initialAttachedSnack, isFoodOnly, setIsModalOpen } = snackManager;
+  const { initialAttachedSnack, isFoodOnly, setIsModalOpen } = manager;
 
   const [submitStatus, setSubmitStatus] = React.useState(Status.IDLE);
 
   const [removeStatus, setRemoveStatus] = React.useState(Status.IDLE);
 
-  const isBusy = React.useMemo(
-    () =>
-      [submitStatus, removeStatus].some((status) => status === Status.LOADING),
-    [submitStatus, removeStatus]
-  );
+  const isLoading =
+    submitStatus === Status.LOADING || removeStatus === Status.LOADING;
 
   const isEditing = initialAttachedSnack != null;
 
@@ -80,16 +77,16 @@ function SnackManagerModal(): JSX.Element {
     {
       food: {
         type: "food" as const,
-        onCreate: snackManager.onCreateFood,
-        onUpdate: snackManager.onUpdateFood,
-        onDelete: snackManager.onDeleteFood,
+        onCreate: manager.onCreateFood,
+        onUpdate: manager.onUpdateFood,
+        onDelete: manager.onDeleteFood,
       },
-      recipe: !snackManager.isFoodOnly
+      recipe: !manager.isFoodOnly
         ? {
             type: "recipe" as const,
-            onCreate: snackManager.onCreateRecipe,
-            onUpdate: snackManager.onUpdateRecipe,
-            onDelete: snackManager.onDeleteRecipe,
+            onCreate: manager.onCreateRecipe,
+            onUpdate: manager.onUpdateRecipe,
+            onDelete: manager.onDeleteRecipe,
           }
         : null,
     }[snack.type];
@@ -108,7 +105,7 @@ function SnackManagerModal(): JSX.Element {
     <Button
       startIcon="arrow_back"
       variant="outlined"
-      disabled={isBusy}
+      disabled={isLoading}
       onClick={backStep}
     >
       Voltar
@@ -116,10 +113,10 @@ function SnackManagerModal(): JSX.Element {
   );
 
   const closeModal = React.useCallback(() => {
-    if (!isBusy) {
+    if (!isLoading) {
       setIsModalOpen(false);
     }
-  }, [setIsModalOpen, isBusy]);
+  }, [setIsModalOpen, isLoading]);
 
   const submit = () => {
     if (!callbacks || !snack || !quantity) {
@@ -249,7 +246,7 @@ function SnackManagerModal(): JSX.Element {
                   startIcon="delete"
                   variant="outlined"
                   isLoading={removeStatus === Status.LOADING}
-                  disabled={isBusy}
+                  disabled={isLoading}
                   onClick={remove}
                 >
                   Remover
@@ -260,7 +257,7 @@ function SnackManagerModal(): JSX.Element {
                 type="submit"
                 startIcon="done"
                 isLoading={submitStatus === Status.LOADING}
-                disabled={isBusy}
+                disabled={isLoading}
               >
                 Salvar
               </Button>

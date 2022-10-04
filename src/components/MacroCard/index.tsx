@@ -46,7 +46,7 @@ function MacroCard({
             </span>
 
             <span css={isCompleted ? tw`text-green-300` : tw`text-red-300`}>
-              {Math.round((currentValue / goalValue) * 100)}%
+              {Math.round((currentValue / (goalValue || 1)) * 100)}%
             </span>
           </div>
         </div>
