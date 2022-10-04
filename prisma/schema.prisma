@@ -20,7 +20,7 @@ enum Measurement {
 
 model User {
   name               String   @id
-  weight             Float    @default(0)
+  weight             Float    @default(65)
   carbohydratesPerKg Float    @default(2)
   fatsPerKg          Float    @default(1)
   proteinsPerKg      Float    @default(1.5)
