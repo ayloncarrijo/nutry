@@ -47,7 +47,9 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
       <Card>
         <div>
           <h2 tw="text-2xl">Ingestão de Macronutrientes</h2>
-          <div tw="mt-2 w-32 h-1 bg-blue-400 rounded-full" />
+          <div tw="mt-2">
+            <div tw="w-32 h-1 bg-blue-400 rounded-full" />
+          </div>
         </div>
 
         <ul tw="mt-6 grid gap-4">
