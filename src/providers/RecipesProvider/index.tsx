@@ -2,49 +2,36 @@ import type { FetchPaginatedProps } from "middlewares/fetchPaginated";
 import React from "react";
 import type { Recipe } from "types/api";
 
-const RecipesContext = React.createContext<ReturnType<
-  typeof useRecipesInitializer
-> | null>(null);
-
-interface RecipesProviderProps extends FetchPaginatedProps<Recipe> {
-  queryKeys?: {
-    search: string;
-    page: string;
-  };
-}
+const RecipesContext = React.createContext<FetchPaginatedProps<Recipe> | null>(
+  null
+);
 
 function RecipesProvider({
+  maximumPage,
+  currentPage,
+  queryKeys,
+  data,
   children,
-  ...props
-}: React.PropsWithChildren<RecipesProviderProps>): JSX.Element {
-  const value = useRecipesInitializer(props);
-
+}: React.PropsWithChildren<FetchPaginatedProps<Recipe>>): JSX.Element {
   return (
-    <RecipesContext.Provider value={value}>{children}</RecipesContext.Provider>
+    <RecipesContext.Provider
+      value={{
+        maximumPage,
+        currentPage,
+        queryKeys,
+        data,
+      }}
+    >
+      {children}
+    </RecipesContext.Provider>
   );
 }
 
-function useRecipesInitializer({
-  maximumPage,
-  currentPage,
-  data,
-  queryKeys = { search: "search", page: "page" },
-}: RecipesProviderProps) {
-  return {
-    maximumPage,
-    currentPage,
-    data,
-    queryKeys,
-  };
-}
-
-function useRecipes(
-  shouldThrowIfNotFound?: true
-): ReturnType<typeof useRecipesInitializer>;
+function useRecipes(shouldThrowIfNotFound?: true): FetchPaginatedProps<Recipe>;
 
 function useRecipes(
   shouldThrowIfNotFound: false
-): ReturnType<typeof useRecipesInitializer> | null;
+): FetchPaginatedProps<Recipe> | null;
 
 function useRecipes(shouldThrowIfNotFound = true) {
   const value = React.useContext(RecipesContext);

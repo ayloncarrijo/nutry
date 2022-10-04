@@ -5,6 +5,7 @@ import type { Paginated } from "types/api";
 interface FetchPaginatedProps<T> {
   maximumPage: number;
   currentPage: number;
+  queryKeys: QueryKeys;
   data: Array<T>;
 }
 
@@ -12,11 +13,13 @@ interface Options {
   url: string;
   limit: number;
   params?: Record<string, string>;
-  queryKeys?: {
-    search: string;
-    page: string;
-  };
+  queryKeys?: QueryKeys;
 }
+
+type QueryKeys = {
+  search: string;
+  page: string;
+};
 
 const fetchPaginated: <T>(
   options: Options
@@ -61,6 +64,7 @@ const fetchPaginated: <T>(
       props: {
         maximumPage,
         currentPage,
+        queryKeys,
         data,
       },
     };

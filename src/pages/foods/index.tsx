@@ -15,7 +15,12 @@ import NextUtil from "utils/NextUtil";
 
 type PageProps = FetchPaginatedProps<Food>;
 
-const Page: AppPage<PageProps> = ({ maximumPage, currentPage, data }) => {
+const Page: AppPage<PageProps> = ({
+  maximumPage,
+  currentPage,
+  queryKeys,
+  data,
+}) => {
   const { push } = useRouter();
 
   return (
@@ -23,6 +28,7 @@ const Page: AppPage<PageProps> = ({ maximumPage, currentPage, data }) => {
       <FoodsProvider
         maximumPage={maximumPage}
         currentPage={currentPage}
+        queryKeys={queryKeys}
         data={data}
       >
         <FoodViewer

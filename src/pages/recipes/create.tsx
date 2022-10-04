@@ -17,7 +17,12 @@ import SwalUtil from "utils/SwalUtil";
 
 type PageProps = FetchPaginatedProps<Food>;
 
-const Page: AppPage<PageProps> = ({ maximumPage, currentPage, data }) => {
+const Page: AppPage<PageProps> = ({
+  maximumPage,
+  currentPage,
+  queryKeys,
+  data,
+}) => {
   const [submitStatus, setSubmitStatus] = React.useState(Status.IDLE);
 
   const user = useUser();
@@ -29,6 +34,7 @@ const Page: AppPage<PageProps> = ({ maximumPage, currentPage, data }) => {
       <FoodsProvider
         maximumPage={maximumPage}
         currentPage={currentPage}
+        queryKeys={queryKeys}
         data={data}
       >
         <RecipeForm

@@ -1,27 +1,38 @@
 import type { GetServerSideProps } from "next";
 
-type MiddlewareProps<
-  T extends Array<GetServerSideProps> | [GetServerSideProps]
-> = {
-  [Index in keyof T]: UnwrapProps<T[Index]>;
+type Middleware = GetServerSideProps | MiddlewareWithUniqueKey;
+
+type MiddlewareWithUniqueKey = {
+  uniqueKey: PropertyKey;
+  gssp: GetServerSideProps;
 };
 
-type UnwrapProps<T extends GetServerSideProps> = T extends GetServerSideProps<
+type MiddlewareProps<T extends Array<Middleware> | [Middleware]> = {
+  [Index in keyof T]: UnwrapMiddlewareProps<T[Index]>;
+};
+
+type UnwrapMiddlewareProps<T extends Middleware> = T extends GetServerSideProps<
   infer Props
 >
   ? Props
+  : T extends MiddlewareWithUniqueKey
+  ? T["gssp"] extends GetServerSideProps<infer Props>
+    ? Props
+    : never
   : never;
 
 class NextUtil {
-  public static mergeGssp<
-    T extends Array<GetServerSideProps> | [GetServerSideProps]
-  >(
+  public static mergeGssp<T extends Array<Middleware> | [Middleware]>(
     middlewares: T,
     gsspGetter?: (props: MiddlewareProps<T>) => GetServerSideProps
   ): GetServerSideProps {
     return async (context) => {
       const middlewareResults = await Promise.all(
-        middlewares.map((middleware) => middleware(context))
+        middlewares.map((middleware) =>
+          typeof middleware === "object"
+            ? middleware.gssp(context)
+            : middleware(context)
+        )
       );
 
       const failedResult = middlewareResults.find(
@@ -43,10 +54,21 @@ class NextUtil {
       );
 
       const unifiedMiddlewareProps = middlewareProps.reduce(
-        (accumulator, props) => ({
-          ...accumulator,
-          ...props,
-        }),
+        (accumulator, props, index) => {
+          const middleware = middlewares[index];
+
+          if (!middleware) {
+            throw new Error("Middleware not found.");
+          }
+
+          const uniqueKey =
+            typeof middleware === "object" ? middleware.uniqueKey : null;
+
+          return {
+            ...accumulator,
+            ...(uniqueKey ? { [uniqueKey]: props } : props),
+          };
+        },
         {}
       );
 
@@ -74,5 +96,5 @@ class NextUtil {
   }
 }
 
-export type { UnwrapProps };
+export type { UnwrapMiddlewareProps as UnwrapProps };
 export default NextUtil;
