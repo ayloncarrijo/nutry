@@ -5,6 +5,7 @@ import Api from "lib/api";
 import { useUser } from "providers/UserProvider";
 import React from "react";
 import "twin.macro";
+import tw from "twin.macro";
 import { MacroIcon, Status } from "types";
 import type { Diet } from "types/api";
 import DatabaseUtil from "utils/DatabaseUtil";
@@ -47,39 +48,41 @@ function DietViewer({ diet, onDietChange }: DietViewerProps): JSX.Element {
       <Card>
         <div>
           <h2 tw="text-2xl">Ingestão de Macronutrientes</h2>
-          <div tw="mt-2">
+          <div tw="mt-3">
             <div tw="w-32 h-1 bg-blue-400 rounded-full" />
           </div>
         </div>
 
-        <ul tw="mt-6 grid gap-4">
-          <li>
-            <MacroCard
-              icon={MacroIcon.CARBOHYDRATES}
-              title="Carboidratos"
-              goalValue={weight * carbohydratesPerKg}
-              currentValue={carbohydrates}
-            />
-          </li>
+        <div tw="mt-6">
+          <ul tw="divide-y divide-gray-700 -my-3" css={{ li: tw`py-3` }}>
+            <li>
+              <MacroCard
+                icon={MacroIcon.CARBOHYDRATES}
+                title="Carboidratos"
+                goalValue={weight * carbohydratesPerKg}
+                currentValue={carbohydrates}
+              />
+            </li>
 
-          <li>
-            <MacroCard
-              icon={MacroIcon.FATS}
-              title="Gorduras"
-              goalValue={weight * fatsPerKg}
-              currentValue={fats}
-            />
-          </li>
+            <li>
+              <MacroCard
+                icon={MacroIcon.FATS}
+                title="Gorduras"
+                goalValue={weight * fatsPerKg}
+                currentValue={fats}
+              />
+            </li>
 
-          <li>
-            <MacroCard
-              icon={MacroIcon.PROTEINS}
-              title="Proteínas"
-              goalValue={weight * proteinsPerKg}
-              currentValue={proteins}
-            />
-          </li>
-        </ul>
+            <li>
+              <MacroCard
+                icon={MacroIcon.PROTEINS}
+                title="Proteínas"
+                goalValue={weight * proteinsPerKg}
+                currentValue={proteins}
+              />
+            </li>
+          </ul>
+        </div>
       </Card>
 
       <div tw="mt-8">
