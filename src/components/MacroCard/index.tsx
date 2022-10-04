@@ -26,9 +26,7 @@ function MacroCard({
     <button
       type="button"
       tw="flex items-center gap-4"
-      onClick={() =>
-        setIsPercentageVisible((wasPercentageVisible) => !wasPercentageVisible)
-      }
+      onClick={() => setIsPercentageVisible(!isPercentageVisible)}
     >
       <div tw="w-12">
         <CircularProgressbarWithChildren
