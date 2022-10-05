@@ -213,7 +213,10 @@ function SnackManagerModal(): JSX.Element {
     ),
     [ModalStep.RECIPES]: (
       <Modal tw="w-full" title="Receitas" onDismiss={closeModal}>
-        <RecipeViewer />
+        <RecipeViewer
+          onRecipeClick={(recipe) => setSnack({ type: "recipe", data: recipe })}
+          startButton={backBtn}
+        />
       </Modal>
     ),
     [ModalStep.QUANTITY]: (

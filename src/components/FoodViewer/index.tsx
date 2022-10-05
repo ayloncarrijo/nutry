@@ -27,11 +27,10 @@ function FoodViewer({
 
   const { query, pathname, replace } = useRouter();
 
-  const initialSearch = query[queryKeys.search];
+  const currentSearch =
+    typeof query[queryKeys.search] === "string" ? query[queryKeys.search] : "";
 
-  const [search, setSearch] = React.useState(
-    typeof initialSearch === "string" ? initialSearch : ""
-  );
+  const [typedSearch, setTypedSearch] = React.useState(currentSearch);
 
   return (
     <div>
@@ -41,7 +40,7 @@ function FoodViewer({
           void replace({
             pathname,
             query: {
-              ...(search && { [queryKeys.search]: search }),
+              ...(typedSearch && { [queryKeys.search]: typedSearch }),
               [queryKeys.page]: 1,
             },
           });
@@ -49,8 +48,8 @@ function FoodViewer({
       >
         <TextInput
           label="Pesquisar"
-          value={search}
-          onValueChange={setSearch}
+          value={typedSearch}
+          onValueChange={setTypedSearch}
           endButtons={[
             {
               icon: "search",
@@ -75,7 +74,7 @@ function FoodViewer({
       {!foods.length ? (
         <MessageBox>
           <p>
-            {initialSearch
+            {currentSearch
               ? "Ainda não há ingredientes registrados com este nome."
               : "Ainda não há ingredientes registrados."}
           </p>

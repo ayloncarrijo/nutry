@@ -28,11 +28,10 @@ function RecipeViewer({
 
   const { query, pathname, replace } = useRouter();
 
-  const initialSearch = query[queryKeys.search];
+  const currentSearch =
+    typeof query[queryKeys.search] === "string" ? query[queryKeys.search] : "";
 
-  const [search, setSearch] = React.useState(
-    typeof initialSearch === "string" ? initialSearch : ""
-  );
+  const [typedSearch, setTypedSearch] = React.useState(currentSearch);
 
   return (
     <div>
@@ -42,7 +41,7 @@ function RecipeViewer({
           void replace({
             pathname,
             query: {
-              ...(search && { [queryKeys.search]: search }),
+              ...(typedSearch && { [queryKeys.search]: typedSearch }),
               [queryKeys.page]: 1,
             },
           });
@@ -50,8 +49,8 @@ function RecipeViewer({
       >
         <TextInput
           label="Pesquisar"
-          value={search}
-          onValueChange={setSearch}
+          value={typedSearch}
+          onValueChange={setTypedSearch}
           endButtons={[
             {
               icon: "search",
@@ -64,7 +63,7 @@ function RecipeViewer({
       <div tw="mb-4 flex items-center gap-2">
         {startButton}
 
-        <Link href="/foods/create" passHref>
+        <Link href="/recipes/create" passHref>
           <Button forwardedAs="a" startIcon="add">
             Registrar
           </Button>
@@ -76,7 +75,7 @@ function RecipeViewer({
       {!recipes.length ? (
         <MessageBox>
           <p>
-            {query.search
+            {currentSearch
               ? "Ainda não há receitas registradas com este nome."
               : "Ainda não há receitas registradas."}
           </p>

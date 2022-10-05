@@ -70,5 +70,5 @@ const fetchPaginated: <T>(
     };
   };
 
-export type { FetchPaginatedProps };
+export type { FetchPaginatedProps, QueryKeys };
 export default fetchPaginated;
