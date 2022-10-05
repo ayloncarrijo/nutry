@@ -6,7 +6,7 @@ import React from "react";
 import "twin.macro";
 import tw from "twin.macro";
 import { MacroIcon, Status } from "types";
-import type { AttachedFood, Diet } from "types/api";
+import type { AttachedFood, AttachedRecipe, Diet } from "types/api";
 import DatabaseUtil from "utils/DatabaseUtil";
 import SwalUtil from "utils/SwalUtil";
 
@@ -42,6 +42,11 @@ function DietViewer({
         setWipeStatus(Status.ERROR);
         void SwalUtil.fireError();
       });
+  };
+
+  const updateDiet = async () => {
+    const { data } = await Api.MAIN.get<Diet>(`/diets/${diet.id}`);
+    onDietChange(data);
   };
 
   return (
@@ -98,12 +103,7 @@ function DietViewer({
               foodId: food.id,
               dietId: diet.id,
             })
-              .then(({ data: attachedFood }) => {
-                onDietChange({
-                  ...diet,
-                  attachedFoods: [attachedFood, ...diet.attachedFoods],
-                });
-              })
+              .then(updateDiet)
               .catch(() => {
                 void SwalUtil.fireError();
               });
@@ -112,42 +112,44 @@ function DietViewer({
             await Api.MAIN.put<AttachedFood>(`/attached-foods/${id}`, {
               quantity,
             })
-              .then(({ data: attachedFood }) => {
-                onDietChange({
-                  ...diet,
-                  attachedFoods: diet.attachedFoods.map((attachedFoodIn) =>
-                    attachedFoodIn.id === attachedFood.id
-                      ? attachedFood
-                      : attachedFoodIn
-                  ),
-                });
-              })
+              .then(updateDiet)
               .catch(() => {
                 void SwalUtil.fireError();
               });
           }}
           onDeleteFood={async (id) => {
             await Api.MAIN.delete(`/attached-foods/${id}`)
-              .then(() => {
-                onDietChange({
-                  ...diet,
-                  attachedFoods: diet.attachedFoods.filter(
-                    (attachedFood) => attachedFood.id !== id
-                  ),
-                });
-              })
+              .then(updateDiet)
               .catch(() => {
                 void SwalUtil.fireError();
               });
           }}
-          onCreateRecipe={({ recipe, quantity }) => {
-            // Api.MAIN.post('/attachedRecipes', { quantity, dietId: diet.id, recipeId: recipe.id });
+          onCreateRecipe={async ({ recipe, quantity }) => {
+            await Api.MAIN.post("/attached-recipes", {
+              quantity,
+              recipeId: recipe.id,
+              dietId: diet.id,
+            })
+              .then(updateDiet)
+              .catch(() => {
+                void SwalUtil.fireError();
+              });
           }}
-          onUpdateRecipe={(id, quantity) => {
-            // Api.MAIN.put(`/attachedRecipes/${id}`, { quantity });
+          onUpdateRecipe={async (id, quantity) => {
+            await Api.MAIN.put<AttachedRecipe>(`/attached-recipes/${id}`, {
+              quantity,
+            })
+              .then(updateDiet)
+              .catch(() => {
+                void SwalUtil.fireError();
+              });
           }}
-          onDeleteRecipe={(id) => {
-            // Api.MAIN.delete(`/attachedRecipes/${id}`);
+          onDeleteRecipe={async (id) => {
+            await Api.MAIN.delete(`/attached-recipes/${id}`)
+              .then(updateDiet)
+              .catch(() => {
+                void SwalUtil.fireError();
+              });
           }}
         />
       </div>

@@ -1,15 +1,43 @@
+import prisma from "lib/prisma";
 import type { NextApiResponse } from "next";
 import type { TypedApiRequest } from "types";
+import type { AttachedRecipe } from "types/api";
 import HttpStatusCode from "types/HttpStatusCode";
 import ObjectUtil from "utils/ObjectUtil";
 
-const methods = {
-  GET: async (req: TypedApiRequest, res: NextApiResponse<never>) => {
-    return res.status(HttpStatusCode.OK).end();
+const include = {
+  recipe: {
+    include: {
+      attachedFoods: {
+        include: {
+          food: true,
+        },
+      },
+    },
   },
+};
 
-  POST: async (req: TypedApiRequest, res: NextApiResponse<never>) => {
-    return res.status(HttpStatusCode.OK).end();
+const methods = {
+  POST: async (
+    req: TypedApiRequest<{
+      quantity: number;
+      dietId: string;
+      recipeId: string;
+    }>,
+    res: NextApiResponse<AttachedRecipe>
+  ) => {
+    const { quantity, recipeId, dietId } = req.body;
+
+    const attachedRecipe = await prisma.attachedRecipe.create({
+      include,
+      data: {
+        quantity,
+        recipeId,
+        dietId,
+      },
+    });
+
+    return res.status(HttpStatusCode.OK).json(attachedRecipe);
   },
 };
 
@@ -26,4 +54,5 @@ const handle = async (
   return res.status(HttpStatusCode.METHOD_NOT_ALLOWED).end();
 };
 
+export { include };
 export default handle;

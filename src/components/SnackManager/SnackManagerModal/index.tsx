@@ -232,6 +232,7 @@ function SnackManagerModal(): JSX.Element {
                 label="Quantidade"
                 value={quantity}
                 onValueChange={({ floatValue }) => setQuantity(floatValue)}
+                decimalScale={0}
                 endElement={
                   <span>
                     {snack.type === "recipe"
