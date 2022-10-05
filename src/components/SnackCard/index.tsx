@@ -53,11 +53,11 @@ function SnackCard({
           <thead>
             <tr>
               {[
-                MacroIcon.CARBOHYDRATES,
-                MacroIcon.FATS,
-                MacroIcon.PROTEINS,
-              ].map((icon, index) => (
-                <th key={icon}>
+                { icon: MacroIcon.CARBOHYDRATES, title: "Carboidratos" },
+                { icon: MacroIcon.FATS, title: "Gorduras" },
+                { icon: MacroIcon.PROTEINS, title: "Proteínas" },
+              ].map(({ icon, title }, index) => (
+                <th key={icon} title={title}>
                   <div
                     tw="flex"
                     css={
