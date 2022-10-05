@@ -52,7 +52,7 @@ function MacroCard({
       <div tw="text-left">
         <h3 tw="text-lg text-white font-medium">{title}</h3>
         <p tw="text-sm">
-          {currentValue}g / {goalValue}g
+          {Number(currentValue.toFixed(1))}g / {goalValue}g
         </p>
       </div>
     </button>

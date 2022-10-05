@@ -6,7 +6,7 @@ import React from "react";
 import "twin.macro";
 import tw from "twin.macro";
 import { MacroIcon, Status } from "types";
-import type { Diet } from "types/api";
+import type { AttachedFood, Diet } from "types/api";
 import DatabaseUtil from "utils/DatabaseUtil";
 import SwalUtil from "utils/SwalUtil";
 
@@ -95,23 +95,35 @@ function DietViewer({
           wipeStatus={wipeStatus}
           attachedFoods={diet.attachedFoods}
           attachedRecipes={diet.attachedRecipes}
-          onCreateFood={() => {
-            //
+          onCreateFood={async ({ food, quantity }) => {
+            const { data: attachedFood } = await Api.MAIN.post<AttachedFood>(
+              "/attachedFoods",
+              {
+                quantity,
+                foodId: food.id,
+                dietId: diet.id,
+              }
+            );
+
+            onDietChange({
+              ...diet,
+              attachedFoods: [attachedFood, ...diet.attachedFoods],
+            });
           }}
-          onUpdateFood={() => {
-            //
+          onUpdateFood={(id, quantity) => {
+            // Api.MAIN.put(`/attachedFoods/${id}`, { quantity });
           }}
-          onDeleteFood={() => {
-            //
+          onDeleteFood={(id) => {
+            // Api.MAIN.delete(`/attachedFoods/${id}`);
           }}
-          onCreateRecipe={() => {
-            //
+          onCreateRecipe={({ recipe, quantity }) => {
+            // Api.MAIN.post('/attachedRecipes', { quantity, dietId: diet.id, recipeId: recipe.id });
           }}
-          onUpdateRecipe={() => {
-            //
+          onUpdateRecipe={(id, quantity) => {
+            // Api.MAIN.put(`/attachedRecipes/${id}`, { quantity });
           }}
-          onDeleteRecipe={() => {
-            //
+          onDeleteRecipe={(id) => {
+            // Api.MAIN.delete(`/attachedRecipes/${id}`);
           }}
         />
       </div>

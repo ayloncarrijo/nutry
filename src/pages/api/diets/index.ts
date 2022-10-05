@@ -56,7 +56,7 @@ const handle = async (
   req: TypedApiRequest<never, never>,
   res: NextApiResponse
 ) => {
-  const { method = "NONE" } = req;
+  const { method = "" } = req;
 
   if (ObjectUtil.isKeyOf(methods, method)) {
     return methods[method](req, res);
