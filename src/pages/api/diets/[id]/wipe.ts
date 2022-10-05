@@ -18,6 +18,7 @@ const methods = {
     const { id } = req.query;
 
     const diet = await prisma.diet.update({
+      include,
       where: {
         id,
       },
@@ -29,7 +30,6 @@ const methods = {
           deleteMany: {},
         },
       },
-      include,
     });
 
     return res.status(HttpStatusCode.OK).json(diet);

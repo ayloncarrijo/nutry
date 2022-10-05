@@ -31,7 +31,6 @@ const methods = {
     req: TypedApiRequest<
       {
         name: string;
-        attachedFoods: Array<{ foodId: string; quantity: number }>;
       },
       Query
     >,
@@ -39,7 +38,7 @@ const methods = {
   ) => {
     const { id } = req.query;
 
-    const { name, attachedFoods } = req.body;
+    const { name } = req.body;
 
     const recipe = await prisma.recipe.update({
       include,
@@ -48,12 +47,6 @@ const methods = {
       },
       data: {
         name,
-        attachedFoods: {
-          deleteMany: {},
-          createMany: {
-            data: attachedFoods,
-          },
-        },
       },
     });
 
