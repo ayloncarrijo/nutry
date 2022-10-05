@@ -36,36 +36,30 @@ const Page: AppPage<PageProps> = ({ food }) => {
           setSubmitStatus(Status.LOADING);
 
           Api.MAIN.put<Food>(`/foods/${food.id}`, data)
-            .then(async () => {
+            .then(() => {
               setSubmitStatus(Status.SUCCESS);
-
-              await SwalUtil.fireSuccess("Informações editadas com sucesso!");
-
               back();
+              void SwalUtil.fireSuccess("Informações editadas com sucesso!");
             })
             .catch(() => {
               setSubmitStatus(Status.ERROR);
-
-              return SwalUtil.fireError();
+              void SwalUtil.fireError();
             });
         }}
         onDelete={() => {
           setDeleteStatus(Status.LOADING);
 
           Api.MAIN.delete(`/foods/${food.id}`)
-            .then(async () => {
+            .then(() => {
               setDeleteStatus(Status.SUCCESS);
-
-              await SwalUtil.fireSuccess(
+              back();
+              void SwalUtil.fireSuccess(
                 "O ingrediente foi deletado com sucesso!"
               );
-
-              back();
             })
             .catch(() => {
               setDeleteStatus(Status.ERROR);
-
-              return SwalUtil.fireError();
+              void SwalUtil.fireError();
             });
         }}
       />
@@ -75,9 +69,9 @@ const Page: AppPage<PageProps> = ({ food }) => {
 
 Page.getLayout = (page) => <UserLayout>{page}</UserLayout>;
 
-export const getServerSideProps: GetServerSideProps = NextUtil.mergeGssp(
-  [authenticate],
-  () => async (context) => {
+export const getServerSideProps: GetServerSideProps = NextUtil.mergeGssp([
+  authenticate,
+  async (context) => {
     const { id } = context.query as Query;
 
     const { data: food } = await Api.MAIN.get<Food | null>(`/foods/${id}`);
@@ -91,13 +85,13 @@ export const getServerSideProps: GetServerSideProps = NextUtil.mergeGssp(
       };
     }
 
-    const props: PageProps = {
+    const props: Pick<PageProps, "food"> = {
       food,
     };
 
     return {
       props,
     };
-  }
-);
+  },
+]);
 export default Page;

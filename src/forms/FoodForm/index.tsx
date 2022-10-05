@@ -14,19 +14,19 @@ import ObjectUtil from "utils/ObjectUtil";
 import SwalUtil from "utils/SwalUtil";
 
 interface FoodFormProps {
-  onSubmit: (food: NotCreated<Food>) => void;
-  onDelete?: () => void;
   initialData?: Food;
   submitStatus: Status;
   deleteStatus?: Status;
+  onSubmit: (food: NotCreated<Food>) => void;
+  onDelete?: () => void;
 }
 
 function FoodForm({
-  onSubmit,
-  onDelete,
   initialData,
   submitStatus,
   deleteStatus,
+  onSubmit,
+  onDelete,
 }: FoodFormProps): JSX.Element {
   const isLoading =
     submitStatus === Status.LOADING || deleteStatus === Status.LOADING;
@@ -176,7 +176,7 @@ function FoodForm({
           type="submit"
           startIcon="done"
         >
-          {initialData ? "Salvar" : "Registrar"}
+          Salvar
         </Button>
       </div>
     </Form>

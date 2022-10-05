@@ -5,7 +5,12 @@ import type { Paginated, Recipe } from "types/api";
 import HttpStatusCode from "types/HttpStatusCode";
 import ObjectUtil from "utils/ObjectUtil";
 
-const include = { attachedFoods: { include: { food: true } } };
+const include = {
+  attachedFoods: {
+    orderBy: { createdAt: "desc" },
+    include: { food: true },
+  },
+} as const;
 
 const methods = {
   GET: async (
