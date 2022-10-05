@@ -11,73 +11,28 @@ type Query = {
 };
 
 const methods = {
-  GET: async (
+  POST: async (
     req: TypedApiRequest<unknown, Query>,
     res: NextApiResponse<Diet>
   ) => {
     const { id } = req.query;
 
-    const diet = await prisma.diet.findUniqueOrThrow({
-      include,
-      where: {
-        id,
-      },
-    });
-
-    return res.status(HttpStatusCode.OK).json(diet);
-  },
-
-  PUT: async (
-    req: TypedApiRequest<
-      {
-        attachedFoods: Array<{ foodId: string; quantity: number }>;
-        attachedRecipes: Array<{ recipeId: string; quantity: number }>;
-      },
-      Query
-    >,
-    res: NextApiResponse<Diet>
-  ) => {
-    const { attachedFoods, attachedRecipes } = req.body;
-
-    const { id } = req.query;
-
     const diet = await prisma.diet.update({
-      include,
       where: {
         id,
       },
       data: {
         attachedFoods: {
           deleteMany: {},
-          createMany: {
-            data: attachedFoods,
-          },
         },
         attachedRecipes: {
           deleteMany: {},
-          createMany: {
-            data: attachedRecipes,
-          },
         },
       },
+      include,
     });
 
     return res.status(HttpStatusCode.OK).json(diet);
-  },
-
-  DELETE: async (
-    req: TypedApiRequest<unknown, Query>,
-    res: NextApiResponse<never>
-  ) => {
-    const { id } = req.query;
-
-    await prisma.diet.delete({
-      where: {
-        id,
-      },
-    });
-
-    return res.status(HttpStatusCode.OK).end();
   },
 };
 

@@ -87,7 +87,7 @@ function SnackCard({
                     }[index]
                   }
                 >
-                  {Math.round(data)}g
+                  {Number(data.toFixed(1))}g
                 </td>
               ))}
             </tr>

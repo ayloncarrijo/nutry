@@ -33,17 +33,14 @@ function DietViewer({
   const wipeAttacheds = () => {
     setWipeStatus(Status.LOADING);
 
-    Api.MAIN.put<Diet>(`/diets/${diet.id}`, {
-      attachedFoods: [],
-      attachedRecipes: [],
-    })
+    Api.MAIN.post<Diet>(`/diets/${diet.id}/wipe`)
       .then(({ data }) => {
         setWipeStatus(Status.SUCCESS);
         onDietChange(data);
       })
       .catch(() => {
         setWipeStatus(Status.ERROR);
-        return SwalUtil.fireError();
+        void SwalUtil.fireError();
       });
   };
 
@@ -96,25 +93,52 @@ function DietViewer({
           attachedFoods={diet.attachedFoods}
           attachedRecipes={diet.attachedRecipes}
           onCreateFood={async ({ food, quantity }) => {
-            const { data: attachedFood } = await Api.MAIN.post<AttachedFood>(
-              "/attachedFoods",
-              {
-                quantity,
-                foodId: food.id,
-                dietId: diet.id,
-              }
-            );
-
-            onDietChange({
-              ...diet,
-              attachedFoods: [attachedFood, ...diet.attachedFoods],
-            });
+            await Api.MAIN.post<AttachedFood>("/attachedFoods", {
+              quantity,
+              foodId: food.id,
+              dietId: diet.id,
+            })
+              .then(({ data: attachedFood }) => {
+                onDietChange({
+                  ...diet,
+                  attachedFoods: [attachedFood, ...diet.attachedFoods],
+                });
+              })
+              .catch(() => {
+                void SwalUtil.fireError();
+              });
           }}
-          onUpdateFood={(id, quantity) => {
-            // Api.MAIN.put(`/attachedFoods/${id}`, { quantity });
+          onUpdateFood={async (id, quantity) => {
+            await Api.MAIN.put<AttachedFood>(`/attachedFoods/${id}`, {
+              quantity,
+            })
+              .then(({ data: attachedFood }) => {
+                onDietChange({
+                  ...diet,
+                  attachedFoods: diet.attachedFoods.map((attachedFoodIn) =>
+                    attachedFoodIn.id === attachedFood.id
+                      ? attachedFood
+                      : attachedFoodIn
+                  ),
+                });
+              })
+              .catch(() => {
+                void SwalUtil.fireError();
+              });
           }}
-          onDeleteFood={(id) => {
-            // Api.MAIN.delete(`/attachedFoods/${id}`);
+          onDeleteFood={async (id) => {
+            await Api.MAIN.delete(`/attachedFoods/${id}`)
+              .then(() => {
+                onDietChange({
+                  ...diet,
+                  attachedFoods: diet.attachedFoods.filter(
+                    (attachedFood) => attachedFood.id !== id
+                  ),
+                });
+              })
+              .catch(() => {
+                void SwalUtil.fireError();
+              });
           }}
           onCreateRecipe={({ recipe, quantity }) => {
             // Api.MAIN.post('/attachedRecipes', { quantity, dietId: diet.id, recipeId: recipe.id });

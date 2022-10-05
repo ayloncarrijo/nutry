@@ -5,6 +5,10 @@ import type { Diet } from "types/api";
 import HttpStatusCode from "types/HttpStatusCode";
 import ObjectUtil from "utils/ObjectUtil";
 
+type Query = {
+  id: string;
+};
+
 const include = {
   attachedFoods: {
     orderBy: {
@@ -23,36 +27,16 @@ const include = {
 } as const;
 
 const methods = {
-  GET: async (req: TypedApiRequest, res: NextApiResponse<Array<Diet>>) => {
-    const diets = await prisma.diet.findMany({
-      include,
-    });
-
-    return res.status(HttpStatusCode.OK).json(diets);
-  },
-
-  POST: async (
-    req: TypedApiRequest<{
-      attachedFoods: Array<{ foodId: string; quantity: number }>;
-      attachedRecipes: Array<{ recipeId: string; quantity: number }>;
-    }>,
+  GET: async (
+    req: TypedApiRequest<unknown, Query>,
     res: NextApiResponse<Diet>
   ) => {
-    const { attachedFoods, attachedRecipes } = req.body;
+    const { id } = req.query;
 
-    const diet = await prisma.diet.create({
+    const diet = await prisma.diet.findUniqueOrThrow({
       include,
-      data: {
-        attachedFoods: {
-          createMany: {
-            data: attachedFoods,
-          },
-        },
-        attachedRecipes: {
-          createMany: {
-            data: attachedRecipes,
-          },
-        },
+      where: {
+        id,
       },
     });
 
