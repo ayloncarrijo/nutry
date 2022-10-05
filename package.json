@@ -3,6 +3,7 @@
   "private": true,
   "name": "diet",
   "scripts": {
+    "vercel-build": "prisma generate && next build",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
