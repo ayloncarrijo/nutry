@@ -21,6 +21,8 @@ const Page: AppPage = () => {
     void push("/");
   };
 
+  console.log(process.env.TEST_ENV);
+
   return (
     <div tw="min-h-screen flex justify-center items-center">
       <Form tw="w-full max-w-xs" onSubmit={logIn}>
