@@ -93,7 +93,7 @@ function DietViewer({
           attachedFoods={diet.attachedFoods}
           attachedRecipes={diet.attachedRecipes}
           onCreateFood={async ({ food, quantity }) => {
-            await Api.MAIN.post<AttachedFood>("/attachedFoods", {
+            await Api.MAIN.post<AttachedFood>("/attached-foods", {
               quantity,
               foodId: food.id,
               dietId: diet.id,
@@ -109,7 +109,7 @@ function DietViewer({
               });
           }}
           onUpdateFood={async (id, quantity) => {
-            await Api.MAIN.put<AttachedFood>(`/attachedFoods/${id}`, {
+            await Api.MAIN.put<AttachedFood>(`/attached-foods/${id}`, {
               quantity,
             })
               .then(({ data: attachedFood }) => {
@@ -127,7 +127,7 @@ function DietViewer({
               });
           }}
           onDeleteFood={async (id) => {
-            await Api.MAIN.delete(`/attachedFoods/${id}`)
+            await Api.MAIN.delete(`/attached-foods/${id}`)
               .then(() => {
                 onDietChange({
                   ...diet,
