@@ -53,19 +53,16 @@ const Page: AppPage<PageProps> = ({
                 quantity: attachedFood.quantity,
               })),
             })
-              .then(async () => {
+              .then(() => {
                 setSubmitStatus(Status.SUCCESS);
-
-                await SwalUtil.fireSuccess(
+                back();
+                void SwalUtil.fireSuccess(
                   "A receita foi registrada com sucesso!"
                 );
-
-                back();
               })
               .catch(() => {
                 setSubmitStatus(Status.ERROR);
-
-                return SwalUtil.fireError();
+                void SwalUtil.fireError();
               });
           }}
         />

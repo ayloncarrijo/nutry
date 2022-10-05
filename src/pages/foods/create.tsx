@@ -23,19 +23,16 @@ const Page: AppPage = () => {
           setSubmitStatus(Status.LOADING);
 
           Api.MAIN.post<Food>("/foods", food)
-            .then(async () => {
+            .then(() => {
               setSubmitStatus(Status.SUCCESS);
-
-              await SwalUtil.fireSuccess(
+              back();
+              void SwalUtil.fireSuccess(
                 "O ingrediente foi registrado com sucesso!"
               );
-
-              back();
             })
             .catch(() => {
               setSubmitStatus(Status.ERROR);
-
-              return SwalUtil.fireError();
+              void SwalUtil.fireError();
             });
         }}
       />
