@@ -91,7 +91,7 @@ function DietViewer({
         </ul>
       </div>
 
-      <div tw="mt-8">
+      <div tw="mt-16">
         <SnackManager
           onWipe={wipeAttacheds}
           wipeStatus={wipeStatus}
