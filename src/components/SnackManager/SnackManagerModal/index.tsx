@@ -3,6 +3,7 @@ import FoodViewer from "components/FoodViewer";
 import Form from "components/Form";
 import Modal from "components/Modal";
 import NumericInput from "components/NumericInput";
+import RecipeViewer from "components/RecipeViewer";
 import { useSnackManager } from "components/SnackManager/SnackManagerContext";
 import React from "react";
 import "twin.macro";
@@ -212,7 +213,7 @@ function SnackManagerModal(): JSX.Element {
     ),
     [ModalStep.RECIPES]: (
       <Modal tw="w-full" title="Receitas" onDismiss={closeModal}>
-        <div>...</div>
+        <RecipeViewer />
       </Modal>
     ),
     [ModalStep.QUANTITY]: (

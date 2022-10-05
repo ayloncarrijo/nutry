@@ -5,7 +5,7 @@ import type { GetServerSideProps } from "next";
 import type { AppPage } from "types";
 
 const Page: AppPage = () => {
-  return <Container>Edição</Container>;
+  return <Container>Página não pronta</Container>;
 };
 
 Page.getLayout = (page) => <UserLayout>{page}</UserLayout>;

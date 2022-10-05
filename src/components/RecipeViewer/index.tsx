@@ -7,23 +7,24 @@ import SnackList from "components/SnackList";
 import TextInput from "components/TextInput";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useFoods } from "providers/FoodsProvider";
+import { useRecipes } from "providers/RecipesProvider";
 import React from "react";
 import "twin.macro";
-import type { Food } from "types/api";
+import { Measurement, Recipe } from "types/api";
+import DatabaseUtil from "utils/DatabaseUtil";
 
-interface FoodViewerProps {
-  onFoodClick: (food: Food) => void;
+interface RecipeViewerProps {
+  onRecipeClick: (recipe: Recipe) => void;
   startButton?: React.ReactNode;
   endButton?: React.ReactNode;
 }
 
-function FoodViewer({
-  onFoodClick,
+function RecipeViewer({
+  onRecipeClick,
   startButton,
   endButton,
-}: FoodViewerProps): JSX.Element {
-  const { maximumPage, currentPage, queryKeys, data: foods } = useFoods();
+}: RecipeViewerProps): JSX.Element {
+  const { maximumPage, currentPage, queryKeys, data: recipes } = useRecipes();
 
   const { query, pathname, replace } = useRouter();
 
@@ -72,31 +73,41 @@ function FoodViewer({
         {endButton}
       </div>
 
-      {!foods.length ? (
+      {!recipes.length ? (
         <MessageBox>
           <p>
-            {initialSearch
-              ? "Ainda não há ingredientes registrados com este nome."
-              : "Ainda não há ingredientes registrados."}
+            {query.search
+              ? "Ainda não há receitas registradas com este nome."
+              : "Ainda não há receitas registradas."}
           </p>
         </MessageBox>
       ) : (
         <SnackList>
-          {foods.map((food) => (
-            <li key={food.id}>
-              <button
-                tw="w-full"
-                type="button"
-                onClick={() => onFoodClick(food)}
-              >
-                <SnackCard
-                  caption="Ingrediente"
-                  cardProps={{ isHoverable: true }}
-                  {...food}
-                />
-              </button>
-            </li>
-          ))}
+          {recipes.map((recipe) => {
+            const { carbohydrates, fats, proteins } =
+              DatabaseUtil.getMacrosFromSnackContainer(recipe);
+
+            return (
+              <li key={recipe.id}>
+                <button
+                  tw="w-full"
+                  type="button"
+                  onClick={() => onRecipeClick(recipe)}
+                >
+                  <SnackCard
+                    caption="Receita"
+                    carbohydrates={carbohydrates}
+                    fats={fats}
+                    proteins={proteins}
+                    measurement={Measurement.UN}
+                    proportion={1}
+                    cardProps={{ isHoverable: true }}
+                    {...recipe}
+                  />
+                </button>
+              </li>
+            );
+          })}
         </SnackList>
       )}
 
@@ -121,4 +132,4 @@ function FoodViewer({
   );
 }
 
-export default FoodViewer;
+export default RecipeViewer;

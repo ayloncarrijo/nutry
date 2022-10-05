@@ -27,16 +27,10 @@ function RecipesProvider({
   );
 }
 
-function useRecipes(shouldThrowIfNotFound?: true): FetchPaginatedProps<Recipe>;
-
-function useRecipes(
-  shouldThrowIfNotFound: false
-): FetchPaginatedProps<Recipe> | null;
-
-function useRecipes(shouldThrowIfNotFound = true) {
+function useRecipes() {
   const value = React.useContext(RecipesContext);
 
-  if (!value && shouldThrowIfNotFound) {
+  if (!value) {
     throw new Error("Must be used within a RecipesProvider");
   }
 
