@@ -2,7 +2,10 @@ import axios from "axios";
 
 const Api = {
   MAIN: axios.create({
-    baseURL: "http://localhost:3000/api",
+    baseURL:
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3000/api"
+        : "https://diet-virid.vercel.app/api",
   }),
 };
 
