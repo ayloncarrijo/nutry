@@ -6,13 +6,21 @@ import HttpStatusCode from "types/HttpStatusCode";
 import ObjectUtil from "utils/ObjectUtil";
 
 const include = {
-  attachedFoods: { include: { food: true } },
+  attachedFoods: {
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: { food: true },
+  },
   attachedRecipes: {
+    orderBy: {
+      createdAt: "desc",
+    },
     include: {
       recipe: { include: { attachedFoods: { include: { food: true } } } },
     },
   },
-};
+} as const;
 
 const methods = {
   GET: async (req: TypedApiRequest, res: NextApiResponse<Array<Diet>>) => {

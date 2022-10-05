@@ -55,7 +55,9 @@ const Page: AppPage = () => {
     })
       .then(() => {
         setStatus(Status.SUCCESS);
-        return SwalUtil.fireSuccess("Os dados foram alterados com sucesso!");
+        return SwalUtil.fireSuccess(
+          "Os seus dados foram alterados com sucesso!"
+        );
       })
       .catch(() => {
         setStatus(Status.ERROR);
