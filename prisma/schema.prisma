@@ -29,6 +29,8 @@ model User {
   goalDiet           Diet     @relation("goalDiet", fields: [goalDietId], references: [id])
   goalDietId         String   @unique
   recipes            Recipe[]
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }
 
 model Food {
@@ -61,24 +63,30 @@ model Diet {
   attachedRecipes  AttachedRecipe[]
   createdAsDailyBy User?            @relation("dailyDiet")
   createdAsGoalBy  User?            @relation("goalDiet")
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
 }
 
 model AttachedFood {
-  id       String  @id @default(uuid())
-  quantity Int
-  food     Food    @relation(fields: [foodId], references: [id], onDelete: Cascade)
-  foodId   String
-  recipe   Recipe? @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-  recipeId String?
-  diet     Diet?   @relation(fields: [dietId], references: [id], onDelete: Cascade)
-  dietId   String?
+  id        String   @id @default(uuid())
+  quantity  Int
+  food      Food     @relation(fields: [foodId], references: [id], onDelete: Cascade)
+  foodId    String
+  recipe    Recipe?  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId  String?
+  diet      Diet?    @relation(fields: [dietId], references: [id], onDelete: Cascade)
+  dietId    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model AttachedRecipe {
-  id       String @id @default(uuid())
-  quantity Int
-  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-  recipeId String
-  diet     Diet   @relation(fields: [dietId], references: [id], onDelete: Cascade)
-  dietId   String
+  id        String   @id @default(uuid())
+  quantity  Int
+  recipe    Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId  String
+  diet      Diet     @relation(fields: [dietId], references: [id], onDelete: Cascade)
+  dietId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
