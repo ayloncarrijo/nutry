@@ -151,14 +151,10 @@ function SnackManagerModal(): JSX.Element {
 
         return;
       }
-    })()
-      .then(() => {
-        setSubmitStatus(Status.SUCCESS);
-        closeModal();
-      })
-      .catch(() => {
-        setSubmitStatus(Status.ERROR);
-      });
+    })().finally(() => {
+      setSubmitStatus(Status.IDLE);
+      closeModal();
+    });
   };
 
   const remove = () => {
@@ -168,14 +164,10 @@ function SnackManagerModal(): JSX.Element {
 
     setRemoveStatus(Status.LOADING);
 
-    Promise.resolve(callbacks.onDelete(initialAttachedSnack.id))
-      .then(() => {
-        setRemoveStatus(Status.SUCCESS);
-        closeModal();
-      })
-      .catch(() => {
-        setRemoveStatus(Status.ERROR);
-      });
+    Promise.resolve(callbacks.onDelete(initialAttachedSnack.id)).finally(() => {
+      setRemoveStatus(Status.IDLE);
+      closeModal();
+    });
   };
 
   return {
