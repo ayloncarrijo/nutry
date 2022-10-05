@@ -13,7 +13,7 @@ const Page: AppPage = () => {
 
   const { push } = useRouter();
 
-  const signIn = () => {
+  const logIn = () => {
     setCookie(null, "userName", name, {
       maxAge: Number.MAX_SAFE_INTEGER,
     });
@@ -23,7 +23,7 @@ const Page: AppPage = () => {
 
   return (
     <div tw="min-h-screen flex justify-center items-center">
-      <Form tw="w-full max-w-xs" onSubmit={signIn}>
+      <Form tw="w-full max-w-xs" onSubmit={logIn}>
         <TextInput
           required
           label="Usuário"

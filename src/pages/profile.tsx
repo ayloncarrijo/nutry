@@ -7,8 +7,10 @@ import UserLayout from "layouts/UserLayout";
 import Api from "lib/api";
 import authenticate from "middlewares/authenticate";
 import type { GetServerSideProps } from "next";
+import { destroyCookie } from "nookies";
 import { useUser } from "providers/UserProvider";
 import React from "react";
+import Swal from "sweetalert2";
 import "twin.macro";
 import { AppPage, Status } from "types";
 import SwalUtil from "utils/SwalUtil";
@@ -28,32 +30,42 @@ const Page: AppPage = () => {
 
   const [status, setStatus] = React.useState(Status.IDLE);
 
-  const submit = async () => {
-    setStatus(Status.LOADING);
+  const logOut = () => {
+    destroyCookie(null, "userName");
+    window.location.href = "/auth";
+  };
 
-    try {
-      await Api.MAIN.put(`/users/${user.name}`, {
-        weight,
-        carbohydratesPerKg,
-        fatsPerKg,
-        proteinsPerKg,
+  const submit = () => {
+    if (!weight) {
+      void Swal.fire({
+        icon: "warning",
+        text: "O peso deve ser maior do que zero.",
       });
 
-      setStatus(Status.SUCCESS);
-      await SwalUtil.fireSuccess("Os dados foram alterados com sucesso!");
-    } catch (error) {
-      setStatus(Status.ERROR);
-      await SwalUtil.fireError();
+      return;
     }
+
+    setStatus(Status.LOADING);
+
+    Api.MAIN.put(`/users/${user.name}`, {
+      weight,
+      carbohydratesPerKg,
+      fatsPerKg,
+      proteinsPerKg,
+    })
+      .then(() => {
+        setStatus(Status.SUCCESS);
+        return SwalUtil.fireSuccess("Os dados foram alterados com sucesso!");
+      })
+      .catch(() => {
+        setStatus(Status.ERROR);
+        return SwalUtil.fireError();
+      });
   };
 
   return (
     <Container>
-      <Form
-        onSubmit={() => {
-          void submit();
-        }}
-      >
+      <Form onSubmit={submit}>
         <div tw="grid grid-cols-12 gap-4">
           <div tw="col-span-full">
             <NumericInput
@@ -100,7 +112,11 @@ const Page: AppPage = () => {
           </div>
         </div>
 
-        <div tw="mt-4 flex justify-end">
+        <div tw="mt-4 flex gap-2 justify-end">
+          <Button onClick={logOut} variant="outlined" startIcon="logout">
+            Sair
+          </Button>
+
           <Button
             isLoading={status === Status.LOADING}
             type="submit"

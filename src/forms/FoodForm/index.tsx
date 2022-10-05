@@ -6,6 +6,7 @@ import NumericInput from "components/NumericInput";
 import SelectInput from "components/SelectInput";
 import TextInput from "components/TextInput";
 import React from "react";
+import Swal from "sweetalert2";
 import "twin.macro";
 import { Status } from "types";
 import type { Food, NotCreated } from "types/api";
@@ -60,6 +61,15 @@ function FoodForm({
   return (
     <Form
       onSubmit={() => {
+        if (!proportion) {
+          void Swal.fire({
+            icon: "warning",
+            text: "A proporção deve ser maior do que zero.",
+          });
+
+          return;
+        }
+
         const data = {
           name,
           measurement: measurement?.value,
