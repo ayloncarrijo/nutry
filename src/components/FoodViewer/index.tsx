@@ -40,7 +40,8 @@ function FoodViewer({
           void replace({
             pathname,
             query: {
-              ...(typedSearch && { [queryKeys.search]: typedSearch }),
+              ...query,
+              [queryKeys.search]: typedSearch,
               [queryKeys.page]: 1,
             },
           });
