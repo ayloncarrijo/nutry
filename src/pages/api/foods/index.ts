@@ -20,11 +20,10 @@ const methods = {
     const sqlFilter = {
       where: {
         name: {
-          mode: "insensitive",
           contains: req.query.search,
         },
       },
-    } as const;
+    };
 
     const [total, foods] = await prisma.$transaction([
       prisma.food.count(sqlFilter),
