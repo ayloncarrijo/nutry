@@ -105,15 +105,15 @@ function SnackManager(props: SnackManagerProps): JSX.Element {
           </Button>
 
           <Button
+            isLoading={wipeStatus === Status.LOADING}
+            disabled={!hasSnack}
             variant="outlined"
-            startIcon="delete_sweep"
+            startIcon="clear_all"
             onClick={() => {
               void SwalUtil.confirm(
                 "Você tem certeza de que deseja limpar todas as refeições adicionadas nesta lista?"
               ).then(({ isConfirmed }) => isConfirmed && onWipe());
             }}
-            disabled={!hasSnack}
-            isLoading={wipeStatus === Status.LOADING}
           >
             Limpar
           </Button>
