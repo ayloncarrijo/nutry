@@ -45,7 +45,7 @@ function SnackCard({
         </div>
 
         <table
-          tw="w-full table-fixed"
+          tw="w-full table-fixed text-sm"
           css={{
             td: tw`pt-2`,
           }}
