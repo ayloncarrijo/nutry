@@ -17,20 +17,18 @@ const methods = {
 
     const page = Number(req.query.page);
 
-    const sqlFilter = {
-      where: {
-        name: {
-          contains: req.query.search,
-        },
+    const where = {
+      name: {
+        contains: req.query.search,
       },
     };
 
     const [total, foods] = await prisma.$transaction([
-      prisma.food.count(sqlFilter),
+      prisma.food.count({ where }),
       prisma.food.findMany({
-        ...sqlFilter,
+        where,
         orderBy: {
-          createdAt: "desc",
+          name: "asc",
         },
         skip: limit * (page - 1),
         take: limit,

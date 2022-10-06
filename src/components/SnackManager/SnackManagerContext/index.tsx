@@ -7,21 +7,20 @@ const SnackManagerContext = React.createContext<ReturnType<
 > | null>(null);
 
 const useSnackManagerInitializer = (props: SnackManagerProps) => {
+  const [initialAttachedSnack, setInitialAttachedSnack] = React.useState<
+    SimpleAttachedFood | SimpleAttachedRecipe | null
+  >(null);
+
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   const attachedRecipes = !props.isFoodOnly ? props.attachedRecipes : undefined;
 
   const attachedSnacks = React.useMemo(
-    () => [...props.attachedFoods, ...(attachedRecipes ?? [])],
-    [props.attachedFoods, attachedRecipes]
+    () => [...(attachedRecipes ?? []), ...props.attachedFoods],
+    [attachedRecipes, props.attachedFoods]
   );
 
-  const hasSnack =
-    props.attachedFoods.length > 0 || (attachedRecipes?.length ?? 0) > 0;
-
-  const [initialAttachedSnack, setInitialAttachedSnack] = React.useState<
-    SimpleAttachedFood | SimpleAttachedRecipe | null
-  >(null);
+  const hasSnack = attachedSnacks.length > 0;
 
   React.useEffect(() => {
     if (!isModalOpen) {

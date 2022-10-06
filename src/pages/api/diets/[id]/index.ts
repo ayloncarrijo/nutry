@@ -12,13 +12,13 @@ type Query = {
 const include = {
   attachedFoods: {
     orderBy: {
-      createdAt: "desc",
+      createdAt: "asc",
     },
     include: { food: true },
   },
   attachedRecipes: {
     orderBy: {
-      createdAt: "desc",
+      createdAt: "asc",
     },
     include: {
       recipe: { include: { attachedFoods: { include: { food: true } } } },

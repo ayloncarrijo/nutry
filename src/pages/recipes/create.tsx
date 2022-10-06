@@ -23,7 +23,7 @@ const Page: AppPage<PageProps> = ({
   queryKeys,
   data,
 }) => {
-  const [submitStatus, setSubmitStatus] = React.useState(Status.IDLE);
+  const [status, setStatus] = React.useState(Status.IDLE);
 
   const user = useUser();
 
@@ -38,9 +38,9 @@ const Page: AppPage<PageProps> = ({
         data={data}
       >
         <RecipeForm
-          submitStatus={submitStatus}
+          submitStatus={status}
           onSubmit={({ name, attachedFoods }) => {
-            setSubmitStatus(Status.LOADING);
+            setStatus(Status.LOADING);
 
             Api.MAIN.post("/recipes", {
               name,
@@ -54,14 +54,14 @@ const Page: AppPage<PageProps> = ({
               })),
             })
               .then(() => {
-                setSubmitStatus(Status.SUCCESS);
+                setStatus(Status.SUCCESS);
                 back();
                 void SwalUtil.fireSuccess(
                   "A receita foi registrada com sucesso!"
                 );
               })
               .catch(() => {
-                setSubmitStatus(Status.ERROR);
+                setStatus(Status.ERROR);
                 void SwalUtil.fireError();
               });
           }}

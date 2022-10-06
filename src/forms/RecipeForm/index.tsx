@@ -64,7 +64,7 @@ function RecipeForm({
           onWipe={wipeAttacheds}
           attachedFoods={attachedFoods}
           onCreateFood={(data) => {
-            setAttachedFoods((prevState) => [data, ...prevState]);
+            setAttachedFoods((prevState) => [...prevState, data]);
           }}
           onUpdateFood={(id, quantity) => {
             setAttachedFoods((prevState) =>

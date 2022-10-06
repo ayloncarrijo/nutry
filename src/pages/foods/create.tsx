@@ -11,27 +11,27 @@ import type { Food } from "types/api";
 import SwalUtil from "utils/SwalUtil";
 
 const Page: AppPage = () => {
-  const [submitStatus, setSubmitStatus] = React.useState(Status.IDLE);
+  const [status, setStatus] = React.useState(Status.IDLE);
 
   const { back } = useRouter();
 
   return (
     <Container>
       <FoodForm
-        submitStatus={submitStatus}
+        submitStatus={status}
         onSubmit={(food) => {
-          setSubmitStatus(Status.LOADING);
+          setStatus(Status.LOADING);
 
           Api.MAIN.post<Food>("/foods", food)
             .then(() => {
-              setSubmitStatus(Status.SUCCESS);
+              setStatus(Status.SUCCESS);
               back();
               void SwalUtil.fireSuccess(
                 "O ingrediente foi registrado com sucesso!"
               );
             })
             .catch(() => {
-              setSubmitStatus(Status.ERROR);
+              setStatus(Status.ERROR);
               void SwalUtil.fireError();
             });
         }}

@@ -7,7 +7,7 @@ import ObjectUtil from "utils/ObjectUtil";
 
 const include = {
   attachedFoods: {
-    orderBy: { createdAt: "desc" },
+    orderBy: { food: { name: "asc" } },
     include: { food: true },
   },
 } as const;
@@ -30,22 +30,20 @@ const methods = {
       return res.status(HttpStatusCode.BAD_REQUEST).end();
     }
 
-    const sqlFilter = {
-      where: {
-        createdBy,
-        name: {
-          contains: req.query.search,
-        },
+    const where = {
+      createdBy,
+      name: {
+        contains: req.query.search,
       },
     };
 
     const [total, recipes] = await prisma.$transaction([
-      prisma.recipe.count(sqlFilter),
+      prisma.recipe.count({ where }),
       prisma.recipe.findMany({
-        ...sqlFilter,
         include,
+        where,
         orderBy: {
-          createdAt: "desc",
+          name: "asc",
         },
         skip: limit * (page - 1),
         take: limit,
