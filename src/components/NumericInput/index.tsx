@@ -12,7 +12,12 @@ interface NumericInputProps
 
 function NumericInput(props: NumericInputProps): JSX.Element {
   return (
-    <NumericFormat allowNegative={false} {...props} customInput={TextInput} />
+    <NumericFormat
+      allowNegative={false}
+      allowedDecimalSeparators={[","]}
+      {...props}
+      customInput={TextInput}
+    />
   );
 }
 
