@@ -15,15 +15,9 @@ import DatabaseUtil from "utils/DatabaseUtil";
 
 interface RecipeViewerProps {
   onRecipeClick: (recipe: Recipe) => void;
-  startButton?: React.ReactNode;
-  endButton?: React.ReactNode;
 }
 
-function RecipeViewer({
-  onRecipeClick,
-  startButton,
-  endButton,
-}: RecipeViewerProps): JSX.Element {
+function RecipeViewer({ onRecipeClick }: RecipeViewerProps): JSX.Element {
   const { maximumPage, currentPage, queryKeys, data: recipes } = useRecipes();
 
   const { query, pathname, replace } = useRouter();
@@ -62,15 +56,11 @@ function RecipeViewer({
       </Form>
 
       <div tw="mb-4 flex items-center gap-2">
-        {startButton}
-
         <Link href="/recipes/create" passHref>
           <Button forwardedAs="a" startIcon="add">
             Registrar
           </Button>
         </Link>
-
-        {endButton}
       </div>
 
       {!recipes.length ? (

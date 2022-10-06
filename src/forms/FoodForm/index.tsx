@@ -159,7 +159,7 @@ function FoodForm({
             disabled={isLoading}
             type="button"
             variant="outlined"
-            startIcon="delete_sweep"
+            startIcon="delete"
             onClick={() => {
               void SwalUtil.confirm(
                 "Você tem certeza de que deseja deletar este ingrediente?"

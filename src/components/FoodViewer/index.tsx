@@ -14,15 +14,9 @@ import type { Food } from "types/api";
 
 interface FoodViewerProps {
   onFoodClick: (food: Food) => void;
-  startButton?: React.ReactNode;
-  endButton?: React.ReactNode;
 }
 
-function FoodViewer({
-  onFoodClick,
-  startButton,
-  endButton,
-}: FoodViewerProps): JSX.Element {
+function FoodViewer({ onFoodClick }: FoodViewerProps): JSX.Element {
   const { maximumPage, currentPage, queryKeys, data: foods } = useFoods();
 
   const { query, pathname, replace } = useRouter();
@@ -61,15 +55,11 @@ function FoodViewer({
       </Form>
 
       <div tw="mb-4 flex items-center gap-2">
-        {startButton}
-
         <Link href="/foods/create" passHref>
           <Button forwardedAs="a" startIcon="add">
             Registrar
           </Button>
         </Link>
-
-        {endButton}
       </div>
 
       {!foods.length ? (

@@ -5,6 +5,7 @@ import Modal from "components/Modal";
 import NumericInput from "components/NumericInput";
 import RecipeViewer from "components/RecipeViewer";
 import { useSnackManager } from "components/SnackManager/SnackManagerContext";
+import Link from "next/link";
 import React from "react";
 import "twin.macro";
 import { Status } from "types";
@@ -199,7 +200,6 @@ function SnackManagerModal(): JSX.Element {
       <Modal tw="w-full" title="Ingredientes" onDismiss={closeModal}>
         <FoodViewer
           onFoodClick={(food) => setSnack({ type: "food", data: food })}
-          startButton={backBtn}
         />
       </Modal>
     ),
@@ -207,7 +207,6 @@ function SnackManagerModal(): JSX.Element {
       <Modal tw="w-full" title="Receitas" onDismiss={closeModal}>
         <RecipeViewer
           onRecipeClick={(recipe) => setSnack({ type: "recipe", data: recipe })}
-          startButton={backBtn}
         />
       </Modal>
     ),
@@ -215,7 +214,18 @@ function SnackManagerModal(): JSX.Element {
       <Modal tw="w-full sm:w-112" onDismiss={closeModal}>
         {snack && (
           <Form onSubmit={submit}>
-            <h4 tw="mb-6 text-2xl">{snack.data.name}</h4>
+            <h4 tw="mb-6 text-2xl">
+              <Link
+                href={
+                  snack.type === "food"
+                    ? `/foods/${snack.data.id}`
+                    : `/recipes/${snack.data.id}`
+                }
+                passHref
+              >
+                <a tw="hover:(text-blue-300)">{snack.data.name}</a>
+              </Link>
+            </h4>
 
             <div>
               <NumericInput
