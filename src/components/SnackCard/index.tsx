@@ -32,9 +32,7 @@ function SnackCard({
       <div tw="min-w-0 flex-1">
         <div tw="text-left">
           <p tw="mb-1 text-xs">{caption}</p>
-          <h3 tw="whitespace-nowrap overflow-hidden overflow-ellipsis font-medium text-lg">
-            {name}
-          </h3>
+          <h3 tw="font-medium text-lg">{name}</h3>
         </div>
 
         <div tw="my-4 text-blue-300">
