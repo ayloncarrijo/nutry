@@ -50,13 +50,13 @@ function SelectInput<
             ...tw`m-0 p-0 text-white`,
           },
           "&__value-container": {
-            ...tw`h-full p-0 py-2 mx-3`,
+            ...tw`h-full p-0 py-2 mx-4`,
           },
           "&__single-value": {
             ...tw`m-0 text-white`,
           },
           "&__indicators": {
-            ...tw`pr-3`,
+            ...tw`pr-4`,
           },
           "&__indicator": {
             ...tw`w-6 h-6 p-0 flex justify-center items-center text-gray-300 hover:text-gray-300`,
@@ -77,7 +77,7 @@ function SelectInput<
             ...tw`text-gray-300`,
           },
           "&__option": {
-            ...tw`text-base`,
+            ...tw`text-base px-4`,
             "&--is-focused": {
               ...tw`bg-gray-600`,
             },

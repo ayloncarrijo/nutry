@@ -26,7 +26,7 @@ const TextInput = ReactUtil.forwardRefWithAs<HTMLInputElement, TextInputProps>(
       >
         <input
           ref={ReactUtil.assignInstanceTo(ref, inputRef)}
-          tw="w-full h-14 p-3 relative text-base text-white bg-transparent focus:(outline-none)"
+          tw="w-full h-14 py-2 px-4 relative text-base text-white bg-transparent focus:(outline-none)"
           onChange={(event) => {
             onValueChange?.(event.target.value);
             onChange?.(event);

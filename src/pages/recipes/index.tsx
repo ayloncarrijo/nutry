@@ -52,7 +52,7 @@ export const getServerSideProps: GetServerSideProps = NextUtil.mergeGssp(
   ([{ user }]) =>
     fetchPaginated({
       url: "/recipes",
-      limit: 9,
+      limit: Number.MAX_SAFE_INTEGER,
       params: { createdBy: user.name },
     })
 );

@@ -12,8 +12,8 @@ interface ImplFieldProps extends React.PropsWithChildren {
   isFocused: boolean;
   isRequired: boolean;
   wrapperRef?: React.Ref<HTMLDivElement>;
-  styles?: Styles<"hitbox">;
   className?: string;
+  styles?: Styles<"hitbox">;
 }
 
 interface FieldProps {
@@ -64,10 +64,10 @@ function Field({
     <div tw="pt-2" ref={wrapperRef} className={className}>
       <div
         tw="relative flex items-center"
-        css={[startElement && tw`pl-3`, endElement && tw`pr-3`]}
+        css={[startElement && tw`pl-4`, endElement && tw`pr-4`]}
       >
         <fieldset
-          tw="absolute inset-0 px-3 rounded-md border border-gray-500 text-sm"
+          tw="absolute inset-0 px-4 rounded-lg border border-gray-500 text-sm"
           css={[isFocused && tw`border-blue-300 text-blue-300`, styles?.hitbox]}
           onClick={onTryFocus}
         >

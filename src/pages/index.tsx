@@ -55,7 +55,7 @@ export const getServerSideProps: GetServerSideProps = NextUtil.mergeGssp(
         uniqueKey: "paginatedFoods",
         gssp: fetchPaginated({
           url: "/foods",
-          limit: 9,
+          limit: Number.MAX_SAFE_INTEGER,
           queryKeys: {
             search: "foodSearch",
             page: "foodPage",
@@ -66,7 +66,7 @@ export const getServerSideProps: GetServerSideProps = NextUtil.mergeGssp(
         uniqueKey: "paginatedRecipes",
         gssp: fetchPaginated({
           url: "/recipes",
-          limit: 9,
+          limit: Number.MAX_SAFE_INTEGER,
           params: { createdBy: user.name },
           queryKeys: {
             search: "recipeSearch",

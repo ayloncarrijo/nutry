@@ -94,7 +94,7 @@ function FoodForm({
           />
         </div>
 
-        <div tw="col-span-8 md:col-span-4">
+        <div tw="col-span-6 md:col-span-4">
           <NumericInput
             required
             label="Proporção"
@@ -103,7 +103,7 @@ function FoodForm({
           />
         </div>
 
-        <div tw="col-span-4 md:col-span-2">
+        <div tw="col-span-6 md:col-span-2">
           <SelectInput
             id="measurement"
             label="Medida"

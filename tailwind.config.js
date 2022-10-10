@@ -4,7 +4,10 @@ module.exports = {
   theme: {
     extend: {
       width: {
-        112: '28rem',
+        112: "28rem",
+      },
+      borderRadius: {
+        "4xl": "2rem",
       },
       gridTemplateColumns: (theme) =>
         Object.fromEntries(
