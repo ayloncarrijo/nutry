@@ -1,12 +1,10 @@
 import Button from "components/Button";
-import Form from "components/Form";
+import Icon from "components/Icon";
 import MessageBox from "components/MessageBox";
-import Pagination from "components/Pagination";
 import SnackCard from "components/SnackCard";
 import SnackList from "components/SnackList";
 import TextInput from "components/TextInput";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useRecipes } from "providers/RecipesProvider";
 import React from "react";
 import "twin.macro";
@@ -18,42 +16,40 @@ interface RecipeViewerProps {
 }
 
 function RecipeViewer({ onRecipeClick }: RecipeViewerProps): JSX.Element {
-  const { maximumPage, currentPage, queryKeys, data: recipes } = useRecipes();
+  const [search, setSearch] = React.useState("");
 
-  const { query, pathname, replace } = useRouter();
+  const { data: recipes } = useRecipes();
 
-  const currentSearch =
-    typeof query[queryKeys.search] === "string" ? query[queryKeys.search] : "";
+  const [filteredRecipes, setFilteredRecipes] = React.useState(recipes);
 
-  const [typedSearch, setTypedSearch] = React.useState(currentSearch);
+  React.useEffect(() => {
+    const timeoutId = window.setTimeout(
+      () =>
+        setFilteredRecipes(
+          search
+            ? recipes.filter((recipe) =>
+                recipe.name.toLowerCase().includes(search.toLowerCase())
+              )
+            : recipes
+        ),
+      250
+    );
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [search, recipes]);
 
   return (
     <div>
-      <Form
-        tw="mb-8"
-        onSubmit={() => {
-          void replace({
-            pathname,
-            query: {
-              ...query,
-              [queryKeys.search]: typedSearch,
-              [queryKeys.page]: 1,
-            },
-          });
-        }}
-      >
+      <div tw="mb-8">
         <TextInput
           label="Pesquisar"
-          value={typedSearch}
-          onValueChange={setTypedSearch}
-          endButtons={[
-            {
-              icon: "search",
-              type: "submit",
-            },
-          ]}
+          value={search}
+          onValueChange={setSearch}
+          endElement={<Icon icon="search" />}
         />
-      </Form>
+      </div>
 
       <div tw="mb-4 flex items-center gap-2">
         <Link href="/recipes/create" passHref>
@@ -63,17 +59,17 @@ function RecipeViewer({ onRecipeClick }: RecipeViewerProps): JSX.Element {
         </Link>
       </div>
 
-      {!recipes.length ? (
+      {!filteredRecipes.length ? (
         <MessageBox>
           <p>
-            {currentSearch
+            {search
               ? "Ainda não há receitas registradas com este nome."
               : "Ainda não há receitas registradas."}
           </p>
         </MessageBox>
       ) : (
         <SnackList>
-          {recipes.map((recipe) => {
+          {filteredRecipes.map((recipe) => {
             const { carbohydrates, fats, proteins } =
               DatabaseUtil.getMacrosFromSnackContainer(recipe);
 
@@ -99,24 +95,6 @@ function RecipeViewer({ onRecipeClick }: RecipeViewerProps): JSX.Element {
             );
           })}
         </SnackList>
-      )}
-
-      {maximumPage > 1 && (
-        <div tw="mt-4 flex justify-center">
-          <Pagination
-            maximumPage={maximumPage}
-            currentPage={currentPage}
-            onPageChange={(page) => {
-              void replace({
-                pathname,
-                query: {
-                  ...query,
-                  [queryKeys.page]: page,
-                },
-              });
-            }}
-          />
-        </div>
       )}
     </div>
   );

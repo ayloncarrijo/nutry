@@ -1,12 +1,10 @@
 import Button from "components/Button";
-import Form from "components/Form";
+import Icon from "components/Icon";
 import MessageBox from "components/MessageBox";
-import Pagination from "components/Pagination";
 import SnackCard from "components/SnackCard";
 import SnackList from "components/SnackList";
 import TextInput from "components/TextInput";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useFoods } from "providers/FoodsProvider";
 import React from "react";
 import "twin.macro";
@@ -17,42 +15,40 @@ interface FoodViewerProps {
 }
 
 function FoodViewer({ onFoodClick }: FoodViewerProps): JSX.Element {
-  const { maximumPage, currentPage, queryKeys, data: foods } = useFoods();
+  const [search, setSearch] = React.useState("");
 
-  const { query, pathname, replace } = useRouter();
+  const { data: foods } = useFoods();
 
-  const currentSearch =
-    typeof query[queryKeys.search] === "string" ? query[queryKeys.search] : "";
+  const [filteredFoods, setFilteredFoods] = React.useState(foods);
 
-  const [typedSearch, setTypedSearch] = React.useState(currentSearch);
+  React.useEffect(() => {
+    const timeoutId = window.setTimeout(
+      () =>
+        setFilteredFoods(
+          search
+            ? foods.filter((food) =>
+                food.name.toLowerCase().includes(search.toLowerCase())
+              )
+            : foods
+        ),
+      250
+    );
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [search, foods]);
 
   return (
     <div>
-      <Form
-        tw="mb-8"
-        onSubmit={() => {
-          void replace({
-            pathname,
-            query: {
-              ...query,
-              [queryKeys.search]: typedSearch,
-              [queryKeys.page]: 1,
-            },
-          });
-        }}
-      >
+      <div tw="mb-8">
         <TextInput
           label="Pesquisar"
-          value={typedSearch}
-          onValueChange={setTypedSearch}
-          endButtons={[
-            {
-              icon: "search",
-              type: "submit",
-            },
-          ]}
+          value={search}
+          onValueChange={setSearch}
+          endElement={<Icon icon="search" />}
         />
-      </Form>
+      </div>
 
       <div tw="mb-4 flex items-center gap-2">
         <Link href="/foods/create" passHref>
@@ -62,17 +58,17 @@ function FoodViewer({ onFoodClick }: FoodViewerProps): JSX.Element {
         </Link>
       </div>
 
-      {!foods.length ? (
+      {!filteredFoods.length ? (
         <MessageBox>
           <p>
-            {currentSearch
+            {search
               ? "Ainda não há ingredientes registrados com este nome."
               : "Ainda não há ingredientes registrados."}
           </p>
         </MessageBox>
       ) : (
         <SnackList>
-          {foods.map((food) => (
+          {filteredFoods.map((food) => (
             <li key={food.id}>
               <button
                 tw="w-full"
@@ -88,24 +84,6 @@ function FoodViewer({ onFoodClick }: FoodViewerProps): JSX.Element {
             </li>
           ))}
         </SnackList>
-      )}
-
-      {maximumPage > 1 && (
-        <div tw="mt-4 flex justify-center">
-          <Pagination
-            maximumPage={maximumPage}
-            currentPage={currentPage}
-            onPageChange={(page) => {
-              void replace({
-                pathname,
-                query: {
-                  ...query,
-                  [queryKeys.page]: page,
-                },
-              });
-            }}
-          />
-        </div>
       )}
     </div>
   );
