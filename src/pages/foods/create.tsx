@@ -19,10 +19,10 @@ const Page: AppPage = () => {
     <Container>
       <FoodForm
         submitStatus={status}
-        onSubmit={(food) => {
+        onSubmit={(data) => {
           setStatus(Status.LOADING);
 
-          Api.MAIN.post<Food>("/foods", food)
+          Api.MAIN.post<Food>("/foods", data)
             .then(() => {
               setStatus(Status.SUCCESS);
               back();

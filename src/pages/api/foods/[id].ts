@@ -31,8 +31,15 @@ const methods = {
   ) => {
     const { id } = req.query;
 
-    const { measurement, proportion, name, carbohydrates, fats, proteins } =
-      req.body;
+    const {
+      measurement,
+      proportion,
+      name,
+      carbohydrates,
+      fats,
+      proteins,
+      reference,
+    } = req.body;
 
     const food = await prisma.food.update({
       where: {
@@ -45,6 +52,7 @@ const methods = {
         carbohydrates,
         fats,
         proteins,
+        reference,
       },
     });
 

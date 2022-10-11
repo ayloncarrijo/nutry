@@ -44,6 +44,7 @@ model Food {
   carbohydrates Float
   fats          Float
   proteins      Float
+  reference     String?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 }

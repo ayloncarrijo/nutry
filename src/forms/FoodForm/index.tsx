@@ -58,6 +58,10 @@ function FoodForm({
 
   const [proteins, setProteins] = React.useState(initialData?.proteins);
 
+  const [reference, setReference] = React.useState(
+    initialData?.reference ?? ""
+  );
+
   return (
     <Form
       onSubmit={() => {
@@ -70,17 +74,18 @@ function FoodForm({
           return;
         }
 
-        const data = {
+        const formData = {
           name,
           measurement: measurement?.value,
           proportion,
           carbohydrates,
           fats,
           proteins,
+          reference,
         };
 
-        if (ObjectUtil.isAllDefined(data)) {
-          onSubmit(data);
+        if (ObjectUtil.isAllDefined(formData)) {
+          onSubmit(formData);
         }
       }}
     >
@@ -148,6 +153,14 @@ function FoodForm({
             label="Proteínas"
             value={proteins}
             onValueChange={({ floatValue }) => setProteins(floatValue)}
+          />
+        </div>
+
+        <div tw="col-span-full">
+          <TextInput
+            label="Referência"
+            value={reference}
+            onValueChange={setReference}
           />
         </div>
       </div>
