@@ -198,16 +198,30 @@ function SnackManagerModal(): JSX.Element {
     ),
     [ModalStep.FOODS]: (
       <Modal tw="w-full" title="Ingredientes" onDismiss={closeModal}>
-        <FoodViewer
-          onFoodClick={(food) => setSnack({ type: "food", data: food })}
-        />
+        <FoodViewer>
+          {(card, food) => (
+            <button
+              type="button"
+              onClick={() => setSnack({ type: "food", data: food })}
+            >
+              {card}
+            </button>
+          )}
+        </FoodViewer>
       </Modal>
     ),
     [ModalStep.RECIPES]: (
       <Modal tw="w-full" title="Receitas" onDismiss={closeModal}>
-        <RecipeViewer
-          onRecipeClick={(recipe) => setSnack({ type: "recipe", data: recipe })}
-        />
+        <RecipeViewer>
+          {(card, recipe) => (
+            <button
+              type="button"
+              onClick={() => setSnack({ type: "recipe", data: recipe })}
+            >
+              {card}
+            </button>
+          )}
+        </RecipeViewer>
       </Modal>
     ),
     [ModalStep.QUANTITY]: (

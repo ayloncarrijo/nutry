@@ -12,10 +12,10 @@ import { Measurement, Recipe } from "types/api";
 import DatabaseUtil from "utils/DatabaseUtil";
 
 interface RecipeViewerProps {
-  onRecipeClick: (recipe: Recipe) => void;
+  children: (card: JSX.Element, recipe: Recipe) => React.ReactNode;
 }
 
-function RecipeViewer({ onRecipeClick }: RecipeViewerProps): JSX.Element {
+function RecipeViewer({ children }: RecipeViewerProps): JSX.Element {
   const [search, setSearch] = React.useState("");
 
   const { data: recipes } = useRecipes();
@@ -75,11 +75,7 @@ function RecipeViewer({ onRecipeClick }: RecipeViewerProps): JSX.Element {
 
             return (
               <li key={recipe.id}>
-                <button
-                  tw="w-full"
-                  type="button"
-                  onClick={() => onRecipeClick(recipe)}
-                >
+                {children(
                   <SnackCard
                     caption="Receita"
                     carbohydrates={carbohydrates}
@@ -89,8 +85,9 @@ function RecipeViewer({ onRecipeClick }: RecipeViewerProps): JSX.Element {
                     proportion={1}
                     cardProps={{ isHoverable: true }}
                     {...recipe}
-                  />
-                </button>
+                  />,
+                  recipe
+                )}
               </li>
             );
           })}

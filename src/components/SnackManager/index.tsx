@@ -70,7 +70,6 @@ function SnackManager(props: SnackManagerProps): JSX.Element {
         return (
           <li key={attachedSnack.id}>
             <button
-              tw="w-full"
               type="button"
               onClick={() => {
                 setInitialAttachedSnack(attachedSnack);

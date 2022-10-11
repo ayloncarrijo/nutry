@@ -11,10 +11,10 @@ import "twin.macro";
 import type { Food } from "types/api";
 
 interface FoodViewerProps {
-  onFoodClick: (food: Food) => void;
+  children: (card: JSX.Element, food: Food) => React.ReactNode;
 }
 
-function FoodViewer({ onFoodClick }: FoodViewerProps): JSX.Element {
+function FoodViewer({ children }: FoodViewerProps): JSX.Element {
   const [search, setSearch] = React.useState("");
 
   const { data: foods } = useFoods();
@@ -68,21 +68,20 @@ function FoodViewer({ onFoodClick }: FoodViewerProps): JSX.Element {
         </MessageBox>
       ) : (
         <SnackList>
-          {filteredFoods.map((food) => (
-            <li key={food.id}>
-              <button
-                tw="w-full"
-                type="button"
-                onClick={() => onFoodClick(food)}
-              >
-                <SnackCard
-                  caption="Ingrediente"
-                  cardProps={{ isHoverable: true }}
-                  {...food}
-                />
-              </button>
-            </li>
-          ))}
+          {filteredFoods.map((food) => {
+            return (
+              <li key={food.id}>
+                {children(
+                  <SnackCard
+                    caption="Ingrediente"
+                    cardProps={{ isHoverable: true }}
+                    {...food}
+                  />,
+                  food
+                )}
+              </li>
+            );
+          })}
         </SnackList>
       )}
     </div>

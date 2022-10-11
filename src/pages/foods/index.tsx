@@ -6,7 +6,7 @@ import fetchPaginated, {
   FetchPaginatedProps,
 } from "middlewares/fetchPaginated";
 import type { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import FoodsProvider from "providers/FoodsProvider";
 import "twin.macro";
 import type { AppPage } from "types";
@@ -21,8 +21,6 @@ const Page: AppPage<PageProps> = ({
   queryKeys,
   data,
 }) => {
-  const { push } = useRouter();
-
   return (
     <Container>
       <FoodsProvider
@@ -31,16 +29,20 @@ const Page: AppPage<PageProps> = ({
         queryKeys={queryKeys}
         data={data}
       >
-        <FoodViewer
-          onFoodClick={(food) => {
-            void push({
-              pathname: "/foods/[id]",
-              query: {
-                id: food.id,
-              },
-            });
-          }}
-        />
+        <FoodViewer>
+          {(card, food) => (
+            <Link
+              href={{
+                pathname: "/foods/[id]",
+                query: {
+                  id: food.id,
+                },
+              }}
+            >
+              <a>{card}</a>
+            </Link>
+          )}
+        </FoodViewer>
       </FoodsProvider>
     </Container>
   );

@@ -5,7 +5,7 @@ import authenticate from "middlewares/authenticate";
 import type { FetchPaginatedProps } from "middlewares/fetchPaginated";
 import fetchPaginated from "middlewares/fetchPaginated";
 import type { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import RecipesProvider from "providers/RecipesProvider";
 import "twin.macro";
 import type { AppPage } from "types";
@@ -20,8 +20,6 @@ const Page: AppPage<PageProps> = ({
   queryKeys,
   data,
 }) => {
-  const { push } = useRouter();
-
   return (
     <Container>
       <RecipesProvider
@@ -30,16 +28,20 @@ const Page: AppPage<PageProps> = ({
         queryKeys={queryKeys}
         data={data}
       >
-        <RecipeViewer
-          onRecipeClick={(recipe) => {
-            void push({
-              pathname: "/recipes/[id]",
-              query: {
-                id: recipe.id,
-              },
-            });
-          }}
-        />
+        <RecipeViewer>
+          {(card, recipe) => (
+            <Link
+              href={{
+                pathname: "/recipes/[id]",
+                query: {
+                  id: recipe.id,
+                },
+              }}
+            >
+              <a>{card}</a>
+            </Link>
+          )}
+        </RecipeViewer>
       </RecipesProvider>
     </Container>
   );
