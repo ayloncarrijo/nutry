@@ -2,6 +2,9 @@ import { createGlobalStyle } from "styled-components";
 import tw, { GlobalStyles as BaseStyles } from "twin.macro";
 
 const CustomStyles = createGlobalStyle({
+  ":root": {
+    colorScheme: "dark",
+  },
   body: {
     fontFamily: "Roboto",
     ...tw`text-gray-300 bg-gray-900`,
