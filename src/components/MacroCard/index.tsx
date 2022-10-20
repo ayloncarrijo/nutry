@@ -1,6 +1,5 @@
 import Icon from "components/Icon";
 import { CircularProgressbarWithChildren } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
 import "twin.macro";
 import tw from "twin.macro";
 
@@ -20,8 +19,10 @@ function MacroCard({
   const percentage = Math.floor((currentValue / goalValue) * 100);
 
   return (
-    <div tw="flex items-center gap-4">
-      <div tw="w-12">
+    <div tw="flex flex-col items-center">
+      <h3 tw="mb-2 text-lg text-white font-medium">{title}</h3>
+
+      <div tw="w-24">
         <CircularProgressbarWithChildren
           value={percentage}
           styles={{
@@ -29,25 +30,16 @@ function MacroCard({
             trail: tw`stroke-current text-gray-700`,
           }}
         >
-          <span
-            tw="font-medium"
-            css={percentage >= 100 ? tw`text-xs` : tw`text-sm`}
-          >
-            {percentage}%
-          </span>
+          <div tw="flex items-center gap-1">
+            <Icon icon={icon} size="sm" />
+            <span tw="font-medium text-sm">{percentage}%</span>
+          </div>
         </CircularProgressbarWithChildren>
       </div>
 
-      <div>
-        <h3 tw="text-lg text-white font-medium">{title}</h3>
-
-        <div tw="flex gap-2 items-center">
-          <Icon icon={icon} size="sm" />
-          <p tw="text-sm">
-            {Math.round(currentValue)}g / {Math.round(goalValue)}g
-          </p>
-        </div>
-      </div>
+      <p tw="mt-2 text-sm">
+        {Math.round(currentValue)}g / {Math.round(goalValue)}g
+      </p>
     </div>
   );
 }

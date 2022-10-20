@@ -6,6 +6,7 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import DrawerProvider from "providers/DrawerProvider";
 import UserProvider from "providers/UserProvider";
+import "react-circular-progressbar/dist/styles.css";
 import type {} from "styled-components/cssprop";
 import type { AppPage } from "types";
 

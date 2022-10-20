@@ -61,7 +61,10 @@ function DietViewer({
       </div>
 
       <div tw="mt-8">
-        <ul tw="divide-y divide-gray-700 -my-4" css={{ li: tw`py-4` }}>
+        <ul
+          tw="-my-4 grid divide-y sm:(my-0 grid-cols-3 divide-y-0 divide-x) divide-gray-700"
+          css={{ li: tw`py-4 sm:(py-0 px-4)` }}
+        >
           <li>
             <MacroCard
               icon={MacroIcon.CARBOHYDRATES}
