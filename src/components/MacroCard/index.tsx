@@ -39,7 +39,7 @@ function MacroCard({
       </div>
 
       <div>
-        <h3 tw="text-lg text-white font-medium">{title}</h3>
+        <h3 tw="text-lg text-white font-medium uppercase">{title}</h3>
 
         <div tw="flex gap-2 items-center">
           <Icon icon={icon} size="sm" />
