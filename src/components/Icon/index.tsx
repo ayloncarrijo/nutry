@@ -5,7 +5,7 @@ import tw from "twin.macro";
 
 interface IconProps {
   icon: string | JSX.Element;
-  size?: "md" | "sm";
+  size?: "md" | "sm" | "xs";
   variant?: "outlined" | "filled";
 }
 
@@ -26,7 +26,7 @@ function Icon({
     <div
       tw="flex justify-center items-center select-none"
       css={[
-        { md: tw`w-6 h-6`, sm: tw`w-5 h-5` }[size],
+        { md: tw`w-6 h-6`, sm: tw`w-5 h-5`, xs: tw`w-4 h-4` }[size],
         !isMaterialReady && tw`opacity-0`,
       ]}
       className={isMaterialIcon ? clsx("material-symbols", size, variant) : ""}

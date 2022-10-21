@@ -4,7 +4,6 @@ import Api from "lib/api";
 import { useUser } from "providers/UserProvider";
 import React from "react";
 import "twin.macro";
-import tw from "twin.macro";
 import { MacroIcon, Status } from "types";
 import type { AttachedFood, AttachedRecipe, Diet } from "types/api";
 import DatabaseUtil from "utils/DatabaseUtil";
@@ -61,10 +60,7 @@ function DietViewer({
       </div>
 
       <div tw="mt-8">
-        <ul
-          tw="-my-4 grid divide-y sm:(my-0 grid-cols-3 divide-y-0 divide-x) divide-gray-700"
-          css={{ li: tw`py-4 sm:(py-0 px-4)` }}
-        >
+        <ul tw="grid grid-cols-3 divide-x divide-gray-700">
           <li>
             <MacroCard
               icon={MacroIcon.CARBOHYDRATES}

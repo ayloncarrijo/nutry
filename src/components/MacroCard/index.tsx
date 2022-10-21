@@ -16,23 +16,23 @@ function MacroCard({
   goalValue,
   currentValue,
 }: MacroCardProps): JSX.Element {
-  const percentage = Math.floor((currentValue / goalValue) * 100);
+  const percentageValue = Math.floor((currentValue / goalValue) * 100);
 
   return (
     <div tw="flex flex-col items-center">
-      <h3 tw="mb-2 text-lg text-white font-medium">{title}</h3>
+      <h3 tw="mb-2 font-medium text-white text-base">{title}</h3>
 
-      <div tw="w-24">
+      <div tw="w-20">
         <CircularProgressbarWithChildren
-          value={percentage}
+          value={percentageValue}
           styles={{
             path: tw`stroke-current text-blue-400`,
             trail: tw`stroke-current text-gray-700`,
           }}
         >
-          <div tw="flex items-center gap-1">
+          <div tw="flex flex-col items-center gap-2">
             <Icon icon={icon} size="sm" />
-            <span tw="font-medium text-sm">{percentage}%</span>
+            <span tw="font-medium text-xs">{percentageValue}%</span>
           </div>
         </CircularProgressbarWithChildren>
       </div>

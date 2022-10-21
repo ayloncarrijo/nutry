@@ -41,6 +41,9 @@ const CustomStyles = createGlobalStyle({
     "&.sm": {
       fontSize: "20px",
     },
+    "&.xs": {
+      fontSize: "16px",
+    },
     "&.outlined": {
       fontVariationSettings: "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48",
     },
