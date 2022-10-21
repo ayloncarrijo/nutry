@@ -16,29 +16,30 @@ interface RecipeViewerProps {
 }
 
 function RecipeViewer({ children }: RecipeViewerProps): JSX.Element {
+  const { data: initialRecipes } = useRecipes();
+
+  const [recipes, setRecipes] = React.useState(initialRecipes);
+
   const [search, setSearch] = React.useState("");
 
-  const { data: recipes } = useRecipes();
-
-  const [filteredRecipes, setFilteredRecipes] = React.useState(recipes);
-
   React.useEffect(() => {
-    const timeoutId = window.setTimeout(
-      () =>
-        setFilteredRecipes(
-          search
-            ? recipes.filter((recipe) =>
-                recipe.name.toLowerCase().includes(search.toLowerCase())
-              )
-            : recipes
-        ),
-      250
-    );
+    const timeoutId = window.setTimeout(() => {
+      const words = search.split(" ").map((word) => word.toLowerCase());
+
+      setRecipes(
+        search
+          ? initialRecipes.filter((recipe) => {
+              const name = recipe.name.toLowerCase();
+              return words.every((word) => name.includes(word));
+            })
+          : initialRecipes
+      );
+    }, 250);
 
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [search, recipes]);
+  }, [search, initialRecipes]);
 
   return (
     <div>
@@ -59,7 +60,7 @@ function RecipeViewer({ children }: RecipeViewerProps): JSX.Element {
         </Link>
       </div>
 
-      {!filteredRecipes.length ? (
+      {!recipes.length ? (
         <MessageBox>
           <p>
             {search
@@ -69,7 +70,7 @@ function RecipeViewer({ children }: RecipeViewerProps): JSX.Element {
         </MessageBox>
       ) : (
         <SnackList>
-          {filteredRecipes.map((recipe) => {
+          {recipes.map((recipe) => {
             const { carbohydrates, fats, proteins } =
               DatabaseUtil.getMacrosFromSnackContainer(recipe);
 

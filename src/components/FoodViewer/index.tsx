@@ -15,29 +15,30 @@ interface FoodViewerProps {
 }
 
 function FoodViewer({ children }: FoodViewerProps): JSX.Element {
+  const { data: initialFoods } = useFoods();
+
+  const [foods, setFoods] = React.useState(initialFoods);
+
   const [search, setSearch] = React.useState("");
 
-  const { data: foods } = useFoods();
-
-  const [filteredFoods, setFilteredFoods] = React.useState(foods);
-
   React.useEffect(() => {
-    const timeoutId = window.setTimeout(
-      () =>
-        setFilteredFoods(
-          search
-            ? foods.filter((food) =>
-                food.name.toLowerCase().includes(search.toLowerCase())
-              )
-            : foods
-        ),
-      250
-    );
+    const timeoutId = window.setTimeout(() => {
+      const words = search.split(" ").map((word) => word.toLowerCase());
+
+      setFoods(
+        search
+          ? initialFoods.filter((food) => {
+              const name = food.name.toLowerCase();
+              return words.every((word) => name.includes(word));
+            })
+          : initialFoods
+      );
+    }, 250);
 
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [search, foods]);
+  }, [search, initialFoods]);
 
   return (
     <div>
@@ -58,7 +59,7 @@ function FoodViewer({ children }: FoodViewerProps): JSX.Element {
         </Link>
       </div>
 
-      {!filteredFoods.length ? (
+      {!foods.length ? (
         <MessageBox>
           <p>
             {search
@@ -68,7 +69,7 @@ function FoodViewer({ children }: FoodViewerProps): JSX.Element {
         </MessageBox>
       ) : (
         <SnackList>
-          {filteredFoods.map((food) => {
+          {foods.map((food) => {
             return (
               <li key={food.id}>
                 {children(
