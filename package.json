@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
   "private": true,
-  "name": "webnutrients",
+  "name": "nutry",
   "scripts": {
     "vercel-build": "prisma generate && next build",
     "dev": "next dev",
